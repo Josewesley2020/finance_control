@@ -1,5 +1,10 @@
-<p>content works!</p>
+<span *ngIf="loginValidate"><button (click)="logout()">Logout</button></span>
 
-<div *ngFor="let item of records">
-<span>{{item.created_at + "|" + item.details_origin_id + "|" + item.id + "|" + item.month + "|" + item.year + "|" + item.value + "|" + item.idUser }}</span>
-</div>
+
+<app-login-screen *ngIf="!loginValidate"
+(userLogado)="validateLogin($event)"
+(user)="setUser($event)">
+</app-login-screen>
+
+
+<app-home *ngIf="loginValidate"></app-home>
