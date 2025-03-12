@@ -1,10 +1,20 @@
-<span *ngIf="loginValidate"><button (click)="logout()">Logout</button></span>
+<div class="card align-items-center col-10 mt-5">
+<div class="card-header col-12 justify-content-around d-flex"><span>App Finance</span>
+</div>
+<div class="card-body col-12">
+  <div class="d-flex justify-content-end mb-3" *ngIf="loginValidate">
+    <button class="btn btn-danger" (click)="logout()">Logout</button>
+  </div>
 
+  <div *ngIf="!loginValidate">
+    <app-login-screen
+      (userLogado)="validateLogin($event)"
+      (user)="setUser($event)">
+    </app-login-screen>
+  </div>
 
-<app-login-screen *ngIf="!loginValidate"
-(userLogado)="validateLogin($event)"
-(user)="setUser($event)">
-</app-login-screen>
-
-
-<app-home *ngIf="loginValidate"></app-home>
+  <div *ngIf="loginValidate">
+    <app-home></app-home>
+  </div>
+</div>
+</div>
