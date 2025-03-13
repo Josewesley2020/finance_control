@@ -1,0 +1,211 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { TableRecordsService } from '../../services/table-records.service';
+import { Record } from '../../models/record.model';
+import { CommonModule } from '@angular/common';
+import { User } from '../../models/user.model';
+import { FormsModule } from '@angular/forms';
+import { NgxCurrencyDirective } from 'ngx-currency';
+import { TableIncomeSourceService } from '../../services/table-income-source.service';
+import { Income } from '../../models/income.model';
+import { TableRecordsIncomeService } from '../../services/table-records-income.service';
+import { RecordIncome } from '../../models/record-income.model';
+
+@Component({
+  selector: 'app-home',
+  imports: [CommonModule, FormsModule, NgxCurrencyDirective],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
+})
+export class HomeComponent implements OnInit {
+  @Input() user?: User;
+  months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  allRecords: Record[] = [];
+  allIncomes: Income[] = [];
+  allRecordsIncomes: RecordIncome[] = [];
+  recordsFiltrados: Record[] = [];
+  dates: string[] = [];
+  selectedDate: string = 'MAR-2025';
+  totalPayable: number = 0;
+  totalPending: number = 0;
+  totalDiscount: number = 0;
+  totalLate: number = 0;
+  valueRecordsIncome: number = 0;
+
+
+  constructor(private tableRecordsService: TableRecordsService,
+  private tableIncomeSourceService: TableIncomeSourceService,
+  private tableRecordsIncomeService: TableRecordsIncomeService) { }
+
+  ngOnInit() {
+    this.getRecords();
+    this.generateDates();
+  }
+
+  getRecordsIncome() {
+    const userId = this.user?.id || '';
+    const { month, year } = this.parseDateString(this.selectedDate);
+    this.tableRecordsIncomeService.selectInRecods_income(userId).then(RecordsIncome => {
+      console.log('RecordsINCOME:', RecordsIncome);
+      this.allRecordsIncomes =  RecordsIncome.filter(record => record.month === month && record.year === year);
+       this.valueRecordsIncome = 0;
+      this.allRecordsIncomes.forEach(recordIncome => {
+        this.valueRecordsIncome += parseFloat(recordIncome.value.toFixed(2));
+      });
+      console.log('ValueRecordsINCOME:', this.valueRecordsIncome);
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+    });
+  }
+  getIncomes() {
+    const userId = this.user?.id || '';
+    this.tableIncomeSourceService.selectInIncomeSource(userId).then(income => {
+      console.log('INCOME:', income);
+      this.allIncomes = income;
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+    });
+  }
+
+  getRecords() {
+    const userId = this.user?.id || '';
+    this.tableRecordsService.selectInRecordsWithDetails_Origin(userId).then(records => {
+      this.allRecords = records;
+      this.filterRecords();
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+    });
+  }
+
+  informPayment(record: Record) {
+    console.log('Pagamento informado:', record);
+  }
+  deleteRecord(record: Record) {
+    console.log('Registro deletado:', record);
+  }
+  editRecord(record: Record) {
+    console.log('Registro editado:', record);
+  }
+
+  generateDates() {
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year <= currentYear + 5; year++) {
+      for (let month of this.months) {
+        this.dates.push(`${month}-${year}`);
+      }
+    }
+  }
+
+  parseDateString(dateString: string): { month: number, year: number } {
+    const [monthStr, yearStr] = dateString.split('-');
+    const month = this.months.indexOf(monthStr) + 1;
+    const year = parseInt(yearStr, 10);
+    return { month, year };
+  }
+
+  onchangeDate() {
+    this.filterRecords();
+    this.getRecordsIncome();
+
+}
+
+  filterRecords() {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    this.recordsFiltrados = this.allRecords.filter(record => record.month === month && record.year === year);
+    const totals = this.calculateTotals(this.recordsFiltrados);
+    this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
+    this.totalPending = parseFloat(totals.totalPending.toFixed(2));
+    this.totalLate = parseFloat(totals.totalLate.toFixed(2));
+    this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
+  }
+
+  calculateTotals(records: any[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
+  let totalPayable = 0;
+  let totalPending = 0;
+  let totalLate = 0;
+  let totalDiscount = 0;
+
+  records.forEach(record => {
+    const valueAfterDiscount = record.value - record.discounts || 0;
+
+    if (record.payment) {
+      totalPayable += valueAfterDiscount;
+    } else {
+      totalPending += valueAfterDiscount;
+      if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) {
+        totalLate += valueAfterDiscount;
+      }
+    }
+    totalDiscount += record.discounts || 0;
+  });
+
+  return { totalPayable, totalPending, totalLate, totalDiscount };
+}
+
+
+  getNextMonthAndYear(month: number, year: number) {
+    let nextMonth = month + 1;
+    let nextYear = year;
+    if (nextMonth > 12) {
+      nextMonth = 1;
+      nextYear++;
+    }
+    return { nextMonth, nextYear };
+  }
+
+  filterValueNextMonth(details_origin_id: number) {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    const { nextMonth, nextYear } = this.getNextMonthAndYear(month, year);
+
+    const recordFromNextMonth = this.allRecords.find(record =>
+      record.month === nextMonth &&
+      record.year === nextYear &&
+      record.details_origin_id === details_origin_id &&
+      record.payment === false
+    );
+
+    if (!recordFromNextMonth) return 0;
+
+    return recordFromNextMonth.value - recordFromNextMonth.discounts || 0;
+  }
+
+  filterValueAllMonths(details_origin_id: number) {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    const { nextMonth, nextYear } = this.getNextMonthAndYear(month, year);
+
+    const recordsAllMonths = this.allRecords.filter(record =>
+      (record.month !== month || record.year !== year) &&
+      (record.month !== nextMonth || record.year !== nextYear) &&
+      record.details_origin_id === details_origin_id &&
+      record.payment === false
+    );
+
+    if (recordsAllMonths.length === 0) return 0;
+    const value = recordsAllMonths.reduce((total, record) =>
+      total + (record.value - record.discounts || 0), 0
+    );
+    return parseFloat(value.toFixed(2));
+  }
+
+  truncate(text: string, limit: number): string {
+    return text.length > limit ? text.substring(0, limit) + '...' : text;
+  }
+
+  classByStatus(record: Record): string {
+    if (record.payment) return 'text-bg-success';
+    if (this.isDatePast(record.Details_Origin.due_date,record.month, record.year)) return 'text-bg-danger';
+    return 'text-bg-warning';
+  }
+  showBtnUpdateValue(record: Record): string {
+    if (record.payment) return 'text-bg-success';
+    if (this.isDatePast(record.Details_Origin.due_date,record.month, record.year)) return 'text-bg-danger';
+    return 'text-bg-warning';
+  }
+
+  isDatePast(day: number, month: number, year: number): boolean {
+    const currentDate = new Date();
+    const inputDate = new Date(year, month - 1, day);
+
+    return inputDate < currentDate;
+  }
+
+}

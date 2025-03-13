@@ -1,0 +1,25 @@
+<div class="card align-items-center col-12 mt-1">
+<div class="card-header col-12 justify-content-between d-flex">
+<span>App Finance
+</span>
+  <div class="d-flex justify-content-end" *ngIf="loginValidate && !loading">
+    <button class="btn btn-danger" (click)="logout()">Logout</button>
+  </div>
+</div>
+<div class="card-body col-12">
+  <div *ngIf="!loginValidate && !loading">
+    <app-login-screen
+      (userLogado)="validateLogin($event)"
+      (user)="setUser($event)">
+    </app-login-screen>
+  </div>
+  <div *ngIf="loginValidate && !loading">
+    <app-home
+    [user]="user"
+    ></app-home>
+  </div>
+  <div *ngIf="loading">
+    <span>CARREGANDO</span>
+  </div>
+</div>
+</div>

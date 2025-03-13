@@ -1,0 +1,86 @@
+<div class="d-flex justify-content-end ">
+  <div class="col-2 ">
+    <select class="form-select mb-4" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
+      <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
+    </select>
+  </div>
+
+</div>
+
+<div class="d-flex justify-content-between">
+  <div class=" text-center mx-2 w-25">
+    <div class="p-1 rounded text-xxl-start">
+      <div class="d-flex justify-content-around">
+        <h5 class="card-title">Entrada</h5>
+        <h5 class="card-title">Sobrou</h5>
+      </div>
+      <div class="d-flex justify-content-around">
+        <p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : ''">{{ valueRecordsIncome - totalPayable  | currency:'BRL':'symbol':'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mx-2 w-25">
+    <div class="p-1 rounded text-bg-success">
+      <h5 class="card-title">Pago</h5>
+      <p class="card-text">{{ totalPayable | currency:'BRL':'symbol':'1.2-2' }}</p>
+    </div>
+  </div>
+  <div class="text-center mx-2 w-25">
+    <div class="p-1 rounded text-bg-info">
+      <h5 class="card-title">Descontos</h5>
+      <p class="card-text">{{ totalDiscount | currency:'BRL':'symbol':'1.2-2' }}</p>
+    </div>
+  </div>
+  <div class="text-center mx-2 w-25">
+    <div class="p-1 rounded text-bg-warning">
+      <h5 class="card-title">Pendente</h5>
+      <p class="card-text">{{ totalPending | currency:'BRL':'symbol':'1.2-2' }}</p>
+    </div>
+  </div>
+  <div class="text-center mx-2 w-25">
+    <div class="p-1 rounded text-bg-danger">
+      <h5 class="card-title">Atrasado</h5>
+      <p class="card-text">{{ totalLate | currency:'BRL':'symbol':'1.2-2' }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid card">
+  <div class="row bg-primary text-white align-items-center justify-content-around py-2">
+    <div class="col-1"></div>
+    <div class="col-2">Origem</div>
+    <div class="col-1">Venc.</div>
+    <div class="col-2">Desc.</div>
+    <div class="col-2">Pagar</div>
+    <div class="col-2">Prox. Mês</div>
+    <div class="col-2">Futuras</div>
+  </div>
+  <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-center py-2">
+    <div class="col-1 d-flex justify-content-between">
+      <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
+      <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
+    </div>
+    <div class="col-2" [attr.title]="record.Details_Origin.Description">
+      {{ truncate(record.Details_Origin.Description, 10) }}
+    </div>
+    <div class="col-1">{{ record.Details_Origin.due_date }}</div>
+    <div class="col-2">{{ record.discounts | currency:'BRL':'symbol':'1.2-2' }}</div>
+    <div class="col-2 mt-2 mb-1" [ngClass]="classByStatus(record)">
+      {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}
+    </div>
+    <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
+    <div class="col-2 d-flex justify-content-between align-items-center">
+      {{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}
+      <button *ngIf="!record.payment && record.definitive_value" class="btn btn-success btn-sm"
+        (click)="informPayment(record)" title="Informe Pagamento">
+        Pay
+      </button>
+      <button
+        *ngIf="!record.payment && !record.definitive_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
+        class="btn btn-warning btn-sm" (click)="informPayment(record)" title="Informe Pagamento">
+        Update
+      </button>
+    </div>
+  </div>
+</div>
