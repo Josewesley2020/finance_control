@@ -1,0 +1,35 @@
+<div class="col-2 mb-2">
+  <select class="form-select" [(ngModel)]="selectedDate" (ngModelChange)="filterRecords()" title="Select Date">
+    <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
+  </select>
+</div>
+
+<div class="container card">
+  <div class="row bg-primary text-white align-items-sm-center justify-content-around">
+    <div class="col-1"></div>
+    <div class="col-2">Origem</div>
+    <div class="col-1">Venc.</div>
+    <div class="col-2">Desc.</div>
+    <div class="col-2">Pagar</div>
+    <div class="col-2">Prox. Mês</div>
+    <div class="col-2">Futuras</div>
+  </div>
+  <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-md-baseline mt-2">
+    <div class="col-1 d-flex justify-content-between">
+      <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
+      <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
+    </div>
+    <div class="col-2" [attr.title]="record.Details_Origin.Description">
+      {{ truncate(record.Details_Origin.Description, 10) }}
+    </div>
+    <div class="col-1">{{ record.Details_Origin.due_date }}</div>
+    <div class="col-2">{{ record.discounts }}</div>
+    <div class="col-2">{{ record.value - record.discounts }}</div>
+    <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) }}</div>
+    <div class="col-2 d-flex justify-content-between">{{ filterValueAllMonths(record.details_origin_id)}}
+    <button class="btn btn-success btn-sm mb-1" (click)="informPayment(record)" title="Informe Pagamento">
+        <i class="bi bi-credit-card"></i>
+      </button>
+    </div>
+  </div>
+</div>
