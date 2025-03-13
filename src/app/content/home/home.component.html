@@ -23,11 +23,11 @@
       {{ truncate(record.Details_Origin.Description, 10) }}
     </div>
     <div class="col-1">{{ record.Details_Origin.due_date }}</div>
-    <div class="col-2">{{ record.discounts }}</div>
-    <div class="col-2">{{ record.value - record.discounts }}</div>
-    <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) }}</div>
-    <div class="col-2 d-flex justify-content-between">{{ filterValueAllMonths(record.details_origin_id)}}
-    <button class="btn btn-success btn-sm mb-1" (click)="informPayment(record)" title="Informe Pagamento">
+    <div class="col-2">{{ record.discounts | currency:'BRL':'symbol':'1.2-2' }}</div>
+    <div class="col-2">{{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}</div>
+    <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
+    <div class="col-2 d-flex justify-content-between">{{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}
+      <button class="btn btn-success btn-sm mb-1" (click)="informPayment(record)" title="Informe Pagamento">
         <i class="bi bi-credit-card"></i>
       </button>
     </div>

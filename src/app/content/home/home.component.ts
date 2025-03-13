@@ -4,13 +4,13 @@ import { Record } from '../../models/record.model';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { FormsModule } from '@angular/forms';
+import { NgxCurrencyDirective } from 'ngx-currency';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [CommonModule, FormsModule, NgxCurrencyDirective  ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   @Input() user?: User;
