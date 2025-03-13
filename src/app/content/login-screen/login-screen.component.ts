@@ -4,11 +4,10 @@ import { AuthenticatorService } from '../../services/authenticator.service';
 import { User } from '../../models/user.model';
 
 @Component({
-  selector: 'app-login-screen',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './login-screen.component.html',
-  styleUrl: './login-screen.component.css'
+    selector: 'app-login-screen',
+    imports: [FormsModule],
+    templateUrl: './login-screen.component.html',
+    styleUrl: './login-screen.component.css'
 })
 export class LoginScreenComponent {
 

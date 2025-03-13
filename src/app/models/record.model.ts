@@ -1,4 +1,4 @@
-import { Details_Origin } from './Details_Origin.model';
+import { Details_Origin } from './details_Origin.model';
 
 export class Record {
   created_at: string;

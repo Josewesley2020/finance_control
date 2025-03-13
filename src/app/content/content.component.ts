@@ -6,11 +6,10 @@ import { LoginScreenComponent } from "./login-screen/login-screen.component";
 import { HomeComponent } from "./home/home.component";
 
 @Component({
-  selector: 'app-content',
-  standalone: true,
-  imports: [CommonModule, LoginScreenComponent, HomeComponent],
-  templateUrl: './content.component.html',
-  styleUrl: './content.component.css'
+    selector: 'app-content',
+    imports: [CommonModule, LoginScreenComponent, HomeComponent],
+    templateUrl: './content.component.html',
+    styleUrl: './content.component.css'
 })
 export class ContentComponent implements OnInit {
   // records: Record[] = [];
