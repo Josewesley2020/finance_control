@@ -1,4 +1,22 @@
-<div class="d-flex justify-content-end ">
+<div class="d-flex justify-content-between">
+  <div *ngIf="allGoals.length > 0 && !loadingGoals">
+    <app-goals [allGoals]="allGoals">
+    </app-goals>
+  </div>
+  <div class="col-2" *ngIf="allGoals.length === 0 && !loadingGoals">
+    <span> ADICIONAR OBJETIVOS </span>
+  </div>
+  <div class="col-2" *ngIf="loadingGoals">
+    <span> CARREGANDO OBJETIVOS </span>
+  </div>
+  <div class=" container">
+    <!-- <span>Menu de ações</span> -->
+    <div class="btn-group mt-2 d-flex" role="group" aria-label="Menu de ações">
+      <button type="button" class="btn btn-outline-primary" (click)="addNewGoal()">Adicionar novo objetivo</button>
+      <button type="button" class="btn btn-outline-primary" (click)="addNewExpense()">Adicionar nova despesa</button>
+      <button type="button" class="btn btn-outline-primary" (click)="addNewIncome()">Adicionar nova renda</button>
+    </div>
+  </div>
   <div class="col-2 ">
     <select class="form-select mb-4" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
       <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
@@ -7,7 +25,7 @@
 
 </div>
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between bg-primary-subtle p-2 rounded-top">
   <div class=" text-center mx-2 w-25">
     <div class="p-1 rounded text-xxl-start">
       <div class="d-flex justify-content-around">
@@ -16,7 +34,8 @@
       </div>
       <div class="d-flex justify-content-around">
         <p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
-        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : ''">{{ valueRecordsIncome - totalPayable  | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : ''">{{
+          valueRecordsIncome - totalPayable | currency:'BRL':'symbol':'1.2-2' }}</p>
       </div>
     </div>
   </div>
@@ -45,7 +64,6 @@
     </div>
   </div>
 </div>
-
 <div class="container-fluid card">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
@@ -66,8 +84,15 @@
     </div>
     <div class="col-1">{{ record.Details_Origin.due_date }}</div>
     <div class="col-2">{{ record.discounts | currency:'BRL':'symbol':'1.2-2' }}</div>
-    <div class="col-2 mt-2 mb-1" [ngClass]="classByStatus(record)">
-      {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}
+    <div class="col-2 d-flex justify-content-between align-items-baseline">
+      <span>
+        {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}
+      </span>
+      <span class="p-1 rounded" [ngClass]="classByStatus(record)">
+        {{ classByStatus(record) === "text-success" ? 'Pago' :
+        classByStatus(record) === "text-danger" ? 'Atrasado' :
+        'Pendente' }}
+      </span>
     </div>
     <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
     <div class="col-2 d-flex justify-content-between align-items-center">

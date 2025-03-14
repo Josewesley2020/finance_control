@@ -1,0 +1,45 @@
+<div class="container card mb-2">
+  <div class="row">
+    <div class="col-12">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Objetivo</th>
+            <th scope="col">Valor Atual</th>
+            <th scope="col">Meta</th>
+            <th scope="col">Progresso</th>
+            <!-- <th scope="col">Diferença</th> -->
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let goal of filteredGoals()" >
+            <td>{{ goal.description }}</td>
+            <td><b>{{ goal.value | currency:'BRL':'symbol':'1.2-2' }}</b></td>
+            <td>{{ goal.objective_value | currency:'BRL':'symbol':'1.2-2' }}</td>
+           <td class="align-content-around">
+              <div *ngIf="goal.value < goal.objective_value" class="progress">
+                <div class="progress-bar" role="progressbar"
+                  [style.width.%]="calculateProgress(goal.value, goal.objective_value)"
+                  [attr.aria-valuenow]="calculateProgress(goal.value, goal.objective_value)" aria-valuemin="0"
+                  aria-valuemax="100" title="Progresso: {{ calculateProgress(goal.value, goal.objective_value) }}%">
+                  {{ calculateProgress(goal.value, goal.objective_value) | number:'1.0-2' }}%
+                </div>
+              </div>
+              <div *ngIf="goal.value >= goal.objective_value" class="text-center text-success">
+                <i class="me-1  bi-check-circle-fill"></i>
+                <span><b>Meta alcançada</b></span>
+              </div>
+            </td>
+            <td>
+              <button *ngIf="shouldShowUpdateButton(goal)" class="btn btn-warning btn-sm" (click)="updateGoal(goal)"
+                title="Atualizar meta">
+                Update
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
