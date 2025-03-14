@@ -4,15 +4,17 @@ import { Record } from '../../models/record.model';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { FormsModule } from '@angular/forms';
-import { NgxCurrencyDirective } from 'ngx-currency';
 import { TableIncomeSourceService } from '../../services/table-income-source.service';
 import { Income } from '../../models/income.model';
 import { TableRecordsIncomeService } from '../../services/table-records-income.service';
 import { RecordIncome } from '../../models/record-income.model';
+import { GoalsComponent } from "../goals/goals.component";
+import { TableGoalsService } from '../../services/table-goals.service';
+import { Goal } from '../../models/goal.model';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, NgxCurrencyDirective],
+  imports: [CommonModule, FormsModule, GoalsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -30,15 +32,33 @@ export class HomeComponent implements OnInit {
   totalDiscount: number = 0;
   totalLate: number = 0;
   valueRecordsIncome: number = 0;
+  allGoals: Goal[] = [];
+  loadingGoals: boolean = false;
 
 
   constructor(private tableRecordsService: TableRecordsService,
-  private tableIncomeSourceService: TableIncomeSourceService,
-  private tableRecordsIncomeService: TableRecordsIncomeService) { }
+    private tableIncomeSourceService: TableIncomeSourceService,
+    private tableRecordsIncomeService: TableRecordsIncomeService,
+    private tableGoalsService: TableGoalsService) { }
 
   ngOnInit() {
+    this.loadingGoals = true;
+    this.getGoals();
     this.getRecords();
     this.generateDates();
+  }
+
+
+  getGoals() {
+    const userId = this.user?.id || '';
+    this.tableGoalsService.selectInInGoals(userId).then(goals => {
+      this.allGoals = goals;
+      console.log('GOALS:', goals);
+      this.loadingGoals = false;
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+      this.loadingGoals = false;
+    });
   }
 
   getRecordsIncome() {
@@ -46,8 +66,8 @@ export class HomeComponent implements OnInit {
     const { month, year } = this.parseDateString(this.selectedDate);
     this.tableRecordsIncomeService.selectInRecods_income(userId).then(RecordsIncome => {
       console.log('RecordsINCOME:', RecordsIncome);
-      this.allRecordsIncomes =  RecordsIncome.filter(record => record.month === month && record.year === year);
-       this.valueRecordsIncome = 0;
+      this.allRecordsIncomes = RecordsIncome.filter(record => record.month === month && record.year === year);
+      this.valueRecordsIncome = 0;
       this.allRecordsIncomes.forEach(recordIncome => {
         this.valueRecordsIncome += parseFloat(recordIncome.value.toFixed(2));
       });
@@ -106,7 +126,7 @@ export class HomeComponent implements OnInit {
     this.filterRecords();
     this.getRecordsIncome();
 
-}
+  }
 
   filterRecords() {
     const { month, year } = this.parseDateString(this.selectedDate);
@@ -119,27 +139,27 @@ export class HomeComponent implements OnInit {
   }
 
   calculateTotals(records: any[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
-  let totalPayable = 0;
-  let totalPending = 0;
-  let totalLate = 0;
-  let totalDiscount = 0;
+    let totalPayable = 0;
+    let totalPending = 0;
+    let totalLate = 0;
+    let totalDiscount = 0;
 
-  records.forEach(record => {
-    const valueAfterDiscount = record.value - record.discounts || 0;
+    records.forEach(record => {
+      const valueAfterDiscount = record.value - record.discounts || 0;
 
-    if (record.payment) {
-      totalPayable += valueAfterDiscount;
-    } else {
-      totalPending += valueAfterDiscount;
-      if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) {
-        totalLate += valueAfterDiscount;
+      if (record.payment) {
+        totalPayable += valueAfterDiscount;
+      } else {
+        totalPending += valueAfterDiscount;
+        if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) {
+          totalLate += valueAfterDiscount;
+        }
       }
-    }
-    totalDiscount += record.discounts || 0;
-  });
+      totalDiscount += record.discounts || 0;
+    });
 
-  return { totalPayable, totalPending, totalLate, totalDiscount };
-}
+    return { totalPayable, totalPending, totalLate, totalDiscount };
+  }
 
 
   getNextMonthAndYear(month: number, year: number) {
@@ -191,13 +211,13 @@ export class HomeComponent implements OnInit {
   }
 
   classByStatus(record: Record): string {
-    if (record.payment) return 'text-bg-success';
-    if (this.isDatePast(record.Details_Origin.due_date,record.month, record.year)) return 'text-bg-danger';
-    return 'text-bg-warning';
+    if (record.payment) return 'text-success';
+    if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) return 'text-danger';
+    return 'text-warning';
   }
   showBtnUpdateValue(record: Record): string {
     if (record.payment) return 'text-bg-success';
-    if (this.isDatePast(record.Details_Origin.due_date,record.month, record.year)) return 'text-bg-danger';
+    if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) return 'text-bg-danger';
     return 'text-bg-warning';
   }
 
@@ -206,6 +226,21 @@ export class HomeComponent implements OnInit {
     const inputDate = new Date(year, month - 1, day);
 
     return inputDate < currentDate;
+  }
+
+  addNewGoal(): void {
+    // Lógica para adicionar um novo objetivo
+    console.log('Adicionar Novo Objetivo');
+  }
+
+  addNewExpense(): void {
+    // Lógica para adicionar uma nova despesa
+    console.log('Adicionar Nova Despesa');
+  }
+
+  addNewIncome(): void {
+    // Lógica para adicionar uma nova renda
+    console.log('Adicionar Nova Renda');
   }
 
 }
