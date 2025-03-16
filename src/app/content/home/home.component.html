@@ -1,31 +1,12 @@
-<div class="d-flex justify-content-between">
-  <div *ngIf="allGoals.length > 0 && !loadingGoals">
-    <app-goals [allGoals]="allGoals">
-    </app-goals>
-  </div>
-  <div class="col-2" *ngIf="allGoals.length === 0 && !loadingGoals">
-    <span> ADICIONAR OBJETIVOS </span>
-  </div>
-  <div class="col-2" *ngIf="loadingGoals">
-    <span> CARREGANDO OBJETIVOS </span>
-  </div>
-  <div class=" container">
-    <!-- <span>Menu de ações</span> -->
-    <div class="btn-group mt-2 d-flex" role="group" aria-label="Menu de ações">
-      <button type="button" class="btn btn-outline-primary" (click)="addNewGoal()">Adicionar novo objetivo</button>
-      <button type="button" class="btn btn-outline-primary" (click)="addNewExpense()">Adicionar nova despesa</button>
-      <button type="button" class="btn btn-outline-primary" (click)="addNewIncome()">Adicionar nova renda</button>
-    </div>
-  </div>
-  <div class="col-2 ">
-    <select class="form-select mb-4" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
+<div class="d-flex justify-content-end">
+  <div class="col-2 mt-2">
+    <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
       <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
     </select>
   </div>
-
 </div>
 
-<div class="d-flex justify-content-between bg-primary-subtle p-2 rounded-top">
+<div class="d-flex justify-content-between rounded-top">
   <div class=" text-center mx-2 w-25">
     <div class="p-1 rounded text-xxl-start">
       <div class="d-flex justify-content-around">
@@ -40,26 +21,35 @@
     </div>
   </div>
   <div class="text-center mx-2 w-25">
-    <div class="p-1 rounded text-bg-success">
-      <h5 class="card-title">Pago</h5>
+    <div class="p-1 border-2 rounded card-footer border-success">
+      <div class="d-inline-flex">
+        <h5 class="card-title me-1">Pago</h5>
+        <i class="bi bi-check-circle-fill text-success"></i>
+      </div>
       <p class="card-text">{{ totalPayable | currency:'BRL':'symbol':'1.2-2' }}</p>
     </div>
   </div>
   <div class="text-center mx-2 w-25">
-    <div class="p-1 rounded text-bg-info">
+    <div class="p-1 border-2 rounded card-footer border-info">
       <h5 class="card-title">Descontos</h5>
       <p class="card-text">{{ totalDiscount | currency:'BRL':'symbol':'1.2-2' }}</p>
     </div>
   </div>
   <div class="text-center mx-2 w-25">
-    <div class="p-1 rounded text-bg-warning">
-      <h5 class="card-title">Pendente</h5>
+    <div class="p-1 border-2 rounded card-footer border-warning">
+      <div class="d-inline-flex">
+        <h5 class="card-title m-1">Pendente</h5>
+        <i class="bi bi-hourglass-split text-warning"></i>
+      </div>
       <p class="card-text">{{ totalPending | currency:'BRL':'symbol':'1.2-2' }}</p>
     </div>
   </div>
   <div class="text-center mx-2 w-25">
-    <div class="p-1 rounded text-bg-danger">
-      <h5 class="card-title">Atrasado</h5>
+    <div class="p-1 border-2 rounded card-footer border-danger">
+      <div class="d-inline-flex">
+        <h5 class="card-title m-1">Atrasado</h5>
+        <i class="bi bi-exclamation-circle-fill text-danger"></i>
+      </div>
       <p class="card-text">{{ totalLate | currency:'BRL':'symbol':'1.2-2' }}</p>
     </div>
   </div>
@@ -74,38 +64,57 @@
     <div class="col-2">Prox. Mês</div>
     <div class="col-2">Futuras</div>
   </div>
-  <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-center py-2">
-    <div class="col-1 d-flex justify-content-between">
-      <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
-      <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
+  <div class="scrollable-content p-2">
+    <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-center py-2">
+      <div class="col-1 d-flex justify-content-between">
+        <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
+        <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
+      </div>
+      <div class="col-2" [attr.title]="record.Details_Origin.Description">
+        {{ truncate(record.Details_Origin.Description, 10) }}
+      </div>
+      <div class="col-1">{{ record.Details_Origin.due_date }}</div>
+      <div class="col-2">{{ record.discounts | currency:'BRL':'symbol':'1.2-2' }}</div>
+      <div class="col-2 d-flex justify-content-between align-items-baseline">
+        <span>
+         <b> {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}</b>
+        </span>
+        <!-- <span class="p-1 rounded" [ngClass]="classByStatus(record)">
+          {{ classByStatus(record) === "text-success" ? 'Pago' :
+          classByStatus(record) === "text-danger" ? 'Atrasado' :
+          'Pendente' }}
+        </span> -->
+        <span class="p-1 rounded" [ngClass]="classByStatus(record)">
+          <i *ngIf="classByStatus(record) === 'text-success'" class="bi bi-check-circle-fill"></i>
+          <i *ngIf="classByStatus(record) === 'text-danger'" class="bi bi-exclamation-circle-fill"></i>
+          <i *ngIf="classByStatus(record) === 'text-warning'" class="bi bi-hourglass-split"></i>
+        </span>
+      </div>
+      <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
+      <div class="col-2 d-flex justify-content-between align-items-center">
+        {{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}
+        <button *ngIf="!record.payment && record.definitive_value" class="btn btn-success btn-sm"
+          (click)="informPayment(record)" title="Informe Pagamento">
+          Pay
+        </button>
+        <button
+          *ngIf="!record.payment && !record.definitive_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
+          class="btn btn-warning btn-sm" (click)="informPayment(record)" title="Informe Pagamento">
+          Update
+        </button>
+      </div>
     </div>
-    <div class="col-2" [attr.title]="record.Details_Origin.Description">
-      {{ truncate(record.Details_Origin.Description, 10) }}
-    </div>
-    <div class="col-1">{{ record.Details_Origin.due_date }}</div>
-    <div class="col-2">{{ record.discounts | currency:'BRL':'symbol':'1.2-2' }}</div>
-    <div class="col-2 d-flex justify-content-between align-items-baseline">
-      <span>
-        {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}
-      </span>
-      <span class="p-1 rounded" [ngClass]="classByStatus(record)">
-        {{ classByStatus(record) === "text-success" ? 'Pago' :
-        classByStatus(record) === "text-danger" ? 'Atrasado' :
-        'Pendente' }}
-      </span>
-    </div>
-    <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
-    <div class="col-2 d-flex justify-content-between align-items-center">
-      {{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}
-      <button *ngIf="!record.payment && record.definitive_value" class="btn btn-success btn-sm"
-        (click)="informPayment(record)" title="Informe Pagamento">
-        Pay
-      </button>
-      <button
-        *ngIf="!record.payment && !record.definitive_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
-        class="btn btn-warning btn-sm" (click)="informPayment(record)" title="Informe Pagamento">
-        Update
-      </button>
-    </div>
+  </div>
+  <div class="d-flex justify-content-end p-2">
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-circle me-1"></i>
+      <span>Adicionar registro</span>
+    </button>
+  </div>
+</div>
+<div class="d-flex justify-content-between mt-2">
+  <div *ngIf="allGoals.length > 0 && !loadingGoals">
+    <app-goals [allGoals]="allGoals">
+    </app-goals>
   </div>
 </div>

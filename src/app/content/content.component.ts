@@ -4,10 +4,11 @@ import { AuthenticatorService } from '../services/authenticator.service';
 import { User } from '../models/user.model';
 import { LoginScreenComponent } from "./login-screen/login-screen.component";
 import { HomeComponent } from "./home/home.component";
+import { MenuHeaderComponent } from "./menu-header/menu-header.component";
 
 @Component({
     selector: 'app-content',
-    imports: [CommonModule, LoginScreenComponent, HomeComponent],
+    imports: [CommonModule, LoginScreenComponent, HomeComponent, MenuHeaderComponent],
     templateUrl: './content.component.html',
     styleUrl: './content.component.css'
 })
