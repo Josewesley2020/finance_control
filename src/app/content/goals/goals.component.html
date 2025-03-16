@@ -1,4 +1,4 @@
-<div class="container card mb-2">
+<div class="container card mb-2" *ngIf="filteredGoals().length != 0 && !loadingGoals">
   <div class="row">
     <div class="col-12">
       <table class="table">
@@ -43,3 +43,10 @@
     </div>
   </div>
 </div>
+
+  <div class="col" *ngIf="filteredGoals().length === 0 && !loadingGoals">
+    <span> ADICIONAR OBJETIVOS </span>
+  </div>
+  <div class="col" *ngIf="loadingGoals">
+    <span> CARREGANDO OBJETIVOS </span>
+  </div>

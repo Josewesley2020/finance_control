@@ -14,8 +14,11 @@ import { CommonModule } from '@angular/common';
 export class GoalsComponent implements OnInit {
   @Input() user?: User;
   @Input() allGoals: Goal[] = [];
+  loadingGoals: boolean = false;
 
-  constructor() { }
+  constructor() {
+    this.loadingGoals = true;
+   }
 
   ngOnInit(): void {
     const allGoals = this.allGoals || '';
@@ -44,6 +47,7 @@ export class GoalsComponent implements OnInit {
   }
 
     filteredGoals(): Goal[] {
+    this.loadingGoals = false;
     return this.allGoals.filter(goal => goal.show_goal);
   }
 }
