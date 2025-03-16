@@ -1,12 +1,11 @@
 <div class="card align-items-center col-12 mt-1">
 <div class="card-header col-12 justify-content-between d-flex">
-<span>App Finance
-</span>
+<app-menu-header></app-menu-header>
   <div class="d-flex justify-content-end" *ngIf="loginValidate && !loading">
-    <button class="btn btn-danger" (click)="logout()">Logout</button>
+    <button class="btn btn-danger mt-2" (click)="logout()">Logout</button>
   </div>
 </div>
-<div class="card-body col-12">
+<div class="card-body col-12 p-1">
   <div *ngIf="!loginValidate && !loading">
     <app-login-screen
       (userLogado)="validateLogin($event)"
