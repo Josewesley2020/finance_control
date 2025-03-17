@@ -26,22 +26,28 @@ export class AuthenticatorService {
   }
 
   logoutLocalStorage() {
-    localStorage.setItem('user', JSON.stringify(undefined));
-    localStorage.setItem('loginValidate', JSON.stringify(false));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(undefined));
+      localStorage.setItem('loginValidate', JSON.stringify(false));
+    }
   }
 
   getUserLocalStorage() {
-  let user: User | undefined = undefined;
-  let loginValidate: boolean = false;
+    let user: User | undefined = undefined;
+    let loginValidate: boolean = false;
+
+    if (typeof localStorage !== 'undefined') {
       const userLocalStorage = localStorage.getItem('user');
-      if (userLocalStorage && userLocalStorage != 'undefined') {
+      if (userLocalStorage && userLocalStorage !== 'undefined' && userLocalStorage !== 'null') {
         user = JSON.parse(userLocalStorage);
         const loginValidateLocalStorage = localStorage.getItem('loginValidate');
-        if (loginValidateLocalStorage) {
+        if (loginValidateLocalStorage && loginValidateLocalStorage !== 'undefined' && loginValidateLocalStorage !== 'null') {
           loginValidate = JSON.parse(loginValidateLocalStorage);
         }
       }
-    return {user, loginValidate};
+    }
+
+    return { user, loginValidate };
   }
 
 }
