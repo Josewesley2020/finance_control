@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TableRecordsService } from '../../services/table-records.service';
+import { TableRecordsService } from '../../services/table-records-expenses.service';
 import { Record } from '../../models/record.model';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
@@ -8,17 +8,17 @@ import { TableIncomeSourceService } from '../../services/table-income-source.ser
 import { Income } from '../../models/income.model';
 import { TableRecordsIncomeService } from '../../services/table-records-income.service';
 import { RecordIncome } from '../../models/record-income.model';
-import { GoalsComponent } from "../goals/goals.component";
 import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, GoalsComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+
   @Input() user?: User;
   months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   allRecords: Record[] = [];
@@ -34,6 +34,8 @@ export class HomeComponent implements OnInit {
   valueRecordsIncome: number = 0;
   allGoals: Goal[] = [];
   loadingGoals: boolean = false;
+  totalReserve: number = 0;
+  reserveAdded: boolean = false;
 
 
   constructor(private tableRecordsService: TableRecordsService,
@@ -241,6 +243,14 @@ export class HomeComponent implements OnInit {
   addNewIncome(): void {
     // Lógica para adicionar uma nova renda
     console.log('Adicionar Nova Renda');
+  }
+
+  addReserve() {
+  this.reserveAdded = true;
+    this.totalReserve += 100;
+    setTimeout(() => {
+      this.reserveAdded = false;
+    }, 200);
   }
 
 }

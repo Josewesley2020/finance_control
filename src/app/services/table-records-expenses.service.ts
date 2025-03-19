@@ -12,7 +12,7 @@ export class TableRecordsService {
 
   async selectInRecordsWithDetails_Origin(idUser: string): Promise<Record[]> {
     let { data: Records, error } = await this.supabaseService.clientSupabase
-      .from('Records')
+      .from('Records_Expenses')
       .select(`
         *,
         Details_Origin (
