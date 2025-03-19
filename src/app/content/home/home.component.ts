@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TableRecordsService } from '../../services/table-records.service';
+import { TableRecordsService } from '../../services/table-records-expenses.service';
 import { Record } from '../../models/record.model';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
@@ -19,6 +19,7 @@ import { Goal } from '../../models/goal.model';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+
   @Input() user?: User;
   months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   allRecords: Record[] = [];
@@ -34,6 +35,7 @@ export class HomeComponent implements OnInit {
   valueRecordsIncome: number = 0;
   allGoals: Goal[] = [];
   loadingGoals: boolean = false;
+  totalReserve: number = 0;
 
 
   constructor(private tableRecordsService: TableRecordsService,
@@ -241,6 +243,10 @@ export class HomeComponent implements OnInit {
   addNewIncome(): void {
     // Lógica para adicionar uma nova renda
     console.log('Adicionar Nova Renda');
+  }
+
+  addReserve() {
+    this.totalReserve += 100;
   }
 
 }
