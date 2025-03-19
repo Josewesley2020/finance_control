@@ -19,13 +19,18 @@ export class ContentComponent implements OnInit {
   loginValidate: boolean = false;
   loading: boolean = false;
 
-  constructor(private authenticatorService: AuthenticatorService) {
+  constructor(
+  private authenticatorService: AuthenticatorService) {
     this.loading = true;
   }
 
   ngOnInit(): void {
     this.getUserLocalStorage();
   }
+
+  //  openModal() {
+  //   this.dialog.open(ModalInsertOriginExpenseComponent);
+  // }
 
   getUserLocalStorage() {
     const { user, loginValidate } = this.authenticatorService.getUserLocalStorage();

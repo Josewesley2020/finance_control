@@ -10,6 +10,7 @@ import { TableRecordsIncomeService } from '../../services/table-records-income.s
 import { RecordIncome } from '../../models/record-income.model';
 import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
+import { TableDetailsOriginService } from '../../services/table-details-origin.service';
 
 @Component({
   selector: 'app-home',
@@ -41,13 +42,25 @@ export class HomeComponent implements OnInit {
   constructor(private tableRecordsService: TableRecordsService,
     private tableIncomeSourceService: TableIncomeSourceService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
-    private tableGoalsService: TableGoalsService) { }
+    private tableGoalsService: TableGoalsService,
+    private tableDetailsOriginService: TableDetailsOriginService) { }
 
   ngOnInit() {
     this.loadingGoals = true;
     this.getGoals();
     this.getRecords();
     this.generateDates();
+    // this.inserDetails_Origin();
+  }
+
+
+  inserDetails_Origin() {
+    const userId = this.user?.id || '';
+    this.tableDetailsOriginService.insertInInDetails_Origin(userId).then(origin => {
+      console.log('ORIGEM:', origin);
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+    });
   }
 
 
