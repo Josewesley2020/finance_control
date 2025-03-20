@@ -10,6 +10,7 @@ import { TableRecordsIncomeService } from '../../services/table-records-income.s
 import { RecordIncome } from '../../models/record-income.model';
 import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
+import { TableDetailsOriginService } from '../../services/table-details-origin.service';
 
 @Component({
   selector: 'app-home',
@@ -49,6 +50,7 @@ export class HomeComponent implements OnInit {
     this.getRecords();
     this.generateDates();
   }
+
 
 
   getGoals() {
