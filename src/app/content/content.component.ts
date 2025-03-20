@@ -13,8 +13,6 @@ import { MenuHeaderComponent } from "./menu-header/menu-header.component";
     styleUrl: './content.component.css'
 })
 export class ContentComponent implements OnInit {
-  // records: Record[] = [];
-  // data: any;
   user?: User;
   loginValidate: boolean = false;
   loading: boolean = false;
@@ -28,25 +26,12 @@ export class ContentComponent implements OnInit {
     this.getUserLocalStorage();
   }
 
-  //  openModal() {
-  //   this.dialog.open(ModalInsertOriginExpenseComponent);
-  // }
-
   getUserLocalStorage() {
     const { user, loginValidate } = this.authenticatorService.getUserLocalStorage();
     this.user = user;
     this.loginValidate = loginValidate;
     this.loading = false;
   }
-
-  // selectInRecordsWithDetails_Origin() {
-  //   this.supabaseService.selectInRecordsWithDetails_Origin().then(records => {
-  //     this.data = records;
-  //     console.log('Data:', this.data);
-  //   }).catch(error => {
-  //     console.error('Erro ao buscar registros:', error);
-  //   });
-  // }
 
   setUser($event: User) {
     this.user = $event;

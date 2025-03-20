@@ -42,26 +42,15 @@ export class HomeComponent implements OnInit {
   constructor(private tableRecordsService: TableRecordsService,
     private tableIncomeSourceService: TableIncomeSourceService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
-    private tableGoalsService: TableGoalsService,
-    private tableDetailsOriginService: TableDetailsOriginService) { }
+    private tableGoalsService: TableGoalsService) { }
 
   ngOnInit() {
     this.loadingGoals = true;
     this.getGoals();
     this.getRecords();
     this.generateDates();
-    // this.inserDetails_Origin();
   }
 
-
-  inserDetails_Origin() {
-    const userId = this.user?.id || '';
-    this.tableDetailsOriginService.insertInInDetails_Origin(userId).then(origin => {
-      console.log('ORIGEM:', origin);
-    }).catch(error => {
-      console.error('Erro ao buscar registros:', error);
-    });
-  }
 
 
   getGoals() {

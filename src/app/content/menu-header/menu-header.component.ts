@@ -27,9 +27,16 @@ export class MenuHeaderComponent {
   }
 
   openModal() {
-    this.dialog.open(ModalInsertOriginExpenseComponent, {
-      width: '1100px', // Defina a largura do modal
-      height: '500px' // Defina a altura do modal
+    const dialogRef = this.dialog.open(ModalInsertOriginExpenseComponent, {
+      width: 'auto',
+      height: 'auto'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        console.log(result.message);
+      } else {
+        console.log('Ação cancelada ou erro ao inserir a origem.');
+      }
     });
   }
 }

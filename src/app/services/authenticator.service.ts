@@ -50,4 +50,9 @@ export class AuthenticatorService {
     return { user, loginValidate };
   }
 
+  getUser(): User | undefined {
+    const { user } = this.getUserLocalStorage();
+    return user || undefined;
+  }
+
 }

@@ -10,18 +10,21 @@ export class TableDetailsOriginService {
   constructor(private supabaseService: SupabaseService) { }
 
 
-  async insertInInDetails_Origin(idUser: string): Promise<Details_Origin[]> {
+  async insertInInDetails_Origin(idUser: string,
+  description: string, observation: string,
+  closing_day: number, due_date: number, change_value: boolean, show_record: boolean): Promise<Details_Origin[]> {
     try {
       let { data: origin, error } = await this.supabaseService.clientSupabase
         .from('Details_Origin')
         .insert([
           {
-            Description: 'APP-FINACE',
-            Observation: 'APP-FINACE',
-            Closing_day: 19,
-            due_date: 21,
-            change_value: true,
-            idUser: idUser
+            Description: description,
+            Observation: observation,
+            Closing_day: closing_day,
+            due_date: due_date,
+            change_value: change_value,
+            idUser: idUser,
+            show_record: show_record
           }
         ])
         .select()
