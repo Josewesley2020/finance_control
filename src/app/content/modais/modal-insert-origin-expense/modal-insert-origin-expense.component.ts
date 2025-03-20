@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { TableDetailsOriginService } from '../../../services/table-details-origin.service';
 import { User } from '../../../models/user.model';
 import { AuthenticatorService } from '../../../services/authenticator.service';
+import { NotificacoesService } from '../../shared/notificacoes.service';
 
 @Component({
   selector: 'app-modal-insert-origin-expense',
@@ -26,6 +27,7 @@ export class ModalInsertOriginExpenseComponent implements OnInit {
   disabledBtnSalve: boolean = false;
 
   constructor(
+    private notificacoesService: NotificacoesService,
     private authService: AuthenticatorService,
     private tableDetailsOriginService: TableDetailsOriginService,
     public dialogRef: MatDialogRef<ModalInsertOriginExpenseComponent>) { }
@@ -53,11 +55,10 @@ export class ModalInsertOriginExpenseComponent implements OnInit {
       this.changeValue,
       this.show_value
     ).then(() => {
-      this.dialogRef.close(
-      { success: true, message: 'Origem inserida com sucesso.' }
-      );
+      this.notificacoesService.sucesso('Origem inserida com sucesso.');
+      this.dialogRef.close({ success: true });
     }).catch(error => {
-      console.log('Erro ao inserir a origem.');
+      this.notificacoesService.erro('Erro ao inserir a origem.');
       this.resetValues();
     });
   }
@@ -66,12 +67,18 @@ export class ModalInsertOriginExpenseComponent implements OnInit {
     if (this.user && this.user.id) {
       this.insertInInDetails_Origin();
     } else {
-      console.error('Usuário inválido. Não é possível inserir a origem.');
+      this.notificacoesService.erro('Usuário inválido. Não é possível inserir a origem.');
     }
   }
 
   cancel() {
     this.dialogRef.close({ success: false, message: 'Modal fechado sem alterações' });
+  }
+
+  isFormValid(): boolean {
+    return this.description.trim() !== '' &&
+      this.closingDay > 0 &&
+      this.dueDate > 0;
   }
 
 }

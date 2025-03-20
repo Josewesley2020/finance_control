@@ -31,6 +31,6 @@
   </div>
   <div class="card-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="save()">Salvar</button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!isFormValid()">Salvar</button>
   </div>
 </div>
