@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+.mat-mdc-snack-bar-container.notificacao-info {
+  --mdc-snackbar-container-color:rgb(10, 90, 205);
+  --mat-mdc-snack-bar-button-color: white;
+  --mdc-snackbar-supporting-text-color: white;
+}
+.mat-mdc-snack-bar-container.notificacao-sucesso {
+  --mdc-snackbar-container-color:rgb(25, 135, 84);
+  --mat-mdc-snack-bar-button-color: white;
+  --mdc-snackbar-supporting-text-color: white;
+}
+.mat-mdc-snack-bar-container.notificacao-alerta {
+  --mdc-snackbar-container-color:rgb(255, 199, 32) ;
+  --mat-mdc-snack-bar-button-color: black;
+  --mdc-snackbar-supporting-text-color: black;
+}
+.mat-mdc-snack-bar-container.notificacao-erro {
+  --mdc-snackbar-container-color:rgb(220, 53, 69);
+  --mat-mdc-snack-bar-button-color: white;
+  --mdc-snackbar-supporting-text-color: white;
+}
