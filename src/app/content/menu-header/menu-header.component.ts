@@ -22,7 +22,7 @@ export class MenuHeaderComponent {
     this.openModal();
   }
 
-  addNewGoal() {
+  addNewDestinationReserva() {
     throw new Error('Method not implemented.');
   }
 
