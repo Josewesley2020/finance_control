@@ -1,0 +1,27 @@
+<div class="card scrollable-content">
+  <div class="card-header text-bg-primary d-flex justify-content-between">
+    <h5 class="card-title m-1" id="modalInsertOriginExpenseLabel">Entrada</h5>
+    <button type="button" class="btn-close m-1" (click)="cancel()" aria-label="Close"></button>
+  </div>
+  <div class="card-body">
+    <form>
+      <!-- <div class="col-2 mt-2">
+    <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
+      <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
+    </select>
+  </div> -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <input type="text" class="form-control" id="description" placeholder="Descrição da entrada" [(ngModel)]="description" name="description">
+      </div>
+      <div class="mb-3">
+        <label for="value" class="form-label">Valor R$:</label>
+        <input type="number" class="form-control" id="value" placeholder="Valor R$:" [(ngModel)]="value" name="value" step="0.01">
+      </div>
+    </form>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="description == ''">Salvar</button>
+  </div>
+</div>
