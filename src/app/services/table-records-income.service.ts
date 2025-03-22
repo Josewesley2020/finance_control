@@ -24,4 +24,30 @@ export class TableRecordsIncomeService {
     }
     return records_income as RecordIncome[];
   }
+
+  async insertInInRecodsIncome( description: string, value: number, month: number, year: number,idIncome: number): Promise<RecordIncome[]> {
+      try {
+        let { data: recordIncome, error } = await this.supabaseService.clientSupabase
+          .from('Recods_income')
+          .insert([
+            {
+              description: description,
+              value: value,
+              month: month,
+              year: year,
+              idIncome: idIncome
+            }
+          ])
+          .select();
+        if (error) {
+          throw error;
+        }
+        return recordIncome as RecordIncome[];
+      } catch (err) {
+        throw err;
+      }
+    }
+
+
+
 }
