@@ -11,6 +11,8 @@ import { RecordIncome } from '../../models/record-income.model';
 import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
 import { TableDetailsOriginService } from '../../services/table-details-origin.service';
+import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-income/modal-insert-record-income.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -39,31 +41,36 @@ export class HomeComponent implements OnInit {
   reserveAdded: boolean = false;
 
 
-  constructor(private tableRecordsService: TableRecordsService,
+  constructor(
+    private dialog: MatDialog,
+    private tableRecordsService: TableRecordsService,
     private tableIncomeSourceService: TableIncomeSourceService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
     private tableGoalsService: TableGoalsService) { }
 
   ngOnInit() {
     this.loadingGoals = true;
-    this.getGoals();
     this.getRecords();
     this.generateDates();
+    this.getRecordsIncome();
   }
 
-
-
-  getGoals() {
-    const userId = this.user?.id || '';
-    this.tableGoalsService.selectInInGoals(userId).then(goals => {
-      this.allGoals = goals;
-      console.log('GOALS:', goals);
-      this.loadingGoals = false;
-    }).catch(error => {
-      console.error('Erro ao buscar registros:', error);
-      this.loadingGoals = false;
+  openModal_ModalInsertRecordIncomeComponent() {
+    const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+      minHeight: '300px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+       this.getRecordsIncome();
+      } else {
+        console.log('Ação cancelada');
+      }
     });
   }
+
 
   getRecordsIncome() {
     const userId = this.user?.id || '';
@@ -80,15 +87,7 @@ export class HomeComponent implements OnInit {
       console.error('Erro ao buscar registros:', error);
     });
   }
-  getIncomes() {
-    const userId = this.user?.id || '';
-    this.tableIncomeSourceService.selectInIncomeSource(userId).then(income => {
-      console.log('INCOME:', income);
-      this.allIncomes = income;
-    }).catch(error => {
-      console.error('Erro ao buscar registros:', error);
-    });
-  }
+
 
   getRecords() {
     const userId = this.user?.id || '';
@@ -251,11 +250,22 @@ export class HomeComponent implements OnInit {
   }
 
   addReserve() {
-  this.reserveAdded = true;
+    this.reserveAdded = true;
     this.totalReserve += 100;
     setTimeout(() => {
       this.reserveAdded = false;
     }, 200);
   }
 
+  getGoals() {
+    const userId = this.user?.id || '';
+    this.tableGoalsService.selectInInGoals(userId).then(goals => {
+      this.allGoals = goals;
+      console.log('GOALS:', goals);
+      this.loadingGoals = false;
+    }).catch(error => {
+      console.error('Erro ao buscar registros:', error);
+      this.loadingGoals = false;
+    });
+  }
 }
