@@ -1,0 +1,22 @@
+<div class="card scrollable-content">
+  <div class="card-header text-bg-primary d-flex justify-content-between">
+    <h5 class="card-title m-1" id="modalInsertOriginExpenseLabel">Destino da reserva</h5>
+    <button type="button" class="btn-close m-1" (click)="cancel()" aria-label="Close"></button>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <input type="text" class="form-control" id="description" placeholder="Destino da reserva" [(ngModel)]="description" name="description">
+      </div>
+      <div class="mb-3">
+        <label for="observation" class="form-label">Observação</label>
+        <textarea class="form-control" id="observation" rows="3" placeholder="Observação" [(ngModel)]="observation" name="observation"></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="description == ''">Salvar</button>
+  </div>
+</div>
