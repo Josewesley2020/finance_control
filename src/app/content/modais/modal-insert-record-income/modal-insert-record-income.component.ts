@@ -27,17 +27,6 @@ export class ModalInsertRecordIncomeComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  //   insertRecordIncome() {
-  //   const month = 3; // Mês
-  //   const year = 2025; // Ano
-  //   const idIncome = 8; // ID da renda
-  //   this.tableRecordsIncomeService.insertInInRecodsIncome('Salário', 1000, month, year, idIncome).then(RecordsIncome => {
-  //     console.log('RecordsINCOME:', RecordsIncome);
-  //   }).catch(error => {
-  //     console.error('Erro ao buscar registros:', error);
-  //   });
-  // }
-
     save() {
       this.tableRecordsIncomeService.insertInInRecodsIncome(this.description, this.value, this.month, this.year, this.idIncome).then(() => {
         this.notificacoesService.sucesso('Sucesso.');
