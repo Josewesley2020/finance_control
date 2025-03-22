@@ -5,6 +5,11 @@
   </div>
   <div class="card-body">
     <form>
+      <!-- <div class="col-2 mt-2">
+    <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
+      <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
+    </select>
+  </div> -->
       <div class="mb-3">
         <label for="description" class="form-label">Descrição</label>
         <input type="text" class="form-control" id="description" placeholder="Descrição da entrada" [(ngModel)]="description" name="description">

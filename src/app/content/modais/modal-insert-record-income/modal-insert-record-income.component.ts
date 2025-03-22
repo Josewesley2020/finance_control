@@ -12,7 +12,6 @@ import { TableRecordsIncomeService } from '../../../services/table-records-incom
   styleUrl: './modal-insert-record-income.component.css'
 })
 export class ModalInsertRecordIncomeComponent implements OnInit{
-
   description: string = '';
   value: number = 0; // Valor
   month = 3; // Mês
