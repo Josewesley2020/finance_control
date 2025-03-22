@@ -25,14 +25,15 @@ export class TableIncomeSourceService {
     }
   }
 
-  async insertInInIncomeSource(idUser: string, description: string): Promise<Income[]> {
+  async insertInInIncomeSource(idUser: string, description: string, show: boolean = true): Promise<Income[]> {
     try {
       let { data: income, error } = await this.supabaseService.clientSupabase
         .from('Income_Source')
         .insert([
           {
             description: description,
-            idUser: idUser
+            idUser: idUser,
+            show: show
           }
         ])
         .select();
