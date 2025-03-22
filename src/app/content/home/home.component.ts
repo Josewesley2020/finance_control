@@ -109,6 +109,9 @@ export class HomeComponent implements OnInit {
   editRecord(record: Record) {
     console.log('Registro editado:', record);
   }
+  showInfo(record: Record) {
+    console.log('Registro editado:', record);
+  }
 
   generateDates() {
     const currentYear = new Date().getFullYear();

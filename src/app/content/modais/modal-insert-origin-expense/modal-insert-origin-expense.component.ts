@@ -72,6 +72,7 @@ export class ModalInsertOriginExpenseComponent implements OnInit {
   }
 
   cancel() {
+    this.notificacoesService.info('Ação cancelada.');
     this.dialogRef.close({ success: false, message: 'Modal fechado sem alterações' });
   }
 

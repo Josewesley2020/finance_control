@@ -10,15 +10,41 @@ export class TableIncomeSourceService {
   constructor(private supabaseService: SupabaseService) {}
 
   async selectInIncomeSource(idUser: string): Promise<Income[]> {
-    let { data: income, error } = await this.supabaseService.clientSupabase
-      .from('Income_Source')
-      .select(`*`)
-      .eq('idUser', idUser);
-    if (error) {
-      throw error;
+    try {
+      let { data: income, error } = await this.supabaseService.clientSupabase
+        .from('Income_Source')
+        .select(`*`)
+        .eq('idUser', idUser);
+      if (error) {
+        throw error;
+      }
+      return income as Income[];
+    } catch (err) {
+      console.error('Erro ao selecionar fonte de renda:', err);
+      throw err;
     }
-    return income as Income[];
   }
 
-
+  async insertInInIncomeSource(idUser: string, description: string, show: boolean = true): Promise<Income[]> {
+    try {
+      let { data: income, error } = await this.supabaseService.clientSupabase
+        .from('Income_Source')
+        .insert([
+          {
+            description: description,
+            idUser: idUser,
+            show: show
+          }
+        ])
+        .select();
+      if (error) {
+        console.error('Erro ao adicionar fonte de renda:', error);
+        throw error;
+      }
+      return income as Income[];
+    } catch (err) {
+      console.error('Erro ao adicionar fonte de renda:', err);
+      throw err;
+    }
+  }
 }

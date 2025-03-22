@@ -12,7 +12,7 @@ export class TableDetailsOriginService {
 
   async insertInInDetails_Origin(idUser: string,
   description: string, observation: string,
-  closing_day: number, due_date: number, change_value: boolean, show_record: boolean): Promise<Details_Origin[]> {
+  closing_day: number, due_date: number, change_value: boolean, show_record: boolean = true): Promise<Details_Origin[]> {
     try {
       let { data: origin, error } = await this.supabaseService.clientSupabase
         .from('Details_Origin')

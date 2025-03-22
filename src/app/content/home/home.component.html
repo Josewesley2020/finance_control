@@ -1,10 +1,11 @@
 <div class="d-flex justify-content-between align-items-center rounded-top">
 
-  <div class="col-2 ms-4 mt-2">
-    <!-- <button class="btn btn-primary me-2">
-      <i class="bi bi-plus-circle me-1"></i>
-      <span>Entrada</span>
-    </button> -->
+  <div class="d-flex justify-content-start mb-2 ms-2
+  ">
+    <button class="btn btn-outline-success d-flex align-items-center">
+          <i class="bi bi-plus-circle me-1"></i>
+          <span>Entrada</span>
+        </button>
   </div>
   <div class="col-2 mt-2">
     <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
@@ -14,22 +15,23 @@
 </div>
 
 <div class="d-flex justify-content-between rounded-top">
-  <div class=" text-center mx-2 w-25">
-    <div class="p-1 rounded text-xxl-start">
-      <div class="d-flex justify-content-start mb-2">
-        <button class="btn btn-outline-success ">
-          <i class="bi bi-plus-circle me-1"></i>
-          <span>Entrada</span>
-        </button>
-        <h5 class="card-title"></h5>
+  <div class="text-center mx-2 w-25">
+    <div class="p-1 border-2 rounded card-footer border-black">
+      <div class="d-inline-flex justify-content-start">
+        <h5 class="card-title me-1">Saldo</h5>
+        <i class="bi bi-coin"></i>
       </div>
       <div class="d-flex justify-content-between">
-        <b><p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p></b>
-        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'">{{
-          valueRecordsIncome - totalPayable | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <b>
+          <p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
+        </b>
+        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'">
+          {{ valueRecordsIncome - totalPayable | currency:'BRL':'symbol':'1.2-2' }}
+        </p>
       </div>
     </div>
   </div>
+
   <div class="text-center mx-2 w-25">
     <div class="p-1 border-2 rounded card-footer border-primary"
       [ngClass]="{'text-bg-success': reserveAdded, 'border-primary': !reserveAdded}">
@@ -75,7 +77,7 @@
     </div>
   </div>
 </div>
-<div class="container-fluid card">
+<div class="container-fluid card mt-2">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
     <div class="col-2">Origem</div>
@@ -88,8 +90,9 @@
   <div class="scrollable-content p-2">
     <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-center py-2">
       <div class="col-1 d-flex justify-content-between">
-        <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
         <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
+        <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
+        <i class="bi bi-info-circle-fill" (click)="showInfo(record)"></i>
       </div>
       <div class="col-2" [attr.title]="record.Details_Origin.Description">
         {{ truncate(record.Details_Origin.Description, 10) }}
