@@ -55,21 +55,23 @@ export class HomeComponent implements OnInit {
     this.getRecordsIncome();
   }
 
-  openModal_ModalInsertRecordIncomeComponent() {
-    const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
-      width: 'auto',
-      height: 'auto',
-      minWidth: '400px',
-      minHeight: '300px'
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.success) {
-       this.getRecordsIncome();
-      } else {
-        console.log('Ação cancelada');
-      }
-    });
-  }
+openModal_ModalInsertRecordIncomeComponent() {
+  const { month, year } = this.parseDateString(this.selectedDate);
+  const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
+    width: 'auto',
+    height: 'auto',
+    minWidth: '400px',
+    minHeight: '300px',
+    data: { month, year }
+  });
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.success) {
+      this.getRecordsIncome();
+    } else {
+      console.log('Ação cancelada');
+    }
+  });
+}
 
 
   getRecordsIncome() {
