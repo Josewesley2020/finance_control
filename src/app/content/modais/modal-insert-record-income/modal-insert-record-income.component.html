@@ -1,18 +1,19 @@
 <div class="card scrollable-content">
   <div class="card-header text-bg-primary d-flex justify-content-between">
-    <h5 class="card-title m-1" id="modalInsertOriginExpenseLabel">Entrada</h5>
+    <h5 class="card-title m-1" id="modalInsertRecordIncomeLabel">Inserir Registro de Renda</h5>
     <button type="button" class="btn-close m-1" (click)="cancel()" aria-label="Close"></button>
   </div>
   <div class="card-body">
     <form>
-      <!-- <div class="col-2 mt-2">
-    <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
-      <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
-    </select>
-  </div> -->
+      <div class="mb-3">
+        <label for="incomeSource" class="form-label">Fonte de Renda</label>
+        <select class="form-select" id="incomeSource" [(ngModel)]="idIncomeSelecionado" name="incomeSource">
+          <option *ngFor="let income of allIncomes" [value]="income.id">{{ income.description }}</option>
+        </select>
+      </div>
       <div class="mb-3">
         <label for="description" class="form-label">Descrição</label>
-        <input type="text" class="form-control" id="description" placeholder="Descrição da entrada" [(ngModel)]="description" name="description">
+        <input type="text" class="form-control" id="description" placeholder="Descrição" [(ngModel)]="description" name="description">
       </div>
       <div class="mb-3">
         <label for="value" class="form-label">Valor R$:</label>
@@ -22,6 +23,6 @@
   </div>
   <div class="card-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="description == ''">Salvar</button>
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="value === undefined || value === 0 || idIncomeSelecionado === 0">Salvar</button>
   </div>
 </div>
