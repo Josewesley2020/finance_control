@@ -89,9 +89,9 @@
   <div class="scrollable-content p-2">
     <div *ngFor="let record of recordsFiltrados; let i = index" class="row border-bottom align-items-center py-2">
       <div class="col-1 d-flex justify-content-between">
-        <i class="bi bi-trash-fill" (click)="deleteRecord(record)"></i>
-        <i class="bi bi-pencil-fill" (click)="editRecord(record)"></i>
-        <i class="bi bi-info-circle-fill" (click)="showInfo(record)"></i>
+        <i class="bi bi-trash-fill icon-action" (click)="deleteRecord(record)"></i>
+        <i class="bi bi-pencil-fill icon-action" (click)="editRecord(record)"></i>
+        <i class="bi bi-info-circle-fill icon-action" (click)="showInfo(record)"></i>
       </div>
       <div class="col-2" [attr.title]="record.Details_Origin.Description">
         {{ truncate(record.Details_Origin.Description, 10) }}
@@ -102,11 +102,6 @@
         <span>
           <b> {{ (record.value - record.discounts) | currency:'BRL':'symbol':'1.2-2' }}</b>
         </span>
-        <!-- <span class="p-1 rounded" [ngClass]="classByStatus(record)">
-          {{ classByStatus(record) === "text-success" ? 'Pago' :
-          classByStatus(record) === "text-danger" ? 'Atrasado' :
-          'Pendente' }}
-        </span> -->
         <span class="p-1 rounded" [ngClass]="classByStatus(record)">
           <i *ngIf="classByStatus(record) === 'text-success'" class="bi bi-check-circle-fill"></i>
           <i *ngIf="classByStatus(record) === 'text-danger'" class="bi bi-exclamation-circle-fill"></i>
@@ -133,15 +128,9 @@
       <i class="bi bi-plus-circle me-1"></i>
       <span>Adicionar reserva</span>
     </button>
-    <button class="btn btn-primary me-2">
+    <button class="btn btn-primary me-2" (click)="addNewExpense()">
       <i class="bi bi-plus-circle me-1"></i>
       <span>Adicionar despesa</span>
     </button>
   </div>
 </div>
-<!-- <div class="d-flex justify-content-between mt-2">
-  <div *ngIf="allGoals.length > 0 && !loadingGoals">
-    <app-goals [allGoals]="allGoals">
-    </app-goals>
-  </div>
-</div> -->
