@@ -4,7 +4,6 @@ import { Record } from '../../models/record.model';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { FormsModule } from '@angular/forms';
-import { TableIncomeSourceService } from '../../services/table-income-source.service';
 import { Income } from '../../models/income.model';
 import { TableRecordsIncomeService } from '../../services/table-records-income.service';
 import { RecordIncome } from '../../models/record-income.model';
@@ -13,6 +12,7 @@ import { Goal } from '../../models/goal.model';
 import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-income/modal-insert-record-income.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificacoesService } from '../shared/notificacoes.service';
+import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
 
 @Component({
   selector: 'app-home',
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
 
 
   constructor(
-   private notificacoesService: NotificacoesService,
+    private notificacoesService: NotificacoesService,
     private dialog: MatDialog,
     private tableRecordsService: TableRecordsService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
@@ -53,6 +53,20 @@ export class HomeComponent implements OnInit {
     this.getRecords();
     this.generateDates();
     this.getRecordsIncome();
+  }
+
+  openModal_ModalShowDetailsRecordExpenseComponent(record: Record) {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    const dialogRef = this.dialog.open(ModalShowDetailsRecordExpenseComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+      minHeight: '300px',
+      data: { record, month, year }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal fechado:', result);
+    });
   }
 
   openModal_ModalInsertRecordIncomeComponent() {
@@ -81,7 +95,7 @@ export class HomeComponent implements OnInit {
         this.valueRecordsIncome += parseFloat(recordIncome.value.toFixed(2));
       });
     }).catch(error => {
-    this.notificacoesService.erro('Erro ao buscar registros de renda.');
+      this.notificacoesService.erro('Erro ao buscar registros de renda.');
     });
   }
 
@@ -90,8 +104,8 @@ export class HomeComponent implements OnInit {
       this.allRecords = records;
       this.filterRecords();
     }).catch(error => {
-    this.notificacoesService.erro('Erro ao buscar registros.');
-    console.error('Erro ao buscar registros:', error);
+      this.notificacoesService.erro('Erro ao buscar registros.');
+      console.error('Erro ao buscar registros:', error);
     });
   }
 
@@ -112,7 +126,7 @@ export class HomeComponent implements OnInit {
   }
 
   updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
-    this.tableRecordsService.updateInRecords_Expenses(id,value,discounts,definitive_value,payment).then(records => {
+    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
       this.notificacoesService.sucesso('Despesa atualizada com sucesso.');
       this.getRecords();
     }).catch(error => {
@@ -125,7 +139,7 @@ export class HomeComponent implements OnInit {
       this.notificacoesService.sucesso('Despesa deletada com sucesso.');
       this.getRecords();
     }).catch(error => {
-     this.notificacoesService.erro('Erro ao deletar despesa.');
+      this.notificacoesService.erro('Erro ao deletar despesa.');
       console.error('Erro ao deletar despesa:', error);
     });
   }
@@ -142,6 +156,7 @@ export class HomeComponent implements OnInit {
     console.log('Registro editado:', record);
   }
   showInfo(record: Record) {
+  this.openModal_ModalShowDetailsRecordExpenseComponent(record);
     console.log('Registro editado:', record);
   }
 
