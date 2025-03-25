@@ -1,24 +1,20 @@
 <div class="card align-items-center col-12 mt-1">
-<div class="card-header col-12 justify-content-between d-flex">
-<app-menu-header></app-menu-header>
-  <div class="d-flex justify-content-end" *ngIf="loginValidate && !loading">
-    <button class="btn btn-danger mt-2" (click)="logout()">Logout</button>
+  <div class="card-header col-12 justify-content-between d-flex">
+    <div *ngIf="loginValidate && !loading"><app-menu-header></app-menu-header></div>
+    <div class="d-flex justify-content-end" *ngIf="loginValidate && !loading">
+      <button class="btn btn-danger mt-2" (click)="logout()">Logout</button>
+    </div>
   </div>
-</div>
-<div class="card-body col-12 p-1">
-  <div *ngIf="!loginValidate && !loading">
-    <app-login-screen
-      (userLogado)="validateLogin($event)"
-      (user)="setUser($event)">
-    </app-login-screen>
+  <div class="card-body col-12 p-1">
+    <div *ngIf="!loginValidate && !loading">
+      <app-login-screen (userLogado)="validateLogin($event)" (user)="setUser($event)">
+      </app-login-screen>
+    </div>
+    <div *ngIf="loginValidate && !loading">
+      <app-home [user]="user"></app-home>
+    </div>
+    <div *ngIf="loading">
+      <span>CARREGANDO</span>
+    </div>
   </div>
-  <div *ngIf="loginValidate && !loading">
-    <app-home
-    [user]="user"
-    ></app-home>
-  </div>
-  <div *ngIf="loading">
-    <span>CARREGANDO</span>
-  </div>
-</div>
 </div>

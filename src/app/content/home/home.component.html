@@ -117,7 +117,7 @@
         </button>
         <button
           *ngIf="!record.payment && !record.definitive_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
-          class="btn btn-warning btn-sm" (click)="informPayment(record)" title="Informe Pagamento">
+          class="btn btn-warning btn-sm" (click)="editRecord(record)" title="Informe Pagamento">
           Update
         </button>
       </div>
