@@ -13,6 +13,7 @@ import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-
 import { MatDialog } from '@angular/material/dialog';
 import { NotificacoesService } from '../shared/notificacoes.service';
 import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
+import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-details-record-expense/modal-edit-details-record-expense.component';
 
 @Component({
   selector: 'app-home',
@@ -55,6 +56,20 @@ export class HomeComponent implements OnInit {
     this.getRecordsIncome();
   }
 
+  openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    const dialogRef = this.dialog.open(ModalEditDetailsRecordExpenseComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+      minHeight: '300px',
+      data: { record, month, year }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getRecords();
+      console.log('Modal fechado:', result);
+    });
+  }
   openModal_ModalShowDetailsRecordExpenseComponent(record: Record) {
     const { month, year } = this.parseDateString(this.selectedDate);
     const dialogRef = this.dialog.open(ModalShowDetailsRecordExpenseComponent, {
@@ -112,10 +127,10 @@ export class HomeComponent implements OnInit {
   insertInRecords_Expenses() {
     const idDetailsOrigin = 41;
     const value = 100;
-    const month = 4;
+    const month = 3;
     const year = 2025;
     const disconts = 0;
-    const definitive_value = true;
+    const definitive_value = false;
     const payment = false;
     this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, disconts, definitive_value, payment).then(records => {
       this.notificacoesService.sucesso('Despesa adicionada com sucesso.');
@@ -153,6 +168,7 @@ export class HomeComponent implements OnInit {
   }
 
   editRecord(record: Record) {
+  this.openModal_ModalEditDetailsRecordExpenseComponent(record);
     console.log('Registro editado:', record);
   }
   showInfo(record: Record) {
