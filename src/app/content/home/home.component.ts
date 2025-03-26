@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotificacoesService } from '../shared/notificacoes.service';
 import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
 import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-details-record-expense/modal-edit-details-record-expense.component';
+import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record-expense/modal-insert-record-expense.component';
 
 @Component({
   selector: 'app-home',
@@ -54,6 +55,21 @@ export class HomeComponent implements OnInit {
     this.getRecords();
     this.generateDates();
     this.getRecordsIncome();
+  }
+
+  openModal_ModalInsertRecordExpenseComponent() {
+    const { month, year } = this.parseDateString(this.selectedDate);
+    const allRecordsExpense = this.allRecords;
+    const dialogRef = this.dialog.open(ModalInsertRecordExpenseComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '500px',
+      data: { allRecordsExpense, month, year }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getRecords();
+      console.log('Modal fechado:', result);
+    });
   }
 
   openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
@@ -124,21 +140,21 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  insertInRecords_Expenses() {
-    const idDetailsOrigin = 41;
-    const value = 100;
-    const month = 3;
-    const year = 2025;
-    const disconts = 0;
-    const definitive_value = false;
-    const payment = false;
-    this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, disconts, definitive_value, payment).then(records => {
-      this.notificacoesService.sucesso('Despesa adicionada com sucesso.');
-      this.getRecords();
-    }).catch(error => {
-      console.error('Erro ao adicionar despesa:', error);
-    });
-  }
+  // insertInRecords_Expenses() {
+  //   const idDetailsOrigin = 41;
+  //   const value = 100;
+  //   const month = 3;
+  //   const year = 2025;
+  //   const disconts = 0;
+  //   const definitive_value = false;
+  //   const payment = false;
+  //   this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, disconts, definitive_value, payment).then(records => {
+  //     this.notificacoesService.sucesso('Despesa adicionada com sucesso.');
+  //     this.getRecords();
+  //   }).catch(error => {
+  //     console.error('Erro ao adicionar despesa:', error);
+  //   });
+  // }
 
   updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
     this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
@@ -304,7 +320,7 @@ export class HomeComponent implements OnInit {
   }
 
   addNewExpense(): void {
-    this.insertInRecords_Expenses();
+    this.openModal_ModalInsertRecordExpenseComponent();
   }
 
   addNewIncome(): void {

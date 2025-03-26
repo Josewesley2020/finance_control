@@ -1,0 +1,68 @@
+<div class="card">
+  <div class="card-header text-bg-primary d-flex justify-content-between align-items-center">
+    <h5 class="card-title m-0">Inserir Registro de Despesa</h5>
+    <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="row mb-1">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="detailsOrigin" class="form-label fw-bold">Origem:</label>
+            <select class="form-select" id="detailsOrigin" [(ngModel)]="idDetailsOrigin" name="detailsOrigin">
+              <option *ngFor="let origin of details_origin" [value]="origin.id">{{ origin.Description }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="value" class="form-label fw-bold">Valor:</label>
+            <input type="number" class="form-control" id="value" [(ngModel)]="value" name="value" step="10.00">
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="discounts" class="form-label fw-bold">Descontos:</label>
+            <input type="number" class="form-control" id="discounts" [(ngModel)]="discounts" name="discounts"
+              step="10.00">
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="form-group">
+            <label for="definitive_value" class="form-label fw-bold">Definitivo:</label>
+            <p class="d-flex justify-content-center">
+            <input type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="definitive_value"
+              name="definitive_value">
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row mb-1">
+        <div class="col-4">
+          <div class="form-group">
+            <label class="form-label fw-bold">Valor Final:</label>
+            <p>{{ (value - discounts) | currency:'BRL':'symbol':'1.2-2' }}</p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label for="definitive_value" class="form-label fw-bold">Valor Definitivo:</label>
+            <input type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="definitive_value" name="definitive_value">
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="row mb-1">
+        <div class="col-4">
+          <div class="form-group">
+            <label for="payment" class="form-label fw-bold">Pago:</label>
+            <input type="checkbox" class="form-check-input" id="payment" [(ngModel)]="payment" name="payment" [disabled]="!definitive_value">
+          </div>
+        </div>
+      </div> -->
+    </form>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary me-2" (click)="close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="insertInRecords_Expenses()">Salvar</button>
+  </div>
+</div>
