@@ -9,26 +9,23 @@
         <label class="form-label fw-bold">Descrição:</label>
       </div>
       <div class="col-6">
-        <p >{{ record?.Details_Origin?.Description }}</p>
+        <p>{{ record?.Details_Origin?.Description }}</p>
       </div>
     </div>
     <div class="row mb-1">
       <div class="col-6">
-      <p >
         <label class="form-label fw-bold">Data de Fechamento:</label>
-      </p>
       </div>
       <div class="col-6">
-        <p >{{ record?.Details_Origin?.Closing_day !== undefined ? formatDate((record?.Details_Origin?.Closing_day || 0),month, year) : '' }}</p>
+        <p>{{ record?.Details_Origin?.Closing_day !== undefined ? formatDate((record?.Details_Origin?.Closing_day || 0), month, year) : '' }}</p>
       </div>
     </div>
     <div class="row mb-1">
       <div class="col-6">
-      <p ><label class="form-label fw-bold">Data de Vencimento:</label></p>
-
+        <label class="form-label fw-bold">Data de Vencimento:</label>
       </div>
       <div class="col-6">
-        <p >{{ formatDate((record?.Details_Origin?.due_date || 0), month, year) }}</p>
+        <p>{{ formatDate((record?.Details_Origin?.due_date || 0), month, year) }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -36,7 +33,7 @@
         <label class="form-label fw-bold">Valor:</label>
       </div>
       <div class="col-6">
-        <p >{{ record?.value | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p>{{ record?.value | currency:'BRL':'symbol':'1.2-2' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -44,7 +41,7 @@
         <label class="form-label fw-bold">Descontos:</label>
       </div>
       <div class="col-6">
-        <p >{{ record?.discounts | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p>{{ record?.discounts | currency:'BRL':'symbol':'1.2-2' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -52,7 +49,7 @@
         <label class="form-label fw-bold">Valor Final:</label>
       </div>
       <div class="col-6">
-        <p >{{ ((record?.value ?? 0) - (record?.discounts ?? 0)) | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p>{{ ((record?.value ?? 0) - (record?.discounts ?? 0)) | currency:'BRL':'symbol':'1.2-2' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -60,11 +57,12 @@
         <label class="form-label fw-bold">Status:</label>
       </div>
       <div class="col-6">
-        <p >
+        <b>
           <span [ngClass]="record ? classByStatus(record) : ''">
-            {{ record?.payment ? 'Pago' : 'Pendente' }}
+            {{ record?.payment ? 'Pago' :
+            isDatePast((record?.Details_Origin?.due_date || 0), month, year) ? 'Atrasado' : 'Pendente' }}
           </span>
-        </p>
+        </b>
       </div>
     </div>
     <div class="row mb-1">
@@ -72,7 +70,7 @@
         <label class="form-label fw-bold">Valor Definitivo:</label>
       </div>
       <div class="col-6">
-        <p >{{ record?.definitive_value ? 'Sim' : 'Não' }}</p>
+        <p>{{ record?.definitive_value ? 'Sim' : 'Não' }}</p>
       </div>
     </div>
   </div>
