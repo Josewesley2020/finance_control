@@ -24,6 +24,7 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   discounts: number = 0;
   definitive_value: boolean = false;
   payment: boolean = false;
+  additionalRecords: { value: number, discounts: number, month: number, year: number }[] = [];
 
   constructor(
     private tableDetailsOriginService: TableDetailsOriginService,
@@ -50,10 +51,31 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
     });
   }
 
+  addRecord() {
+    const lastRecord = this.additionalRecords.length > 0 ? this.additionalRecords[this.additionalRecords.length - 1] : { month: this.month, year: this.year };
+    const nextMonth = lastRecord.month === 12 ? 1 : lastRecord.month + 1;
+    const nextYear = lastRecord.month === 12 ? lastRecord.year + 1 : lastRecord.year;
+    this.additionalRecords.push({ value: 0, discounts: 0, month: nextMonth, year: nextYear });
+  }
+
+  removeLastRecord() {
+    if (this.additionalRecords.length > 0) {
+      this.additionalRecords.pop();
+    }
+  }
+
   insertInRecords_Expenses() {
     const { idDetailsOrigin, value, discounts, definitive_value, payment, month, year } = this;
     this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, discounts, definitive_value, payment).then(records => {
       this.notificacoesService.sucesso('Despesa adicionada com sucesso.');
+      this.additionalRecords.forEach(record => {
+        this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, record.value, record.month, record.year, record.discounts, definitive_value, payment).then(records => {
+          this.notificacoesService.sucesso('Despesa adicional adicionada com sucesso.');
+        }).catch(error => {
+          console.error('Erro ao adicionar despesa adicional:', error);
+          this.notificacoesService.erro('Erro ao adicionar despesa adicional.');
+        });
+      });
       this.dialogRef.close({ success: true });
     }).catch(error => {
       console.error('Erro ao adicionar despesa:', error);
