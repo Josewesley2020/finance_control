@@ -33,7 +33,7 @@
         <label for="value" class="form-label fw-bold">Valor:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="number" class="form-control" id="value" [(ngModel)]="record.value" name="value" step="10.00">
+        <input *ngIf="record" type="number" class="form-control" id="value" [(ngModel)]="record.value" name="value" step="10.00" min="0">
       </div>
     </div>
     <div class="row mb-1">
@@ -41,7 +41,7 @@
         <label for="discounts" class="form-label fw-bold">Descontos:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="number" class="form-control" id="discounts" [(ngModel)]="record.discounts" name="discounts" step="10.00">
+        <input *ngIf="record" type="number" class="form-control" id="discounts" [(ngModel)]="record.discounts" name="discounts" step="10.00" min="0">
       </div>
     </div>
     <div class="row mb-1">

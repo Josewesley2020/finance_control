@@ -275,14 +275,15 @@ export class HomeComponent implements OnInit {
 
   filterValueAllMonths(details_origin_id: number) {
     const { month, year } = this.parseDateString(this.selectedDate);
-    const { nextMonth, nextYear } = this.getNextMonthAndYear(month, year);
+    const { month: selectedMonth, year: selectedYear } = this.parseDateString(this.selectedDate);
 
-    const recordsAllMonths = this.allRecords.filter(record =>
-      (record.month !== month || record.year !== year) &&
-      (record.month !== nextMonth || record.year !== nextYear) &&
+    const recordsAllMonths = this.allRecords.filter(record => {
+      const recordDate = new Date(record.year, record.month - 1);
+      const selectedDate = new Date(selectedYear, selectedMonth - 1);
+      return recordDate >= selectedDate &&
       record.details_origin_id === details_origin_id &&
-      record.payment === false
-    );
+      record.payment === false;
+    });
 
     if (recordsAllMonths.length === 0) return 0;
     const value = recordsAllMonths.reduce((total, record) =>
