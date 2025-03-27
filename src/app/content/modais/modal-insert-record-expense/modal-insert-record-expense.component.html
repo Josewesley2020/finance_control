@@ -9,7 +9,13 @@
         <div class="col-3">
           <div class="form-group">
             <label for="detailsOrigin" class="form-label fw-bold">Origem:</label>
-            <select class="form-select" id="detailsOrigin" [(ngModel)]="idDetailsOrigin" name="detailsOrigin">
+                <select
+              class="form-select"
+              id="detailsOrigin"
+              [(ngModel)]="idDetailsOrigin"
+              name="detailsOrigin"
+              (change)="onDetailsOriginChange($event)"
+            >
               <option *ngFor="let origin of details_origin" [value]="origin.id">{{ origin.Description }}</option>
             </select>
           </div>
@@ -17,40 +23,40 @@
         <div class="col-3">
           <div class="form-group">
             <label for="value" class="form-label fw-bold">Valor:</label>
-            <input type="number" class="form-control" id="value" [(ngModel)]="value" name="value" step="0.01">
+            <input type="number" class="form-control" id="value" [(ngModel)]="value" name="value" step="10.00" min="0">
           </div>
         </div>
         <div class="col-3">
           <div class="form-group">
             <label for="discounts" class="form-label fw-bold">Descontos:</label>
-            <input type="number" class="form-control" id="discounts" [(ngModel)]="discounts" name="discounts" step="0.01">
+            <input type="number" class="form-control" id="discounts" [(ngModel)]="discounts" name="discounts" step="10.00" min="0">
           </div>
         </div>
       </div>
-      <div *ngFor="let record of additionalRecords; let i = index" class="row mb-1">
+      <div *ngFor="let record of additionalRecords; let i = index" class="row mb-1 align-items-center">
+        <div class="col-3 d-flex align-self-end">
+          <span class="fw-bold">{{ description }}</span>
+        </div>
         <div class="col-3">
           <label for="value-{{i}}" class="form-label fw-bold">Valor:</label>
-          <input type="number" class="form-control" id="value-{{i}}" [(ngModel)]="record.value" name="value-{{i}}" step="0.01">
+          <input type="number" class="form-control" id="value-{{i}}" [(ngModel)]="record.value" name="value-{{i}}" step="10.00" min="0">
         </div>
         <div class="col-3">
           <label for="discounts-{{i}}" class="form-label fw-bold">Descontos:</label>
-          <input type="number" class="form-control" id="discounts-{{i}}" [(ngModel)]="record.discounts" name="discounts-{{i}}" step="0.01">
+          <input type="number" class="form-control" id="discounts-{{i}}" [(ngModel)]="record.discounts" name="discounts-{{i}}" step="10.00" min="0">
         </div>
         <div class="col-2">
           <label class="form-label fw-bold">Mês/Ano:</label>
           <p class="form-control-plaintext">{{ record.month }}/{{ record.year }}</p>
         </div>
-        <div class="col-1 justify-content-end d-flex align-items-center">
-                <div class="col-1 mt-4 d-flex align-items-center" *ngIf="i === additionalRecords.length - 1">
-          <button type="button" class="btn btn-danger btn-sm" (click)="removeLastRecord()" title="Remove Last Record">
+        <div class="col-1 d-flex justify-content-end mt-4">
+          <button *ngIf="i === additionalRecords.length - 1" type="button" class="btn btn-danger btn-sm" (click)="removeLastRecord()" title="Remove Last Record">
             <i class="bi bi-trash"></i>
           </button>
         </div>
-
-        </div>
       </div>
       <div class="row mb-1">
-        <div class="col-12 d-flex justify-content-end">
+        <div *ngIf="idDetailsOrigin != 0" class="col-12 d-flex justify-content-end">
           <button type="button" class="btn btn-secondary btn-sm" (click)="addRecord()" title="Adicionar Mês">
             <i class="bi bi-plus"></i>
           </button>
@@ -60,6 +66,6 @@
   </div>
   <div class="card-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary me-2" (click)="close()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="insertInRecords_Expenses()">Salvar</button>
+    <button type="button" class="btn btn-primary" (click)="insertInRecords_Expenses()" [disabled]="!isFormValid()">Salvar</button>
   </div>
 </div>
