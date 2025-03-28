@@ -66,7 +66,7 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
     const lastRecord = this.additionalRecords.length > 0 ? this.additionalRecords[this.additionalRecords.length - 1] : { month: this.month, year: this.year };
     const nextMonth = lastRecord.month === 12 ? 1 : lastRecord.month + 1;
     const nextYear = lastRecord.month === 12 ? lastRecord.year + 1 : lastRecord.year;
-    this.additionalRecords.push({ value: 0, discounts: 0, month: nextMonth, year: nextYear });
+    this.additionalRecords.push({ value: this.value, discounts: this.discounts, month: nextMonth, year: nextYear });
   }
 
   removeLastRecord() {

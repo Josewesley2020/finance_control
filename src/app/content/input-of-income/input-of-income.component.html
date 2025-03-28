@@ -1,0 +1,37 @@
+<div class="container mt-3">
+  <!-- <h5 class="text-center">Registros de Renda</h5> -->
+  <table class="table table-striped table-bordered">
+    <thead class="table-primary">
+      <tr>
+        <th>#</th>
+        <th>Fonte de Renda</th>
+        <th>Observação</th>
+        <th>Valor (R$)</th>
+        <th>Data</th>
+        <th class="text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of allRecordsIncomesArray; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          {{ getIncomeDescription(record.idIncome) || 'Não encontrado' }}
+        </td>
+        <td>{{ record.description }}</td>
+        <td>{{ record.value | currency:'BRL':'symbol':'1.2-2' }}</td>
+        <td>{{ selectedDate }}</td>
+        <td class="text-center">
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="deleteRecordIncome(record.id)"
+            title="Excluir registro">
+            <i class="bi bi-trash"></i> Excluir
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="allRecordsIncomesArray.length === 0">
+        <td colspan="5" class="text-center">Nenhum registro encontrado para o período selecionado.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

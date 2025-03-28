@@ -6,16 +6,35 @@
       <span>Entrada</span>
     </button>
   </div>
+  <div class="d-flex justify-content-center mt-2 mb-2">
+  <ul class="nav nav-tabs">
+    <li class="nav-item navbar-action">
+      <a
+        class="nav-link"
+        [ngClass]="{ active: !showRecordsIncome }"
+        (click)="showRecordsIncome = false">Despesas
+      </a>
+    </li>
+    <li class="nav-item navbar-action">
+      <a
+        class="nav-link"
+        [ngClass]="{ active: showRecordsIncome }"
+        (click)="showRecordsIncome = true"
+        >Receitas</a
+      >
+    </li>
+  </ul>
+</div>
   <div class="col-2 mt-2">
     <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
       <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
     </select>
   </div>
 </div>
-
 <div class="d-flex justify-content-between rounded-top">
   <div class="text-center mx-2 w-25">
-    <div class="p-1 border-2 rounded card-footer border-black">
+    <div class="p-1 border-2 rounded card-footer border-black"
+    [ngClass]="{'text-bg-primary': inputSaldo}">
       <div class="d-inline-flex justify-content-start">
         <h5 class="card-title me-1">Saldo</h5>
         <i class="bi bi-coin"></i>
@@ -24,13 +43,14 @@
         <b>
           <p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
         </b>
-        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'">
-          {{ valueRecordsIncome - totalPayable | currency:'BRL':'symbol':'1.2-2' }}
+        <p class="card-text"
+        [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'"
+        [ngClass]="{'text-white': inputSaldo}">
+          {{ valueRecordsIncome - totalPayable - totalReserve | currency:'BRL':'symbol':'1.2-2' }}
         </p>
       </div>
     </div>
   </div>
-
   <div class="text-center mx-2 w-25">
     <div class="p-1 border-2 rounded card-footer border-primary"
       [ngClass]="{'text-bg-success': reserveAdded, 'border-primary': !reserveAdded}">
@@ -76,7 +96,17 @@
     </div>
   </div>
 </div>
-<div class="container-fluid card mt-2">
+
+<!-- <div class="d-flex justify-content-center mt-2 mb-2">
+  <button class="btn btn-primary me-2" (click)="showRecordsIncome = false" [ngClass]="{'active': !showRecordsIncome}">
+    Despesas
+  </button>
+  <button class="btn btn-primary" (click)="showRecordsIncome = true" [ngClass]="{'active': showRecordsIncome}">
+    Receitas
+  </button>
+</div> -->
+
+<div class="container-fluid mt-2" *ngIf="!showRecordsIncome">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
     <div class="col-2">Origem</div>
@@ -133,4 +163,10 @@
       <span>Adicionar despesa</span>
     </button>
   </div>
+</div>
+
+<div *ngIf="showRecordsIncome">
+  <app-input-of-income
+  (allRecordsIncomes)="onChangeRecordsIncome()">
+  </app-input-of-income>
 </div>
