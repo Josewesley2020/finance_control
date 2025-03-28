@@ -12,3 +12,8 @@
   color: #007bff; /* Cor azul para indicar ação */
   transform: scale(1.2); /* Aumenta o tamanho do ícone */
 }
+
+.navbar-action {
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}

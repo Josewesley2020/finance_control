@@ -44,7 +44,7 @@ export class ModalInsertRecordIncomeComponent implements OnInit {
 
   getIncomes() {
     if (this.user && this.user.id) {
-      this.tableIncomeSourceService.selectInIncomeSource(this.user.id).then((incomes: Income[]) => {
+      this.tableIncomeSourceService.selectInIncomeSource().then((incomes: Income[]) => {
         this.allIncomes = incomes;
       }).catch(error => {
         this.notificacoesService.erro('Erro ao buscar as fontes de renda.');

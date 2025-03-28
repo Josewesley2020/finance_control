@@ -15,10 +15,12 @@ import { NotificacoesService } from '../shared/notificacoes.service';
 import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
 import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-details-record-expense/modal-edit-details-record-expense.component';
 import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record-expense/modal-insert-record-expense.component';
+import { InputOfIncomeComponent } from "../input-of-income/input-of-income.component";
+import { DataSelectedService } from '../../services/data-selected.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, InputOfIncomeComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -41,6 +43,9 @@ export class HomeComponent implements OnInit {
   loadingGoals: boolean = false;
   totalReserve: number = 0;
   reserveAdded: boolean = false;
+  showRecordsIncome: boolean = false;
+  outputSaldo: boolean = false;
+  inputSaldo: boolean = false;
 
 
   constructor(
@@ -48,13 +53,14 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private tableRecordsService: TableRecordsService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
-    private tableGoalsService: TableGoalsService) { }
+    private dataSelectedService: DataSelectedService) { }
 
   ngOnInit() {
     this.loadingGoals = true;
     this.getRecords();
     this.generateDates();
     this.getRecordsIncome();
+    this.dataSelectedService.setDate(this.selectedDate);
   }
 
   openModal_ModalInsertRecordExpenseComponent() {
@@ -68,8 +74,16 @@ export class HomeComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getRecords();
+      // this.alertCardSaldo();
       console.log('Modal fechado:', result);
     });
+  }
+
+  alertCardSaldo() {
+    this.inputSaldo = true;
+    setTimeout(() => {
+      this.inputSaldo = false;
+    }, 200);
   }
 
   openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
@@ -112,8 +126,15 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.success) {
         this.getRecordsIncome();
+        this.alertCardSaldo();
+        this.dataSelectedService.setDate(this.selectedDate);
       }
     });
+  }
+
+  onChangeRecordsIncome() {
+    this.getRecordsIncome();
+    this.alertCardSaldo();
   }
 
   getRecordsIncome() {
@@ -184,11 +205,11 @@ export class HomeComponent implements OnInit {
   }
 
   editRecord(record: Record) {
-  this.openModal_ModalEditDetailsRecordExpenseComponent(record);
+    this.openModal_ModalEditDetailsRecordExpenseComponent(record);
     console.log('Registro editado:', record);
   }
   showInfo(record: Record) {
-  this.openModal_ModalShowDetailsRecordExpenseComponent(record);
+    this.openModal_ModalShowDetailsRecordExpenseComponent(record);
     console.log('Registro editado:', record);
   }
 
@@ -211,7 +232,7 @@ export class HomeComponent implements OnInit {
   onchangeDate() {
     this.filterRecords();
     this.getRecordsIncome();
-
+    this.dataSelectedService.setDate(this.selectedDate);
   }
 
   filterRecords() {
@@ -281,8 +302,8 @@ export class HomeComponent implements OnInit {
       const recordDate = new Date(record.year, record.month - 1);
       const selectedDate = new Date(selectedYear, selectedMonth - 1);
       return recordDate >= selectedDate &&
-      record.details_origin_id === details_origin_id &&
-      record.payment === false;
+        record.details_origin_id === details_origin_id &&
+        record.payment === false;
     });
 
     if (recordsAllMonths.length === 0) return 0;

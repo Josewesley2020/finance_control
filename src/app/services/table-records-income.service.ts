@@ -48,6 +48,23 @@ export class TableRecordsIncomeService {
       }
     }
 
-
+      async deleteInRecodsIncome(id: number): Promise<RecordIncome[]> {
+      try {
+        let {  error } = await this.supabaseService.clientSupabase
+          .from('Recods_income')
+          .delete()
+          .eq('id', id)
+          .select();
+        if (error) {
+          console.error('Erro ao deletar despesa:', error);
+          throw error;
+        }
+        return [];
+      }
+      catch (err) {
+        console.error('Erro ao deletar despesa:', err);
+        throw err;
+      }
+      }
 
 }
