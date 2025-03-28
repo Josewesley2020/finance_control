@@ -32,7 +32,7 @@ export class ModalInsertRecordIncomeComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalInsertRecordIncomeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { month: number, year: number }
   ) {
-    this.month = data.  month;
+    this.month = data.month;
     this.year = data.year;
   }
 

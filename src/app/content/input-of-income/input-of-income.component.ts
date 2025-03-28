@@ -9,15 +9,18 @@ import { DataSelectedService } from '../../services/data-selected.service';
 import { TableIncomeSourceService } from '../../services/table-income-source.service';
 import { Income } from '../../models/income.model';
 import { CommonModule } from '@angular/common';
+import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-income/modal-insert-record-income.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-input-of-income',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, MatDialogModule],
   templateUrl: './input-of-income.component.html',
-  styleUrl: './input-of-income.component.css'
+  styleUrls: ['./input-of-income.component.css'] // Corrigido aqui
 })
-export class InputOfIncomeComponent implements OnInit, OnDestroy {
 
+export class InputOfIncomeComponent implements OnInit, OnDestroy {
   @Output() allRecordsIncomes = new EventEmitter<RecordIncome[]>(); // Emissor de eventos
   allRecordsIncomesArray: RecordIncome[] = []; // Array para armazenar os registros de renda
   user?: User;
@@ -33,7 +36,8 @@ export class InputOfIncomeComponent implements OnInit, OnDestroy {
     private tableRecordsIncomeService: TableRecordsIncomeService,
     private notificacoesService: NotificacoesService,
     private dataSelectedService: DataSelectedService,
-    private tableIncomeSourceService: TableIncomeSourceService) { }
+    private tableIncomeSourceService: TableIncomeSourceService,
+    private dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -43,6 +47,18 @@ export class InputOfIncomeComponent implements OnInit, OnDestroy {
       this.onDateChanged(date);
     });
   }
+openModalInsertRecordIncome(): void {
+  const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
+    width: '500px',
+    data: { month: this.selectedMonth, year: this.selectedYear }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result && result.success) {
+      this.getRecordsIncome();
+    }
+  });
+}
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -95,8 +111,11 @@ export class InputOfIncomeComponent implements OnInit, OnDestroy {
   }
 
   getIncomeDescription(idIncome: number): string | undefined {
-  const income = this.allIncomeSources.find(source => source.id === idIncome);
-  return income?.description; // Retorna a descrição ou undefined se não encontrar
-}
+    const income = this.allIncomeSources.find(source => source.id === idIncome);
+    return income?.description; // Retorna a descrição ou undefined se não encontrar
+  }
 
+  addNewIncome() {
+    this.openModalInsertRecordIncome();
+  }
 }
