@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
   showRecordsIncome: boolean = false;
   outputSaldo: boolean = false;
   inputSaldo: boolean = false;
+  activeTab: string = 'despesas'; // Aba ativa inicial
 
 
   constructor(
@@ -61,6 +62,10 @@ export class HomeComponent implements OnInit {
     this.generateDates();
     this.getRecordsIncome();
     this.dataSelectedService.setDate(this.selectedDate);
+  }
+
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
   }
 
   openModal_ModalInsertRecordExpenseComponent() {

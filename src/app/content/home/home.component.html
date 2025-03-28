@@ -6,22 +6,34 @@
       <span>Entrada</span>
     </button>
   </div>
-  <div class="d-flex justify-content-center mt-2 mb-2">
+<div class="d-flex justify-content-center mt-2 mb-2">
   <ul class="nav nav-tabs">
     <li class="nav-item navbar-action">
       <a
         class="nav-link"
-        [ngClass]="{ active: !showRecordsIncome }"
-        (click)="showRecordsIncome = false">Despesas
+        [ngClass]="{ active: activeTab === 'despesas' }"
+        (click)="setActiveTab('despesas')"
+      >
+        Despesas
       </a>
     </li>
     <li class="nav-item navbar-action">
       <a
         class="nav-link"
-        [ngClass]="{ active: showRecordsIncome }"
-        (click)="showRecordsIncome = true"
-        >Receitas</a
+        [ngClass]="{ active: activeTab === 'receitas' }"
+        (click)="setActiveTab('receitas')"
       >
+        Receitas
+      </a>
+    </li>
+    <li class="nav-item navbar-action">
+      <a
+        class="nav-link"
+        [ngClass]="{ active: activeTab === 'reservas' }"
+        (click)="setActiveTab('reservas')"
+      >
+        Reservas
+      </a>
     </li>
   </ul>
 </div>
@@ -106,7 +118,7 @@
   </button>
 </div> -->
 
-<div class="container-fluid mt-2" *ngIf="!showRecordsIncome">
+<div class="container-fluid mt-2" *ngIf="activeTab === 'despesas'">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
     <div class="col-2">Origem</div>
@@ -164,9 +176,12 @@
     </button>
   </div>
 </div>
+<div *ngIf="activeTab === 'receitas'">
+  <!-- Conteúdo de Receitas -->
+  <app-input-of-income (allRecordsIncomes)="onChangeRecordsIncome()"></app-input-of-income>
+</div>
 
-<div *ngIf="showRecordsIncome">
-  <app-input-of-income
-  (allRecordsIncomes)="onChangeRecordsIncome()">
-  </app-input-of-income>
+<div *ngIf="activeTab === 'reservas'">
+  <!-- Conteúdo de Reservas -->
+  <p class="text-center">Aqui será exibido o conteúdo de Reservas.</p>
 </div>
