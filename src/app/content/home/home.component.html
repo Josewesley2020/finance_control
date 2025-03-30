@@ -1,37 +1,28 @@
 <div class="d-flex justify-content-between align-items-center rounded-top mb-4">
-    <div class="col-2 mt-2">
-      <!-- <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
+  <div class="col-2 mt-2">
+    <!-- <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
         <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
       </select> -->
-    </div>
-<div class="d-flex justify-content-center mt-2 mb-2">
-  <ul class="nav nav-tabs">
-    <li class="nav-item navbar-action">
-      <a
-        class="nav-link"
-        [ngClass]="{ active: activeTab === 'despesas' }"
-        (click)="setActiveTab('despesas')">
-        Despesas
-      </a>
-    </li>
-    <li class="nav-item navbar-action">
-      <a
-        class="nav-link"
-        [ngClass]="{ active: activeTab === 'receitas' }"
-        (click)="setActiveTab('receitas')">
-        Receitas
-      </a>
-    </li>
-    <li class="nav-item navbar-action">
-      <a
-        class="nav-link"
-        [ngClass]="{ active: activeTab === 'reservas' }"
-        (click)="setActiveTab('reservas')">
-        Reservas
-      </a>
-    </li>
-  </ul>
-</div>
+  </div>
+  <div class="d-flex justify-content-center mt-2 mb-2">
+    <ul class="nav nav-tabs">
+      <li class="nav-item navbar-action">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'despesas' }" (click)="setActiveTab('despesas')">
+          Despesas
+        </a>
+      </li>
+      <li class="nav-item navbar-action">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'receitas' }" (click)="setActiveTab('receitas')">
+          Receitas
+        </a>
+      </li>
+      <li class="nav-item navbar-action">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'reservas' }" (click)="setActiveTab('reservas')">
+          Reservas
+        </a>
+      </li>
+    </ul>
+  </div>
   <div class="col-2 mt-2">
     <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
       <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
@@ -40,8 +31,7 @@
 </div>
 <div class="d-flex justify-content-between rounded-top mb-4">
   <div class="text-center mx-2 w-25">
-    <div class="p-1 border-2 rounded card-footer border-black"
-    [ngClass]="{'text-bg-primary': inputSaldo}">
+    <div class="p-1 border-2 rounded card-footer border-black" [ngClass]="{'text-bg-primary': inputSaldo}">
       <div class="d-inline-flex justify-content-start">
         <h5 class="card-title me-1">Saldo</h5>
         <i class="bi bi-coin"></i>
@@ -50,9 +40,8 @@
         <b>
           <p class="card-text">{{ valueRecordsIncome | currency:'BRL':'symbol':'1.2-2' }}</p>
         </b>
-        <p class="card-text"
-        [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'"
-        [ngClass]="{'text-white': inputSaldo}">
+        <p class="card-text" [ngClass]="valueRecordsIncome - totalPayable < 0 ? 'text-danger' : 'text-success'"
+          [ngClass]="{'text-white': inputSaldo}">
           {{ valueRecordsIncome - totalPayable - totalReserve | currency:'BRL':'symbol':'1.2-2' }}
         </p>
       </div>
@@ -160,24 +149,23 @@
       </div>
     </div>
   </div>
-  <div class="d-flex justify-content-between p-2">
-    <button class="btn btn-secondary" (click)="addReserve()">
+  <div class="d-flex justify-content-end p-2">
+    <!-- <button class="btn btn-secondary" (click)="addReserve()">
       <i class="bi bi-plus-circle me-1"></i>
       <span>Adicionar reserva</span>
-    </button>
+    </button> -->
     <button class="btn btn-primary me-2" (click)="addNewExpense()">
       <i class="bi bi-plus-circle me-1"></i>
-      <span>Adicionar despesa</span>
+      <span>Despesa</span>
     </button>
   </div>
 </div>
 <div *ngIf="activeTab === 'receitas'">
-  <!-- Conteúdo de Receitas -->
   <app-input-of-income (allRecordsIncomes)="onChangeRecordsIncome()"></app-input-of-income>
 </div>
 
 <div *ngIf="activeTab === 'reservas'">
-<app-reserves></app-reserves>
-  <!-- Conteúdo de Reservas -->
-  <p class="text-center">Aqui será exibido o conteúdo de Reservas.</p>
+  <app-reserves
+  (valueTotalOfRecordsReserve)="onChangeRecordsReserve($event)"
+  ></app-reserves>
 </div>

@@ -142,6 +142,14 @@ export class HomeComponent implements OnInit {
     this.alertCardSaldo();
   }
 
+  onChangeRecordsReserve(value: any) {
+    this.reserveAdded = true;
+    this.totalReserve = value;
+    setTimeout(() => {
+      this.reserveAdded = false;
+    }, 200);
+  }
+
   getRecordsIncome() {
     const userId = this.user?.id || '';
     const { month, year } = this.parseDateString(this.selectedDate);
