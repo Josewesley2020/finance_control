@@ -92,8 +92,6 @@ openModalInsertRecordIncome(): void {
           this.valueTotalOfRecordsIncome += parseFloat(recordIncome.value.toFixed(2));
         });
       });
-      console.log('Registros de renda:', this.allRecordsIncomes);
-      console.log('Valor total de registros de renda:', this.valueTotalOfRecordsIncome);
     }).catch(error => {
       this.notificacoesService.erro('Erro ao buscar registros de renda.');
     });

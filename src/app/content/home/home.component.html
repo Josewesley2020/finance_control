@@ -1,12 +1,4 @@
-<div class="d-flex justify-content-between align-items-center rounded-top">
-  <!-- <div class="d-flex justify-content-start mb-2 ms-2">
-    <button class="btn btn-outline-success d-flex align-items-center"
-      (click)="openModal_ModalInsertRecordIncomeComponent()">
-      <i class="bi bi-plus-circle me-1"></i>
-      <span>Entrada</span>
-    </button>
-  </div> -->
-
+<div class="d-flex justify-content-between align-items-center rounded-top mb-4">
     <div class="col-2 mt-2">
       <!-- <select class="form-select mb-2" [(ngModel)]="selectedDate" (ngModelChange)="onchangeDate()" title="Select Date">
         <option *ngFor="let date of dates" [value]="date">{{ date }}</option>
@@ -18,8 +10,7 @@
       <a
         class="nav-link"
         [ngClass]="{ active: activeTab === 'despesas' }"
-        (click)="setActiveTab('despesas')"
-      >
+        (click)="setActiveTab('despesas')">
         Despesas
       </a>
     </li>
@@ -27,8 +18,7 @@
       <a
         class="nav-link"
         [ngClass]="{ active: activeTab === 'receitas' }"
-        (click)="setActiveTab('receitas')"
-      >
+        (click)="setActiveTab('receitas')">
         Receitas
       </a>
     </li>
@@ -36,8 +26,7 @@
       <a
         class="nav-link"
         [ngClass]="{ active: activeTab === 'reservas' }"
-        (click)="setActiveTab('reservas')"
-      >
+        (click)="setActiveTab('reservas')">
         Reservas
       </a>
     </li>
@@ -49,7 +38,7 @@
     </select>
   </div>
 </div>
-<div class="d-flex justify-content-between rounded-top">
+<div class="d-flex justify-content-between rounded-top mb-4">
   <div class="text-center mx-2 w-25">
     <div class="p-1 border-2 rounded card-footer border-black"
     [ngClass]="{'text-bg-primary': inputSaldo}">
@@ -124,7 +113,7 @@
   </button>
 </div> -->
 
-<div class="container-fluid mt-2" *ngIf="activeTab === 'despesas'">
+<div class="container-fluid" *ngIf="activeTab === 'despesas'">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
     <div class="col-2">Origem</div>
@@ -188,6 +177,7 @@
 </div>
 
 <div *ngIf="activeTab === 'reservas'">
+<app-reserves></app-reserves>
   <!-- Conteúdo de Reservas -->
   <p class="text-center">Aqui será exibido o conteúdo de Reservas.</p>
 </div>

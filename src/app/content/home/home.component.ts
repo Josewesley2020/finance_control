@@ -9,7 +9,6 @@ import { TableRecordsIncomeService } from '../../services/table-records-income.s
 import { RecordIncome } from '../../models/record-income.model';
 import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
-import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-income/modal-insert-record-income.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificacoesService } from '../shared/notificacoes.service';
 import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
@@ -17,10 +16,11 @@ import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-det
 import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record-expense/modal-insert-record-expense.component';
 import { InputOfIncomeComponent } from "../input-of-income/input-of-income.component";
 import { DataSelectedService } from '../../services/data-selected.service';
+import { ReservesComponent } from "../reserves/reserves.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, InputOfIncomeComponent],
+  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -119,23 +119,23 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openModal_ModalInsertRecordIncomeComponent() {
-    const { month, year } = this.parseDateString(this.selectedDate);
-    const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
-      width: 'auto',
-      height: 'auto',
-      minWidth: '400px',
-      minHeight: '300px',
-      data: { month, year }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.success) {
-        this.getRecordsIncome();
-        this.alertCardSaldo();
-        this.dataSelectedService.setDate(this.selectedDate);
-      }
-    });
-  }
+  // openModal_ModalInsertRecordIncomeComponent() {
+  //   const { month, year } = this.parseDateString(this.selectedDate);
+  //   const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
+  //     width: 'auto',
+  //     height: 'auto',
+  //     minWidth: '400px',
+  //     minHeight: '300px',
+  //     data: { month, year }
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result && result.success) {
+  //       this.getRecordsIncome();
+  //       this.alertCardSaldo();
+  //       this.dataSelectedService.setDate(this.selectedDate);
+  //     }
+  //   });
+  // }
 
   onChangeRecordsIncome() {
     this.getRecordsIncome();
