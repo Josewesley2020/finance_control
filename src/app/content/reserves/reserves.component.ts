@@ -7,6 +7,8 @@ import { NotificacoesService } from '../shared/notificacoes.service';
 import { TableRecordsReserveService } from '../../services/table-records-reserve.service';
 import { RecordReserve } from '../../models/records-reserve';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalInsertRecordReserveComponent } from '../modais/modal-insert-record-reserve/modal-insert-record-reserve.component';
 
 @Component({
   selector: 'app-reserves',
@@ -27,6 +29,7 @@ export class ReservesComponent implements OnInit {
   selectedYear: number = 0;
 
   constructor(
+    private  dialog: MatDialog,
     private notificacoesService: NotificacoesService,
     private dataSelectedService: DataSelectedService,
     private tableRecordsReserveService: TableRecordsReserveService,
@@ -104,11 +107,21 @@ export class ReservesComponent implements OnInit {
     );
   }
 
-    addNewIncome() {
-    throw new Error('Method not implemented.');
+    addNewRecord() {
+    this.openModalInsertRecordReserve();
   }
-  deleteRecordIncome(arg0: any) {
-    throw new Error('Method not implemented.');
+
+  openModalInsertRecordReserve(): void {
+    const dialogRef = this.dialog.open(ModalInsertRecordReserveComponent, {
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        this.reload();
+        console.log('Modal closed with success:', result);
+      }
+    });
   }
 
 }

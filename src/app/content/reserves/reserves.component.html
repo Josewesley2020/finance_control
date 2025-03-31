@@ -15,10 +15,10 @@
       <tr *ngFor="let record of allRecordsReserve; let i = index">
         <td>{{ i + 1 }}</td>
         <td>
-          {{ getDestinationDescription(record.idDestination) || 'Não encontrado' }}
+          {{ getDestinationDescription(record.idDestination) || '' }}
         </td>
         <td>
-          {{ getDestinationObservation(record.idDestination) || 'Não encontrado' }}
+          {{ getDestinationObservation(record.idDestination) || '' }}
         </td>
         <td>{{ record.value | currency:'BRL':'symbol':'1.2-2' }}</td>
         <td>{{ convertBoleanInString(record.safe_in_piggy) }}</td>
@@ -37,7 +37,7 @@
     </tbody>
   </table>
     <div class="d-flex justify-content-end p-2">
-    <button class="btn btn-primary me-2" (click)="addNewIncome()">
+    <button class="btn btn-primary me-2" (click)="addNewRecord()">
       <i class="bi bi-plus-circle me-1"></i>
       <span>Reserva</span>
     </button>

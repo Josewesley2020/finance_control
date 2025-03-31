@@ -1,0 +1,55 @@
+<div class="card scrollable-content">
+  <div class="card-header text-bg-primary d-flex justify-content-between">
+    <h5 class="card-title m-1" id="modalInsertRecordIncomeLabel">Inserir Registro de Reserva</h5>
+    <button type="button" class="btn-close m-1" (click)="cancel()" aria-label="Close"></button>
+  </div>
+  <div class="card-body">
+    <form>
+      <!-- Destino da Reserva -->
+      <div class="mb-3">
+        <label for="destination" class="form-label">Destino da Reserva</label>
+        <select class="form-select" id="destination" [(ngModel)]="idDestination" name="destination">
+          <option *ngFor="let destination of allDestination" [value]="destination.id">{{ destination.description }}</option>
+        </select>
+      </div>
+
+      <!-- Valor -->
+      <div class="mb-3">
+        <label for="value" class="form-label">Valor R$:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="value"
+          placeholder="Digite o valor"
+          [(ngModel)]="value"
+          name="value"
+          step="10.00"
+          min="0"
+        />
+      </div>
+
+      <!-- Adicionar ao Cofre -->
+      <div class="form-check mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="addCofre"
+          [(ngModel)]="safe_in_piggy"
+          name="addCofre"
+        />
+        <label class="form-check-label" for="addCofre">Adicionar ao cofre</label>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="save()"
+      [disabled]="value === undefined || value === 0 || idDestination === 0"
+    >
+      Salvar
+    </button>
+  </div>
+</div>

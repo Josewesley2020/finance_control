@@ -85,10 +85,7 @@ export class HomeComponent implements OnInit {
   }
 
   alertCardSaldo() {
-    this.inputSaldo = true;
-    setTimeout(() => {
-      this.inputSaldo = false;
-    }, 200);
+  this.toggleCardState('inputSaldo')
   }
 
   openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
@@ -143,12 +140,18 @@ export class HomeComponent implements OnInit {
   }
 
   onChangeRecordsReserve(value: any) {
-    this.reserveAdded = true;
-    this.totalReserve = value;
-    setTimeout(() => {
-      this.reserveAdded = false;
-    }, 200);
+    if (this.totalReserve != value) {
+      this.totalReserve = value;
+      this.toggleCardState('reserveAdded');
+    }
   }
+
+  toggleCardState(cardVariable: keyof this): void {
+  (this[cardVariable] as boolean) = true;
+  setTimeout(() => {
+    (this[cardVariable] as boolean) = false;
+  }, 300);
+}
 
   getRecordsIncome() {
     const userId = this.user?.id || '';
