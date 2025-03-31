@@ -142,8 +142,9 @@ export class HomeComponent implements OnInit {
   onChangeRecordsReserve(value: any) {
     if (this.totalReserve != value) {
       this.totalReserve = value;
-      this.toggleCardState('reserveAdded');
+      // this.toggleCardState('reserveAdded');
     }
+    this.toggleCardState('reserveAdded');
   }
 
   toggleCardState(cardVariable: keyof this): void {
