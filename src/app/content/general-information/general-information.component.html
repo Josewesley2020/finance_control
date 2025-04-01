@@ -1,9 +1,19 @@
-<div class=" p-2">
+<div class="d-flex">
+  <!-- <div class="text-center mt-3">
+    <small class="text-muted">
+      Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b>  dia(s)
+      <i
+        *ngIf="getDaysSinceLastUpdate() > 30"
+        class="bi bi-exclamation-triangle-fill text-danger ms-2"
+        title="Mais de 30 dias sem atualização!"
+      ></i>
+    </small>
+  </div> -->
   <div class="d-flex justify-content-between align-items-center">
     <!-- Valor no Cofre -->
     <div class="text-center">
-      <h6 class="text-muted m-0">Cofre</h6>
-      <p *ngIf="!isEditing" class="fs-6 fw-bold text-success m-0">
+      <h6 class="text-muted m-0 me-2">Cofre</h6>
+      <p *ngIf="!isEditing" class="fs-6 fw-bold text-success m-0 me-2">
         {{ showValues ? (safeValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
       </p>
       <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
@@ -11,13 +21,14 @@
     </div>
 
     <!-- Barra de Progresso -->
-    <div class="flex-grow-1 mx-3">
-      <div class="progress custom-progress-height">
-        <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="getProgressPercentage()"
-          [attr.aria-valuenow]="getProgressPercentage()" aria-valuemin="0" aria-valuemax="100"
-          aria-label="Progress towards goal"></div>
+    <!-- <div *ngIf="showValues" class="progress col-4 mt-4 m-2">
+      <div class="progress-bar" role="progressbar" [style.width.%]="calculateProgress(safeValue, goalValue)"
+        [attr.aria-valuenow]="calculateProgress(safeValue, goalValue)" aria-valuemin="0" aria-valuemax="100"
+        title="Progresso: {{ calculateProgress(safeValue,goalValue) }}%">
+        {{ calculateProgress(safeValue, goalValue) | number:'1.0-2' }}%
       </div>
-    </div>
+    </div> -->
+
 
     <!-- Meta -->
     <div class="text-center">
@@ -54,14 +65,27 @@
       </button>
     </div>
   </div>
-  <div class="text-center mt-3">
+  <div *ngIf="showValues && !isEditing " class="m-2 mt-3">
     <small class="text-muted">
-      Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b>  dia(s)
-      <i
-        *ngIf="getDaysSinceLastUpdate() > 30"
-        class="bi bi-exclamation-triangle-fill text-danger ms-2"
-        title="Mais de 30 dias sem atualização!"
-      ></i>
+      Atualizado: há <b>{{ getDaysSinceLastUpdate() }}</b> dia(s)
+      <i *ngIf="getDaysSinceLastUpdate() > 30" class="bi bi-exclamation-triangle-fill text-danger ms-2"
+        title="Mais de 30 dias sem atualização!"></i>
     </small>
   </div>
+</div>
+
+<!-- Barra de Progresso -->
+<div *ngIf="showValues && !isEditing " class="progress">
+  <div class="progress-bar" role="progressbar" [style.width.%]="calculateProgress(safeValue, goalValue)"
+    [attr.aria-valuenow]="calculateProgress(safeValue, goalValue)" aria-valuemin="0" aria-valuemax="100"
+    title="Progresso: {{ calculateProgress(safeValue,goalValue) }}%">
+    {{ calculateProgress(safeValue, goalValue) | number:'1.0-2' }}%
+  </div>
+    <!-- <div class="m-2 col-8 mt-3">
+    <small class="text-muted">
+      Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b> dia(s)
+      <i *ngIf="getDaysSinceLastUpdate() > 30" class="bi bi-exclamation-triangle-fill text-danger ms-2"
+        title="Mais de 30 dias sem atualização!"></i>
+    </small>
+  </div> -->
 </div>

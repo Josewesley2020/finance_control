@@ -17,11 +17,10 @@ import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record
 import { InputOfIncomeComponent } from "../input-of-income/input-of-income.component";
 import { DataSelectedService } from '../../services/data-selected.service';
 import { ReservesComponent } from "../reserves/reserves.component";
-import { GeneralInformationComponent } from '../general-information/general-information.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent, GeneralInformationComponent],
+  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

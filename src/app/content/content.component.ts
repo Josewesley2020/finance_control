@@ -5,10 +5,11 @@ import { User } from '../models/user.model';
 import { LoginScreenComponent } from "./login-screen/login-screen.component";
 import { HomeComponent } from "./home/home.component";
 import { MenuHeaderComponent } from "./menu-header/menu-header.component";
+import { GeneralInformationComponent } from "./general-information/general-information.component";
 
 @Component({
     selector: 'app-content',
-    imports: [CommonModule, LoginScreenComponent, HomeComponent, MenuHeaderComponent],
+    imports: [CommonModule, LoginScreenComponent, HomeComponent, MenuHeaderComponent, GeneralInformationComponent],
     templateUrl: './content.component.html',
     styleUrl: './content.component.css'
 })

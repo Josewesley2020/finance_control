@@ -27,13 +27,13 @@ export class GeneralInformationComponent implements OnInit {
   update_day: number = new Date().getDate(); // Dia atual
   idRecord: number = 0; // ID do registro a ser atualizado
 
-  constructor(private tableGeneralInformationService: TableGeneralInformationService) {}
+  constructor(private tableGeneralInformationService: TableGeneralInformationService) { }
 
   ngOnInit(): void {
     this.getGeneralInformation();
   }
 
-    getDaysSinceLastUpdate(): number {
+  getDaysSinceLastUpdate(): number {
     const lastUpdateDate = new Date(this.last_update_year, this.last_update_month - 1, this.last_update_day);
     const currentDate = new Date();
     const timeDifference = currentDate.getTime() - lastUpdateDate.getTime();
@@ -44,8 +44,8 @@ export class GeneralInformationComponent implements OnInit {
     this.tableGeneralInformationService.selectInGeneralInformation()
       .then((data) => {
         if (data && Array.isArray(data) && data.length > 0) {
-          this.safeValue = data[0].value_in_the_Piggy;
-          this.goalValue = data[0].goal_value_in_the_piggy;
+          this.safeValue = data[0].value_in_the_Piggy || 0;
+          this.goalValue = data[0].goal_value_in_the_piggy || 0;
           this.upDateValue = this.safeValue;
           this.upDateGoalValue = this.goalValue;
           this.last_update_year = data[0].last_update_year;
@@ -104,5 +104,12 @@ export class GeneralInformationComponent implements OnInit {
     this.upDateValue = this.safeValue;
     this.upDateGoalValue = this.goalValue;
     this.isEditing = false;
+  }
+
+    calculateProgress(value: number, objectiveValue: number): number {
+    if (objectiveValue === 0) {
+      return 0;
+    }
+    return (value / objectiveValue) * 100;
   }
 }
