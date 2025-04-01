@@ -15,18 +15,29 @@ export class GeneralInformationComponent implements OnInit {
   goalValue: number = 0; // Meta
   showValues: boolean = true; // Controla a exibição dos valores
   isEditing: boolean = false; // Controla o modo de edição
+  last_update_year: number = 0; // Data da última atualização
+  last_update_month: number = 0; // Mês da última atualização
+  last_update_day: number = 0; // Dia da última atualização
 
   upDateValue: number = 0; // Valor a ser atualizado no cofre
   upDateGoalValue: number = 0; // Valor a ser atualizado na meta
   old_value_piggy: number = 0; // Valor antigo no cofre
-  last_update_year: number = new Date().getFullYear(); // Ano atual
-  last_update_month: number = new Date().getMonth() + 1; // Mês atual (0-11, então adicionamos 1)
+  update_year: number = new Date().getFullYear(); // Ano atual
+  update_month: number = new Date().getMonth() + 1; // Mês atual (0-11, então adicionamos 1)
+  update_day: number = new Date().getDate(); // Dia atual
   idRecord: number = 0; // ID do registro a ser atualizado
 
   constructor(private tableGeneralInformationService: TableGeneralInformationService) {}
 
   ngOnInit(): void {
     this.getGeneralInformation();
+  }
+
+    getDaysSinceLastUpdate(): number {
+    const lastUpdateDate = new Date(this.last_update_year, this.last_update_month - 1, this.last_update_day);
+    const currentDate = new Date();
+    const timeDifference = currentDate.getTime() - lastUpdateDate.getTime();
+    return Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Converte milissegundos para dias
   }
 
   getGeneralInformation() {
@@ -37,6 +48,9 @@ export class GeneralInformationComponent implements OnInit {
           this.goalValue = data[0].goal_value_in_the_piggy;
           this.upDateValue = this.safeValue;
           this.upDateGoalValue = this.goalValue;
+          this.last_update_year = data[0].last_update_year;
+          this.last_update_month = data[0].last_update_month;
+          this.last_update_day = data[0].last_update_day;
           this.idRecord = data[0].id;
         }
       })
@@ -64,8 +78,8 @@ export class GeneralInformationComponent implements OnInit {
       this.safeValue,
       this.goalValue,
       this.old_value_piggy,
-      this.last_update_month,
-      this.last_update_year
+      this.update_month,
+      this.update_year
     )
       .then(() => {
         console.log('Valores atualizados com sucesso!');

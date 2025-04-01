@@ -6,29 +6,16 @@
       <p *ngIf="!isEditing" class="fs-6 fw-bold text-success m-0">
         {{ showValues ? (safeValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
       </p>
-      <input
-        *ngIf="isEditing"
-        type="number"
-        class="form-control form-control-sm text-center mt-2"
-        [(ngModel)]="upDateValue"
-        placeholder="Atualizar Cofre"
-        step="10.00"
-        min="0"
-      />
+      <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
+        [(ngModel)]="upDateValue" placeholder="Atualizar Cofre" step="10.00" min="0" />
     </div>
 
-        <!-- Barra de Progresso -->
+    <!-- Barra de Progresso -->
     <div class="flex-grow-1 mx-3">
       <div class="progress custom-progress-height">
-        <div
-          class="progress-bar bg-primary"
-          role="progressbar"
-          [style.width.%]="getProgressPercentage()"
-          [attr.aria-valuenow]="getProgressPercentage()"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-label="Progress towards goal"
-        ></div>
+        <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="getProgressPercentage()"
+          [attr.aria-valuenow]="getProgressPercentage()" aria-valuemin="0" aria-valuemax="100"
+          aria-label="Progress towards goal"></div>
       </div>
     </div>
 
@@ -38,56 +25,43 @@
       <p *ngIf="!isEditing" class="fs-6 fw-bold text-primary m-0">
         {{ showValues ? (goalValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
       </p>
-      <input
-        *ngIf="isEditing"
-        type="number"
-        class="form-control form-control-sm text-center mt-2"
-        [(ngModel)]="upDateGoalValue"
-        placeholder="Atualizar Meta"
-        step="10.00"
-        min="0"
-      />
+      <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
+        [(ngModel)]="upDateGoalValue" placeholder="Atualizar Meta" step="10.00" min="0" />
     </div>
 
-  <!-- Botões de ação -->
+    <!-- Botões de ação -->
     <div class="ms-3 d-flex align-items-center">
       <!-- Botão para alternar exibição -->
-      <button
-        *ngIf="!isEditing"
-        class="btn btn-outline-secondary btn-sm me-2"
-        (click)="toggleShowValues()"
-        title="Alternar visibilidade"
-      >
+      <button *ngIf="!isEditing" class="btn btn-outline-secondary btn-sm me-2" (click)="toggleShowValues()"
+        title="Alternar visibilidade">
         <i class="bi" [ngClass]="showValues ? 'bi-eye-slash' : 'bi-eye'"></i>
       </button>
 
       <!-- Botões para salvar e cancelar -->
       <div *ngIf="isEditing" class="d-flex mt-4">
-        <button
-          class="btn btn-outline-success btn-sm me-2"
-          (click)="saveUpdatedValues()"
-          title="Salvar alterações"
-        >
+        <button class="btn btn-outline-success btn-sm me-2" (click)="saveUpdatedValues()" title="Salvar alterações">
           <i class="bi bi-check"></i>
         </button>
-        <button
-          class="btn btn-outline-danger btn-sm"
-          (click)="cancelEdit()"
-          title="Cancelar alterações"
-        >
+        <button class="btn btn-outline-danger btn-sm" (click)="cancelEdit()" title="Cancelar alterações">
           <i class="bi bi-x"></i>
         </button>
       </div>
 
       <!-- Botão para alternar edição -->
-      <button
-        *ngIf="!isEditing"
-        class="btn btn-outline-primary btn-sm"
-        (click)="toggleEditMode()"
-        title="Editar valores"
-      >
+      <button *ngIf="!isEditing" class="btn btn-outline-primary btn-sm" (click)="toggleEditMode()"
+        title="Editar valores">
         <i class="bi bi-pencil"></i>
       </button>
     </div>
+  </div>
+  <div class="text-center mt-3">
+    <small class="text-muted">
+      Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b>  dia(s)
+      <i
+        *ngIf="getDaysSinceLastUpdate() > 30"
+        class="bi bi-exclamation-triangle-fill text-danger ms-2"
+        title="Mais de 30 dias sem atualização!"
+      ></i>
+    </small>
   </div>
 </div>
