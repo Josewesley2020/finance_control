@@ -58,10 +58,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loadingGoals = true;
+    this.selectedDate = this.getCurrentMonthAndYear(); // Define o mês e ano atual
     this.getRecords();
     this.generateDates();
     this.getRecordsIncome();
     this.dataSelectedService.setDate(this.selectedDate);
+  }
+
+    getCurrentMonthAndYear(): string {
+    const currentDate = new Date();
+    const currentMonth = this.months[currentDate.getMonth()]; // Obtém o mês atual
+    const currentYear = currentDate.getFullYear(); // Obtém o ano atual
+    return `${currentMonth}-${currentYear}`; // Retorna no formato "MMM-YYYY"
   }
 
   setActiveTab(tab: string): void {
@@ -151,7 +159,7 @@ export class HomeComponent implements OnInit {
   (this[cardVariable] as boolean) = true;
   setTimeout(() => {
     (this[cardVariable] as boolean) = false;
-  }, 300);
+  }, 200);
 }
 
   getRecordsIncome() {

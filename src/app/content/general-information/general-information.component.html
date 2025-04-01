@@ -1,5 +1,9 @@
-<div class="d-flex">
-  <!-- <div class="text-center mt-3">
+<div class="card p-2"
+  [ngClass]="{ 'bg-info-subtle': changeValues, 
+  'border-3': changeValues,
+  'border-success': changeValues,}">
+  <div class="d-flex">
+    <!-- <div class="text-center mt-3">
     <small class="text-muted">
       Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b>  dia(s)
       <i
@@ -9,83 +13,66 @@
       ></i>
     </small>
   </div> -->
-  <div class="d-flex justify-content-between align-items-center">
-    <!-- Valor no Cofre -->
-    <div class="text-center">
-      <h6 class="text-muted m-0 me-2">Cofre</h6>
-      <p *ngIf="!isEditing" class="fs-6 fw-bold text-success m-0 me-2">
-        {{ showValues ? (safeValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
-      </p>
-      <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
-        [(ngModel)]="upDateValue" placeholder="Atualizar Cofre" step="10.00" min="0" />
-    </div>
-
-    <!-- Barra de Progresso -->
-    <!-- <div *ngIf="showValues" class="progress col-4 mt-4 m-2">
-      <div class="progress-bar" role="progressbar" [style.width.%]="calculateProgress(safeValue, goalValue)"
-        [attr.aria-valuenow]="calculateProgress(safeValue, goalValue)" aria-valuemin="0" aria-valuemax="100"
-        title="Progresso: {{ calculateProgress(safeValue,goalValue) }}%">
-        {{ calculateProgress(safeValue, goalValue) | number:'1.0-2' }}%
-      </div>
-    </div> -->
-
-
-    <!-- Meta -->
-    <div class="text-center">
-      <h6 class="text-muted m-0">Meta</h6>
-      <p *ngIf="!isEditing" class="fs-6 fw-bold text-primary m-0">
-        {{ showValues ? (goalValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
-      </p>
-      <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
-        [(ngModel)]="upDateGoalValue" placeholder="Atualizar Meta" step="10.00" min="0" />
-    </div>
-
-    <!-- Botões de ação -->
-    <div class="ms-3 d-flex align-items-center">
-      <!-- Botão para alternar exibição -->
-      <button *ngIf="!isEditing" class="btn btn-outline-secondary btn-sm me-2" (click)="toggleShowValues()"
-        title="Alternar visibilidade">
-        <i class="bi" [ngClass]="showValues ? 'bi-eye-slash' : 'bi-eye'"></i>
-      </button>
-
-      <!-- Botões para salvar e cancelar -->
-      <div *ngIf="isEditing" class="d-flex mt-4">
-        <button class="btn btn-outline-success btn-sm me-2" (click)="saveUpdatedValues()" title="Salvar alterações">
-          <i class="bi bi-check"></i>
-        </button>
-        <button class="btn btn-outline-danger btn-sm" (click)="cancelEdit()" title="Cancelar alterações">
-          <i class="bi bi-x"></i>
-        </button>
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Valor no Cofre -->
+      <div class="text-center">
+        <h6 class="text-muted m-0 me-2">Cofre</h6>
+        <p *ngIf="!isEditing" class="fs-6 fw-bold text-success m-0 me-2">
+          {{ showValues ? (safeValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
+        </p>
+        <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
+          [(ngModel)]="upDateValue" placeholder="Atualizar Cofre" step="10.00" min="0" />
       </div>
 
-      <!-- Botão para alternar edição -->
-      <button *ngIf="!isEditing" class="btn btn-outline-primary btn-sm" (click)="toggleEditMode()"
-        title="Editar valores">
-        <i class="bi bi-pencil"></i>
-      </button>
+      <!-- Meta -->
+      <div class="text-center">
+        <h6 class="text-muted m-0">Meta</h6>
+        <p *ngIf="!isEditing" class="fs-6 fw-bold text-primary m-0">
+          {{ showValues ? (goalValue | currency:'BRL':'symbol':'1.2-2') : '***' }}
+        </p>
+        <input *ngIf="isEditing" type="number" class="form-control form-control-sm text-center mt-2"
+          [(ngModel)]="upDateGoalValue" placeholder="Atualizar Meta" step="10.00" min="0" />
+      </div>
+
+      <!-- Botões de ação -->
+      <div class="ms-3 d-flex align-items-center">
+        <!-- Botão para alternar exibição -->
+        <button *ngIf="!isEditing" class="btn btn-outline-secondary btn-sm me-2" (click)="toggleShowValues()"
+          title="Alternar visibilidade">
+          <i class="bi" [ngClass]="showValues ? 'bi-eye-slash' : 'bi-eye'"></i>
+        </button>
+
+        <!-- Botões para salvar e cancelar -->
+        <div *ngIf="isEditing" class="d-flex mt-4">
+          <button class="btn btn-outline-success btn-sm me-2" (click)="saveUpdatedValues()" title="Salvar alterações">
+            <i class="bi bi-check"></i>
+          </button>
+          <button class="btn btn-outline-danger btn-sm" (click)="cancelEdit()" title="Cancelar alterações">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+
+        <!-- Botão para alternar edição -->
+        <button *ngIf="!isEditing" class="btn btn-outline-primary btn-sm" (click)="toggleEditMode()"
+          title="Editar valores">
+          <i class="bi bi-pencil"></i>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="showValues && !isEditing " class="m-2 mt-3">
+      <small class="text-muted">
+        Atualizado: há <b>{{ getDaysSinceLastUpdate() }}</b> dia(s)
+        <i *ngIf="getDaysSinceLastUpdate() > 30" class="bi bi-exclamation-triangle-fill text-danger"
+          title="Mais de 30 dias sem atualização!"></i>
+      </small>
     </div>
   </div>
-  <div *ngIf="showValues && !isEditing " class="m-2 mt-3">
-    <small class="text-muted">
-      Atualizado: há <b>{{ getDaysSinceLastUpdate() }}</b> dia(s)
-      <i *ngIf="getDaysSinceLastUpdate() > 30" class="bi bi-exclamation-triangle-fill text-danger ms-2"
-        title="Mais de 30 dias sem atualização!"></i>
-    </small>
+  <!-- Barra de Progresso -->
+  <div *ngIf="showValues && !isEditing " class="progress">
+    <div class="progress-bar" role="progressbar" [style.width.%]="calculateProgress(safeValue, goalValue)"
+      [attr.aria-valuenow]="calculateProgress(safeValue, goalValue)" aria-valuemin="0" aria-valuemax="100"
+      title="Progresso: {{ calculateProgress(safeValue,goalValue) }}%">
+      {{ calculateProgress(safeValue, goalValue) | number:'1.0-2' }}%
+    </div>
   </div>
-</div>
-
-<!-- Barra de Progresso -->
-<div *ngIf="showValues && !isEditing " class="progress">
-  <div class="progress-bar" role="progressbar" [style.width.%]="calculateProgress(safeValue, goalValue)"
-    [attr.aria-valuenow]="calculateProgress(safeValue, goalValue)" aria-valuemin="0" aria-valuemax="100"
-    title="Progresso: {{ calculateProgress(safeValue,goalValue) }}%">
-    {{ calculateProgress(safeValue, goalValue) | number:'1.0-2' }}%
-  </div>
-    <!-- <div class="m-2 col-8 mt-3">
-    <small class="text-muted">
-      Última atualização: há <b>{{ getDaysSinceLastUpdate() }}</b> dia(s)
-      <i *ngIf="getDaysSinceLastUpdate() > 30" class="bi bi-exclamation-triangle-fill text-danger ms-2"
-        title="Mais de 30 dias sem atualização!"></i>
-    </small>
-  </div> -->
 </div>

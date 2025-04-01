@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TableGeneralInformationService } from '../../services/table-general-information.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './general-information.component.css'
 })
 export class GeneralInformationComponent implements OnInit {
+  private subscriptionChangeInfoGeral: Subscription = new Subscription();
   safeValue: number = 0; // Valor no cofre
   goalValue: number = 0; // Meta
   showValues: boolean = true; // Controla a exibição dos valores
@@ -26,11 +28,18 @@ export class GeneralInformationComponent implements OnInit {
   update_month: number = new Date().getMonth() + 1; // Mês atual (0-11, então adicionamos 1)
   update_day: number = new Date().getDate(); // Dia atual
   idRecord: number = 0; // ID do registro a ser atualizado
+  changeValues: boolean = false; // Controla se os valores foram alterados
 
-  constructor(private tableGeneralInformationService: TableGeneralInformationService) { }
+  constructor(
+  private cdr: ChangeDetectorRef,// Injetando ChangeDetectorRef
+  private tableGeneralInformationService: TableGeneralInformationService) { }
 
   ngOnInit(): void {
     this.getGeneralInformation();
+    this.subscriptionChangeInfoGeral = this.tableGeneralInformationService.infoUpdate$.subscribe((info) => {
+      this.getGeneralInformation();
+      this.toggleCardState('changeValues');
+    });
   }
 
   getDaysSinceLastUpdate(): number {
@@ -79,7 +88,8 @@ export class GeneralInformationComponent implements OnInit {
       this.goalValue,
       this.old_value_piggy,
       this.update_month,
-      this.update_year
+      this.update_year,
+      this.update_day
     )
       .then(() => {
         console.log('Valores atualizados com sucesso!');
@@ -106,10 +116,21 @@ export class GeneralInformationComponent implements OnInit {
     this.isEditing = false;
   }
 
-    calculateProgress(value: number, objectiveValue: number): number {
+  calculateProgress(value: number, objectiveValue: number): number {
     if (objectiveValue === 0) {
       return 0;
     }
     return (value / objectiveValue) * 100;
+  }
+
+  toggleCardState(cardVariable: keyof this): void {
+    console.log(this.changeValues);
+    (this[cardVariable] as boolean) = true;
+    this.cdr.detectChanges(); // Força a detecção de mudanças
+    console.log(this.changeValues);
+    setTimeout(() => {
+      (this[cardVariable] as boolean) = false;
+      this.cdr.detectChanges(); // Força a detecção de mudanças novamente
+    }, 200);
   }
 }

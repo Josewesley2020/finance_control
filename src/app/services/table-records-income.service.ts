@@ -25,46 +25,46 @@ export class TableRecordsIncomeService {
     return records_income as RecordIncome[];
   }
 
-  async insertInInRecodsIncome( description: string, value: number, month: number, year: number,idIncome: number): Promise<RecordIncome[]> {
-      try {
-        let { data: recordIncome, error } = await this.supabaseService.clientSupabase
-          .from('Recods_income')
-          .insert([
-            {
-              description: description,
-              value: value,
-              month: month,
-              year: year,
-              idIncome: idIncome
-            }
-          ])
-          .select();
-        if (error) {
-          throw error;
-        }
-        return recordIncome as RecordIncome[];
-      } catch (err) {
-        throw err;
+  async insertInInRecodsIncome(description: string, value: number, month: number, year: number, idIncome: number): Promise<RecordIncome[]> {
+    try {
+      let { data: recordIncome, error } = await this.supabaseService.clientSupabase
+        .from('Recods_income')
+        .insert([
+          {
+            description: description,
+            value: value,
+            month: month,
+            year: year,
+            idIncome: idIncome
+          }
+        ])
+        .select();
+      if (error) {
+        throw error;
       }
+      return recordIncome as RecordIncome[];
+    } catch (err) {
+      throw err;
     }
+  }
 
-      async deleteInRecodsIncome(id: number): Promise<RecordIncome[]> {
-      try {
-        let {  error } = await this.supabaseService.clientSupabase
-          .from('Recods_income')
-          .delete()
-          .eq('id', id)
-          .select();
-        if (error) {
-          console.error('Erro ao deletar despesa:', error);
-          throw error;
-        }
-        return [];
+  async deleteInRecodsIncome(id: number): Promise<RecordIncome[]> {
+    try {
+      let { error } = await this.supabaseService.clientSupabase
+        .from('Recods_income')
+        .delete()
+        .eq('id', id)
+        .select();
+      if (error) {
+        console.error('Erro ao deletar despesa:', error);
+        throw error;
       }
-      catch (err) {
-        console.error('Erro ao deletar despesa:', err);
-        throw err;
-      }
-      }
+      return [];
+    }
+    catch (err) {
+      console.error('Erro ao deletar despesa:', err);
+      throw err;
+    }
+  }
 
 }
