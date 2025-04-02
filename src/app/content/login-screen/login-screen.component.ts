@@ -27,8 +27,8 @@ export class LoginScreenComponent {
   }
 
   userAuth(login: string, password: string) {
-    this.authenticatorService.userAuth(login, password).then(user => {
-      if (user) {
+    this.authenticatorService.loginUser(login, password).then(user => {
+      if (user !== undefined && user) {
         this.userLogado.emit(true);
         this.user.emit(user);
       } else {

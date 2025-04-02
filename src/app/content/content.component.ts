@@ -29,7 +29,7 @@ export class ContentComponent implements OnInit {
 
   getUserLocalStorage() {
     const { user, loginValidate } = this.authenticatorService.getUserLocalStorage();
-    this.user = user;
+        this.user = user;
     this.loginValidate = loginValidate;
     this.loading = false;
   }

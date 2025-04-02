@@ -9,12 +9,11 @@ export class AuthenticatorService {
 
   constructor(private supabaseService: SupabaseService) { }
 
-  async userAuth(login: string, password: string): Promise<User | null> {
+  async userAuth(login: string): Promise<User | null> {
     let { data: Users, error } = await this.supabaseService.clientSupabase
       .from('Users')
       .select('id, Name, Login,Email')
       .eq('Login', login)
-      .eq('pass', password);
     if (error) {
       throw error
     }
@@ -55,4 +54,38 @@ export class AuthenticatorService {
     return user || undefined;
   }
 
+  async RegisterUserAuth(login: string, pass: string) {
+    const { data: { user, session }, error } = await this.supabaseService.clientSupabase.auth.signUp({
+      email: login,
+      password: pass,
+    });
+    if (error) {
+      console.error('Erro de autenticação:', error.message);
+      return;
+    }
+    if (user) {
+      console.log('Usuário autenticado:', user);
+    }
+  }
+
+  async loginUser(email: string, password: string): Promise<any> {
+    const { data, error } = await this.supabaseService.clientSupabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      console.error('Erro de autenticação:', error.message);
+      return;
+    }
+
+    if (data) {
+      const user = data.user;
+      const session = data.session;
+      if (session) {
+        const userStorage = await this.userAuth(email);
+        return (userStorage && userStorage != undefined)  ? user : null;
+      }
+    }
+  }
 }
