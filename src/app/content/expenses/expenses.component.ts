@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Record } from '../../models/record.model';
 import { FormsModule } from '@angular/forms';
@@ -18,25 +18,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./expenses.component.css']
 })
 export class ExpensesComponent implements OnInit {
-  // informPayment(_t15: Record) {
-  // console.log('informPayment', _t15);
-  // }
-  // editRecords(_t15: Record) {
-  // throw new Error('Method not implemented.');
-  // }
-  // showInfo(_t15: Record) {
-  // throw new Error('Method not implemented.');
-  // }
-  // deleteRecord(_t15: Record) {
-  // throw new Error('Method not implemented.');
-  // }
-
-
-  // addNewRecord() {
-  //   throw new Error('Method not implemented.');
-  // }
   private subscriptionInDate: Subscription = new Subscription();
+  @Output() totalPayableEvent = new EventEmitter<number>();
+  @Output() totalPendingEvent = new EventEmitter<number>();
+  @Output() totalLateEvent = new EventEmitter<number>();
+  @Output() totalDiscountEvent = new EventEmitter<number>();
   months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
   records: Record[] = [];
   allRecords: Record[] = [];
   selectedMonth: number = 0;
@@ -79,25 +67,17 @@ export class ExpensesComponent implements OnInit {
 
   filterRecords() {
     // Filtra os registros pelo mês e ano selecionados
-    this.records = this.allRecords
-      .filter(record => record.month === this.selectedMonth && record.year === this.selectedYear)
-    // .sort((a, b) => this.compareDueDates(a.Details_Origin.due_date.toString(), b.Details_Origin.due_date.toString()));
-
-    // Calcula os totais
-    const totals = this.calculateTotals(this.records);
-    this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
-    this.totalPending = parseFloat(totals.totalPending.toFixed(2));
-    this.totalLate = parseFloat(totals.totalLate.toFixed(2));
-    this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
+    this.records = this.allRecords.filter(record => record.month === this.selectedMonth && record.year === this.selectedYear)
+    this.calculateTotals();
   }
 
-  calculateTotals(records: Record[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
+  calculateTotals(): void {
     let totalPayable = 0;
     let totalPending = 0;
     let totalLate = 0;
     let totalDiscount = 0;
 
-    records.forEach(record => {
+    this.records.forEach(record => {
       const valueAfterDiscount = record.value - record.discounts || 0;
 
       if (record.payment) {
@@ -111,8 +91,13 @@ export class ExpensesComponent implements OnInit {
       totalDiscount += record.discounts || 0;
     });
 
-    return { totalPayable, totalPending, totalLate, totalDiscount };
+    // Emitir os valores calculados para o componente pai
+    this.totalPayableEvent.emit(parseFloat(totalPayable.toFixed(2)));
+    this.totalPendingEvent.emit(parseFloat(totalPending.toFixed(2)));
+    this.totalLateEvent.emit(parseFloat(totalLate.toFixed(2)));
+    this.totalDiscountEvent.emit(parseFloat(totalDiscount.toFixed(2)));
   }
+
 
   isDatePast(day: number, month: number, year: number): boolean {
     const currentDate = new Date();

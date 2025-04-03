@@ -4,14 +4,14 @@
   </div>
   <div class="d-flex justify-content-center mt-2 mb-2">
     <ul class="nav nav-tabs">
-      <li class="nav-item navbar-action">
+      <!-- <li class="nav-item navbar-action">
         <a class="nav-link" [ngClass]="{ active: activeTab === 'despesas' }" (click)="setActiveTab('despesas')">
           Despesas
         </a>
-      </li>
+      </li> -->
       <li class="nav-item navbar-action">
-        <a class="nav-link" [ngClass]="{ active: activeTab === 'NewDespesas' }" (click)="setActiveTab('NewDespesas')">
-          New Despesas
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'despesas' }" (click)="setActiveTab('despesas')">
+          Despesas
         </a>
       </li>
       <li class="nav-item navbar-action">
@@ -105,7 +105,7 @@
   </button>
 </div> -->
 
-<div class="container-fluid" *ngIf="activeTab === 'despesas'">
+<!-- <div class="container-fluid" *ngIf="activeTab === 'despesas'">
   <div class="row bg-primary text-white align-items-center justify-content-around py-2">
     <div class="col-1"></div>
     <div class="col-2">Origem</div>
@@ -153,16 +153,14 @@
     </div>
   </div>
   <div class="d-flex justify-content-end p-2">
-    <!-- <button class="btn btn-secondary" (click)="addReserve()">
-      <i class="bi bi-plus-circle me-1"></i>
-      <span>Adicionar reserva</span>
-    </button> -->
     <button class="btn btn-primary me-2" (click)="addNewExpense()">
       <i class="bi bi-plus-circle me-1"></i>
       <span>Despesa</span>
     </button>
   </div>
-</div>
+</div> -->
+
+
 <div *ngIf="activeTab === 'receitas'">
   <app-input-of-income (allRecordsIncomes)="onChangeRecordsIncome()"></app-input-of-income>
 </div>
@@ -171,6 +169,11 @@
   <app-reserves (valueTotalOfRecordsReserve)="onChangeRecordsReserve($event)"></app-reserves>
 </div>
 
-<div *ngIf="activeTab === 'NewDespesas'">
-<app-expenses></app-expenses>
+<div *ngIf="activeTab === 'despesas'">
+  <app-expenses
+    (totalPayableEvent)="updateTotalPayable($event)"
+    (totalPendingEvent)="updateTotalPending($event)"
+    (totalLateEvent)="updateTotalLate($event)"
+    (totalDiscountEvent)="updateTotalDiscount($event)"
+  ></app-expenses>
 </div>

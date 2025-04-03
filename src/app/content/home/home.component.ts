@@ -66,6 +66,22 @@ export class HomeComponent implements OnInit {
     this.dataSelectedService.setDate(this.selectedDate);
   }
 
+updateTotalPayable(value: number): void {
+    this.totalPayable = value;
+  }
+
+  updateTotalPending(value: number): void {
+    this.totalPending = value;
+  }
+
+  updateTotalLate(value: number): void {
+    this.totalLate = value;
+  }
+
+  updateTotalDiscount(value: number): void {
+    this.totalDiscount = value;
+  }
+
   getCurrentMonthAndYear(): string {
     const currentDate = new Date();
     const currentMonth = this.months[currentDate.getMonth()]; // Obtém o mês atual
