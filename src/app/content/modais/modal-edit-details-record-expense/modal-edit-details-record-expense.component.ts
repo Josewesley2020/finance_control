@@ -42,7 +42,7 @@ export class ModalEditDetailsRecordExpenseComponent implements OnInit {
         this.record.id,
         this.record.value,
         this.record.discounts,
-        this.record.change_value,
+        this.record.definitive_value,
         this.record.payment,
         this.record.obs || '' // Inclui a observação na atualização
       );

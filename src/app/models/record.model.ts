@@ -11,7 +11,7 @@ export class Record {
   value: number;
   idUser: number;
   discounts: number;
-  change_value: boolean = false;
+  definitive_value: boolean = false;
   payment: boolean = false;
   month_year: string = `JAN-2025`;
   obs?: string; // Nova coluna de observação
@@ -27,7 +27,7 @@ export class Record {
     idUser: number,
     Details_Origin: Details_Origin,
     discounts: number,
-    change_value: boolean,
+    definitive_value: boolean,
     payment: boolean,
     month_year: string,
     obs: string = '' // Inicializa a observação como string vazia
@@ -42,7 +42,7 @@ export class Record {
     this.idUser = idUser;
     this.Details_Origin = Details_Origin;
     this.discounts = this.parseCurrency(discounts.toString());
-    this.change_value = change_value;
+    this.definitive_value = definitive_value;
     this.payment = payment;
     this.month_year = month_year;
     this.obs = obs;

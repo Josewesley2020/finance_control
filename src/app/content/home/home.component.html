@@ -10,6 +10,11 @@
         </a>
       </li>
       <li class="nav-item navbar-action">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'NewDespesas' }" (click)="setActiveTab('NewDespesas')">
+          New Despesas
+        </a>
+      </li>
+      <li class="nav-item navbar-action">
         <a class="nav-link" [ngClass]="{ active: activeTab === 'receitas' }" (click)="setActiveTab('receitas')">
           Receitas
         </a>
@@ -135,12 +140,12 @@
       <div class="col-2">{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</div>
       <div class="col-2 d-flex justify-content-between align-items-center">
         {{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}
-        <button *ngIf="!record.payment && record.change_value" class="btn btn-success btn-sm"
+        <button *ngIf="!record.payment && record.definitive_value" class="btn btn-success btn-sm"
           (click)="informPayment(record)" title="Informe Pagamento">
           Pay
         </button>
         <button
-          *ngIf="!record.payment && !record.change_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
+          *ngIf="!record.payment && !record.definitive_value && isDatePast(record.Details_Origin.Closing_day, record.month, record.year)"
           class="btn btn-warning btn-sm" (click)="editRecord(record)" title="Informe Pagamento">
           Update
         </button>
@@ -164,4 +169,8 @@
 
 <div *ngIf="activeTab === 'reservas'">
   <app-reserves (valueTotalOfRecordsReserve)="onChangeRecordsReserve($event)"></app-reserves>
+</div>
+
+<div *ngIf="activeTab === 'NewDespesas'">
+<app-expenses></app-expenses>
 </div>

@@ -57,7 +57,7 @@
         <label for="definitive_value" class="form-label fw-bold">Valor Definitivo:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="record.change_value" name="definitive_value" [disabled]="record.payment">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="record.definitive_value" name="definitive_value" [disabled]="record.payment">
       </div>
     </div>
     <div class="row mb-1">
@@ -65,7 +65,7 @@
         <label for="payment" class="form-label fw-bold">Pago:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment" name="payment" [disabled]="!record.change_value">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment" name="payment" [disabled]="!record.definitive_value">
       </div>
     </div>
     <div class="row mb-3">

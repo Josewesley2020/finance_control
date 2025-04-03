@@ -17,10 +17,11 @@ import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record
 import { InputOfIncomeComponent } from "../input-of-income/input-of-income.component";
 import { DataSelectedService } from '../../services/data-selected.service';
 import { ReservesComponent } from "../reserves/reserves.component";
+import { ExpensesComponent } from "../expenses/expenses.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent],
+  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent, ExpensesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -188,7 +189,7 @@ export class HomeComponent implements OnInit {
   }
 
   informPayment(record: Record) {
-    this.updateInRecords_Expenses(record.id, record.value, record.discounts, record.change_value, true);
+    this.updateInRecords_Expenses(record.id, record.value, record.discounts, record.definitive_value, true);
   }
 
   deleteRecord(record: Record) {
