@@ -7,13 +7,9 @@ import { FormsModule } from '@angular/forms';
 import { Income } from '../../models/income.model';
 import { TableRecordsIncomeService } from '../../services/table-records-income.service';
 import { RecordIncome } from '../../models/record-income.model';
-import { TableGoalsService } from '../../services/table-goals.service';
 import { Goal } from '../../models/goal.model';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificacoesService } from '../shared/notificacoes.service';
-import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
-import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-details-record-expense/modal-edit-details-record-expense.component';
-import { ModalInsertRecordExpenseComponent } from '../modais/modal-insert-record-expense/modal-insert-record-expense.component';
 import { InputOfIncomeComponent } from "../input-of-income/input-of-income.component";
 import { DataSelectedService } from '../../services/data-selected.service';
 import { ReservesComponent } from "../reserves/reserves.component";
@@ -52,15 +48,12 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private notificacoesService: NotificacoesService,
-    private dialog: MatDialog,
-    private tableRecordsService: TableRecordsService,
     private tableRecordsIncomeService: TableRecordsIncomeService,
     private dataSelectedService: DataSelectedService) { }
 
   ngOnInit() {
     this.loadingGoals = true;
     this.selectedDate = this.getCurrentMonthAndYear(); // Define o mês e ano atual
-    this.getRecords();
     this.generateDates();
     this.getRecordsIncome();
     this.dataSelectedService.setDate(this.selectedDate);
@@ -93,53 +86,11 @@ updateTotalPayable(value: number): void {
     this.activeTab = tab;
   }
 
-  openModal_ModalInsertRecordExpenseComponent() {
-    const { month, year } = this.parseDateString(this.selectedDate);
-    const allRecordsExpense = this.allRecords;
-    const dialogRef = this.dialog.open(ModalInsertRecordExpenseComponent, {
-      width: 'auto',
-      height: 'auto',
-      minWidth: '500px',
-      data: { allRecordsExpense, month, year }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getRecords();
-      // this.alertCardSaldo();
-      console.log('Modal fechado:', result);
-    });
-  }
 
   alertCardSaldo() {
     this.toggleCardState('inputSaldo')
   }
 
-  openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
-    const { month, year } = this.parseDateString(this.selectedDate);
-    const dialogRef = this.dialog.open(ModalEditDetailsRecordExpenseComponent, {
-      width: 'auto',
-      height: 'auto',
-      minWidth: '400px',
-      minHeight: '300px',
-      data: { record, month, year }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.getRecords();
-      console.log('Modal fechado:', result);
-    });
-  }
-  openModal_ModalShowDetailsRecordExpenseComponent(record: Record) {
-    const { month, year } = this.parseDateString(this.selectedDate);
-    const dialogRef = this.dialog.open(ModalShowDetailsRecordExpenseComponent, {
-      width: 'auto',
-      height: 'auto',
-      minWidth: '400px',
-      minHeight: '300px',
-      data: { record, month, year }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Modal fechado:', result);
-    });
-  }
 
   onChangeRecordsIncome() {
     this.getRecordsIncome();
@@ -175,52 +126,6 @@ updateTotalPayable(value: number): void {
     });
   }
 
-  getRecords() {
-    this.tableRecordsService.selectInRecordsWithDetails_Origin().then(records => {
-      this.allRecords = records;
-      this.filterRecords();
-    }).catch(error => {
-      this.notificacoesService.erro('Erro ao buscar registros.');
-      console.error('Erro ao buscar registros:', error);
-    });
-  }
-
-  updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
-    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
-      this.notificacoesService.sucesso('Despesa atualizada com sucesso.');
-      this.getRecords();
-    }).catch(error => {
-      console.error('Erro ao atualizar despesa:', error);
-    }
-    );
-  }
-  deleteInRecords_Expenses(id: number) {
-    this.tableRecordsService.deleteInRecords_Expenses(id).then(records => {
-      this.notificacoesService.sucesso('Despesa deletada com sucesso.');
-      this.getRecords();
-    }).catch(error => {
-      this.notificacoesService.erro('Erro ao deletar despesa.');
-      console.error('Erro ao deletar despesa:', error);
-    });
-  }
-
-  informPayment(record: Record) {
-    this.updateInRecords_Expenses(record.id, record.value, record.discounts, record.definitive_value, true);
-  }
-
-  deleteRecord(record: Record) {
-    this.deleteInRecords_Expenses(record.id);
-  }
-
-  editRecord(record: Record) {
-    this.openModal_ModalEditDetailsRecordExpenseComponent(record);
-    console.log('Registro editado:', record);
-  }
-  showInfo(record: Record) {
-    this.openModal_ModalShowDetailsRecordExpenseComponent(record);
-    console.log('Registro editado:', record);
-  }
-
   generateDates() {
     const currentYear = new Date().getFullYear();
     for (let year = currentYear; year <= currentYear + 5; year++) {
@@ -243,16 +148,6 @@ updateTotalPayable(value: number): void {
     this.dataSelectedService.setDate(this.selectedDate);
   }
 
-  // filterRecords() {
-  //   const { month, year } = this.parseDateString(this.selectedDate);
-  //   this.recordsFiltrados = this.allRecords.filter(record => record.month === month && record.year === year);
-  //   const totals = this.calculateTotals(this.recordsFiltrados);
-  //   this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
-  //   this.totalPending = parseFloat(totals.totalPending.toFixed(2));
-  //   this.totalLate = parseFloat(totals.totalLate.toFixed(2));
-  //   this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
-  // }
-
   filterRecords() {
     const { month, year } = this.parseDateString(this.selectedDate);
 
@@ -261,12 +156,6 @@ updateTotalPayable(value: number): void {
       .filter(record => record.month === month && record.year === year)
       .sort((a, b) => this.compareDueDates(a.Details_Origin.due_date.toString(), b.Details_Origin.due_date.toString()));
 
-    // Calcula os totais
-    const totals = this.calculateTotals(this.recordsFiltrados);
-    this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
-    this.totalPending = parseFloat(totals.totalPending.toFixed(2));
-    this.totalLate = parseFloat(totals.totalLate.toFixed(2));
-    this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
   }
 
   compareDueDates(dueDateA: string, dueDateB: string): number {
@@ -275,28 +164,6 @@ updateTotalPayable(value: number): void {
     return dateA.getTime() - dateB.getTime(); // Ordena em ordem crescente
   }
 
-  calculateTotals(records: Record[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
-    let totalPayable = 0;
-    let totalPending = 0;
-    let totalLate = 0;
-    let totalDiscount = 0;
-
-    records.forEach(record => {
-      const valueAfterDiscount = record.value - record.discounts || 0;
-
-      if (record.payment) {
-        totalPayable += valueAfterDiscount;
-      } else {
-        totalPending += valueAfterDiscount;
-        if (this.isDatePast(record.Details_Origin.due_date, record.month, record.year)) {
-          totalLate += valueAfterDiscount;
-        }
-      }
-      totalDiscount += record.discounts || 0;
-    });
-
-    return { totalPayable, totalPending, totalLate, totalDiscount };
-  }
 
   getNextMonthAndYear(month: number, year: number) {
     let nextMonth = month + 1;
@@ -366,26 +233,5 @@ updateTotalPayable(value: number): void {
     return inputDate < currentDate;
   }
 
-  addNewGoal(): void {
-    // Lógica para adicionar um novo objetivo
-    console.log('Adicionar Novo Objetivo');
-  }
-
-  addNewExpense(): void {
-    this.openModal_ModalInsertRecordExpenseComponent();
-  }
-
-  addNewIncome(): void {
-    // Lógica para adicionar uma nova renda
-    console.log('Adicionar Nova Renda');
-  }
-
-  addReserve() {
-    this.reserveAdded = true;
-    this.totalReserve += 100;
-    setTimeout(() => {
-      this.reserveAdded = false;
-    }, 200);
-  }
 
 }
