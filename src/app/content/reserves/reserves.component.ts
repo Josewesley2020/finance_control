@@ -63,20 +63,20 @@ export class ReservesComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  selectRecordsReserve() {
-    this.tableRecordsReserveService.selectInRecordsReserve().then((res) => {
-      const filteredRecords = res.filter(record =>
-        record.month === this.selectedMonth &&
-        record.year === this.selectedYear);
-      this.allRecordsReserve = filteredRecords;
-      this.allRecordsReserveEvent.emit(filteredRecords);
-      this.allRecordsReserveEvent.subscribe((res) => {
-        this.valueTotalOfRecordsReserve.emit(res.reduce((acc, record) => acc + record.value, 0));
-      });
-    }).catch((error) => {
-      this.notificacoesService.erro('Erro ao buscar reservas.');
-    });
-  }
+selectRecordsReserve() {
+  this.tableRecordsReserveService.selectInRecordsReserve().then((res) => {
+    const filteredRecords = res.filter(record =>
+      record.month === this.selectedMonth &&
+      record.year === this.selectedYear);
+    this.allRecordsReserve = filteredRecords;
+    this.allRecordsReserveEvent.emit(filteredRecords);
+    this.valueTotalOfRecordsReserve.emit(
+      filteredRecords.reduce((acc, record) => acc + record.value, 0)
+    );
+  }).catch((error) => {
+    this.notificacoesService.erro('Erro ao buscar reservas.');
+  });
+}
 
 
   selectReservesDestination() {

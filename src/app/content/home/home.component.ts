@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
     this.dataSelectedService.setDate(this.selectedDate);
   }
 
-    getCurrentMonthAndYear(): string {
+  getCurrentMonthAndYear(): string {
     const currentDate = new Date();
     const currentMonth = this.months[currentDate.getMonth()]; // Obtém o mês atual
     const currentYear = currentDate.getFullYear(); // Obtém o ano atual
@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit {
   }
 
   alertCardSaldo() {
-  this.toggleCardState('inputSaldo')
+    this.toggleCardState('inputSaldo')
   }
 
   openModal_ModalEditDetailsRecordExpenseComponent(record: Record) {
@@ -124,24 +124,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // openModal_ModalInsertRecordIncomeComponent() {
-  //   const { month, year } = this.parseDateString(this.selectedDate);
-  //   const dialogRef = this.dialog.open(ModalInsertRecordIncomeComponent, {
-  //     width: 'auto',
-  //     height: 'auto',
-  //     minWidth: '400px',
-  //     minHeight: '300px',
-  //     data: { month, year }
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result && result.success) {
-  //       this.getRecordsIncome();
-  //       this.alertCardSaldo();
-  //       this.dataSelectedService.setDate(this.selectedDate);
-  //     }
-  //   });
-  // }
-
   onChangeRecordsIncome() {
     this.getRecordsIncome();
     this.alertCardSaldo();
@@ -156,11 +138,11 @@ export class HomeComponent implements OnInit {
   }
 
   toggleCardState(cardVariable: keyof this): void {
-  (this[cardVariable] as boolean) = true;
-  setTimeout(() => {
-    (this[cardVariable] as boolean) = false;
-  }, 200);
-}
+    (this[cardVariable] as boolean) = true;
+    setTimeout(() => {
+      (this[cardVariable] as boolean) = false;
+    }, 200);
+  }
 
   getRecordsIncome() {
     const userId = this.user?.id || '';
@@ -186,22 +168,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // insertInRecords_Expenses() {
-  //   const idDetailsOrigin = 41;
-  //   const value = 100;
-  //   const month = 3;
-  //   const year = 2025;
-  //   const disconts = 0;
-  //   const definitive_value = false;
-  //   const payment = false;
-  //   this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, disconts, definitive_value, payment).then(records => {
-  //     this.notificacoesService.sucesso('Despesa adicionada com sucesso.');
-  //     this.getRecords();
-  //   }).catch(error => {
-  //     console.error('Erro ao adicionar despesa:', error);
-  //   });
-  // }
-
   updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
     this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
       this.notificacoesService.sucesso('Despesa atualizada com sucesso.');
@@ -222,7 +188,7 @@ export class HomeComponent implements OnInit {
   }
 
   informPayment(record: Record) {
-    this.updateInRecords_Expenses(record.id, record.value, record.discounts, record.definitive_value, true);
+    this.updateInRecords_Expenses(record.id, record.value, record.discounts, record.change_value, true);
   }
 
   deleteRecord(record: Record) {
@@ -260,9 +226,25 @@ export class HomeComponent implements OnInit {
     this.dataSelectedService.setDate(this.selectedDate);
   }
 
+  // filterRecords() {
+  //   const { month, year } = this.parseDateString(this.selectedDate);
+  //   this.recordsFiltrados = this.allRecords.filter(record => record.month === month && record.year === year);
+  //   const totals = this.calculateTotals(this.recordsFiltrados);
+  //   this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
+  //   this.totalPending = parseFloat(totals.totalPending.toFixed(2));
+  //   this.totalLate = parseFloat(totals.totalLate.toFixed(2));
+  //   this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
+  // }
+
   filterRecords() {
     const { month, year } = this.parseDateString(this.selectedDate);
-    this.recordsFiltrados = this.allRecords.filter(record => record.month === month && record.year === year);
+
+    // Filtra os registros pelo mês e ano selecionados
+    this.recordsFiltrados = this.allRecords
+      .filter(record => record.month === month && record.year === year)
+      .sort((a, b) => this.compareDueDates(a.Details_Origin.due_date.toString(), b.Details_Origin.due_date.toString()));
+
+    // Calcula os totais
     const totals = this.calculateTotals(this.recordsFiltrados);
     this.totalPayable = parseFloat(totals.totalPayable.toFixed(2));
     this.totalPending = parseFloat(totals.totalPending.toFixed(2));
@@ -270,7 +252,13 @@ export class HomeComponent implements OnInit {
     this.totalDiscount = parseFloat(totals.totalDiscount.toFixed(2));
   }
 
-  calculateTotals(records: any[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
+  compareDueDates(dueDateA: string, dueDateB: string): number {
+    const dateA = new Date(dueDateA);
+    const dateB = new Date(dueDateB);
+    return dateA.getTime() - dateB.getTime(); // Ordena em ordem crescente
+  }
+
+  calculateTotals(records: Record[]): { totalPayable: number, totalPending: number, totalLate: number, totalDiscount: number } {
     let totalPayable = 0;
     let totalPending = 0;
     let totalLate = 0;

@@ -11,14 +11,27 @@ export class Record {
   value: number;
   idUser: number;
   discounts: number;
-  definitive_value: boolean = false;
+  change_value: boolean = false;
   payment: boolean = false;
   month_year: string = `JAN-2025`;
+  obs?: string; // Nova coluna de observação
 
-  constructor(created_at: string, details_origin_id: number, id: number, month: number, year: number,
-  type_output_or_input: string, value: number, idUser: number, Details_Origin: Details_Origin, discounts: number,
-  definitive_value: boolean, payment: boolean, month_year: string)
-  {
+  constructor(
+    created_at: string,
+    details_origin_id: number,
+    id: number,
+    month: number,
+    year: number,
+    type_output_or_input: string,
+    value: number,
+    idUser: number,
+    Details_Origin: Details_Origin,
+    discounts: number,
+    change_value: boolean,
+    payment: boolean,
+    month_year: string,
+    obs: string = '' // Inicializa a observação como string vazia
+  ) {
     this.created_at = created_at;
     this.details_origin_id = details_origin_id;
     this.id = id;
@@ -29,12 +42,13 @@ export class Record {
     this.idUser = idUser;
     this.Details_Origin = Details_Origin;
     this.discounts = this.parseCurrency(discounts.toString());
-    this.definitive_value = definitive_value;
+    this.change_value = change_value;
     this.payment = payment;
     this.month_year = month_year;
+    this.obs = obs;
   }
 
-    parseCurrency(value: string) {
+  parseCurrency(value: string) {
     return parseFloat(value.replace('.', ','));
   }
 }

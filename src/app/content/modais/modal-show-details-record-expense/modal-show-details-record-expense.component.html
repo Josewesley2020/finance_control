@@ -22,10 +22,10 @@
     </div>
     <div class="row mb-1">
       <div class="col-6">
-        <label class="form-label fw-bold">Data de Vencimento:</label>
+        <label class="form-label fw-bold">Observação:</label>
       </div>
       <div class="col-6">
-        <p>{{ formatDate((record?.Details_Origin?.due_date || 0), month, year) }}</p>
+        <p>{{ record?.obs || 'Sem observação' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -63,14 +63,6 @@
             isDatePast((record?.Details_Origin?.due_date || 0), month, year) ? 'Atrasado' : 'Pendente' }}
           </span>
         </b>
-      </div>
-    </div>
-    <div class="row mb-1">
-      <div class="col-6">
-        <label class="form-label fw-bold">Valor Definitivo:</label>
-      </div>
-      <div class="col-6">
-        <p>{{ record?.definitive_value ? 'Sim' : 'Não' }}</p>
       </div>
     </div>
   </div>

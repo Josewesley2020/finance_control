@@ -29,7 +29,17 @@ export class TableRecordsService {
     }
     return Records as Record[];
   }
-  async insertInInRecords_Expenses(details_origin_id: number,value: number, month: number, year: number, discounts: number, definitive_value: boolean, payment: boolean): Promise<Record[]> {
+
+    async insertInInRecords_Expenses(
+    details_origin_id: number,
+    value: number,
+    month: number,
+    year: number,
+    discounts: number,
+    definitive_value: boolean,
+    payment: boolean,
+    obs: string = '' // Novo parâmetro para observação
+  ): Promise<Record[]> {
     try {
       let { data: records_expenses, error } = await this.supabaseService.clientSupabase
         .from('Records_Expenses')
@@ -42,7 +52,8 @@ export class TableRecordsService {
             discounts: discounts,
             definitive_value: definitive_value,
             payment: payment,
-            idUser: this.user?.id
+            idUser: this.user?.id,
+            obs: obs // Inclui o campo obs
           }
         ])
         .select();
@@ -56,6 +67,7 @@ export class TableRecordsService {
       throw err;
     }
   }
+
   async deleteInRecords_Expenses(id: number): Promise<Record[]> {
   try {
     let {  error } = await this.supabaseService.clientSupabase
@@ -74,7 +86,15 @@ export class TableRecordsService {
     throw err;
   }
   }
-  async updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean): Promise<Record[]> {
+
+  async updateInRecords_Expenses(
+    id: number,
+    value: number,
+    discounts: number,
+    definitive_value: boolean,
+    payment: boolean,
+    obs: string = '' // Novo parâmetro para observação
+  ): Promise<Record[]> {
     try {
       let { data: records_expenses, error } = await this.supabaseService.clientSupabase
         .from('Records_Expenses')
@@ -82,7 +102,8 @@ export class TableRecordsService {
           value: value,
           discounts: discounts,
           definitive_value: definitive_value,
-          payment: payment
+          payment: payment,
+          obs: obs // Inclui o campo obs
         })
         .eq('id', id)
         .select();

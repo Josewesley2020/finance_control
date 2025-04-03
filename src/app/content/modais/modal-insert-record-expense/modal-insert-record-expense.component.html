@@ -5,11 +5,12 @@
   </div>
   <div class="card-body">
     <form>
-      <div class="row mb-1">
+      <!-- Origem, Valor e Descontos -->
+      <div class="row">
         <div class="col-3">
           <div class="form-group">
             <label for="detailsOrigin" class="form-label fw-bold">Origem:</label>
-                <select
+            <select
               class="form-select"
               id="detailsOrigin"
               [(ngModel)]="idDetailsOrigin"
@@ -23,49 +24,145 @@
         <div class="col-3">
           <div class="form-group">
             <label for="value" class="form-label fw-bold">Valor:</label>
-            <input type="number" class="form-control" id="value" [(ngModel)]="value" name="value" step="10.00" min="0">
+            <input
+              type="number"
+              class="form-control"
+              id="value"
+              [(ngModel)]="value"
+              name="value"
+              step="10.00"
+              min="0"
+            />
           </div>
         </div>
         <div class="col-3">
           <div class="form-group">
             <label for="discounts" class="form-label fw-bold">Descontos:</label>
-            <input type="number" class="form-control" id="discounts" [(ngModel)]="discounts" name="discounts" step="10.00" min="0">
+            <input
+              type="number"
+              class="form-control"
+              id="discounts"
+              [(ngModel)]="discounts"
+              name="discounts"
+              step="10.00"
+              min="0"
+            />
           </div>
         </div>
       </div>
-      <div *ngFor="let record of additionalRecords; let i = index" class="row mb-1 align-items-center">
-        <div class="col-3 d-flex align-self-end">
-          <span class="fw-bold">{{ description }}</span>
+
+      <!-- Botão para Alternar Observação -->
+      <!-- <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="toggleObsField()"
+            title="Exibir/Esconder Observação"
+          >
+            <i class="bi" [ngClass]="showObsField ? 'bi-eye-slash' : 'bi-eye'"></i>
+            {{ showObsField ? 'Esconder Observação' : 'Exibir Observação' }}
+          </button>
+        </div>
+      </div> -->
+
+      <!-- Observação -->
+      <div class="row mt-2">
+        <div class="col-12">
+          <label for="obs" class="form-label fw-bold">Observação:</label>
+                <button
+            type="button"
+            class="btn btn-sm"
+            (click)="toggleObsField()"
+            title="Exibir/Esconder Observação"
+          >
+            <i class="bi" [ngClass]="showObsField ? 'bi-eye-slash' : 'bi-eye'"></i>
+            {{ showObsField ? '' : '' }}
+          </button>
+          <textarea *ngIf="showObsField"
+            class="form-control"
+            id="obs"
+            [(ngModel)]="obs"
+            name="obs"
+            rows="3"
+            placeholder="Digite uma observação"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Registros Adicionais -->
+      <div *ngFor="let record of additionalRecords; let i = index" class="row align-items-center">
+          <span class="fw-bold col-3 d-flex justify-content-around">{{ description }}</span>
+        <div class="col-3">
+          <!-- <label for="value-{{ i }}" class="form-label fw-bold">Valor:</label> -->
+          <input
+            type="number"
+            class="form-control"
+            id="value-{{ i }}"
+            [(ngModel)]="record.value"
+            name="value-{{ i }}"
+            step="10.00"
+            min="0"
+            title="Digite o valor"
+            placeholder="Digite o valor"
+          />
         </div>
         <div class="col-3">
-          <label for="value-{{i}}" class="form-label fw-bold">Valor:</label>
-          <input type="number" class="form-control" id="value-{{i}}" [(ngModel)]="record.value" name="value-{{i}}" step="10.00" min="0">
-        </div>
-        <div class="col-3">
-          <label for="discounts-{{i}}" class="form-label fw-bold">Descontos:</label>
-          <input type="number" class="form-control" id="discounts-{{i}}" [(ngModel)]="record.discounts" name="discounts-{{i}}" step="10.00" min="0">
+          <!-- <label for="discounts-{{ i }}" class="form-label fw-bold">Descontos:</label> -->
+          <input
+          title="Digite o valor"
+            type="number"
+            class="form-control"
+            id="discounts-{{ i }}"
+            [(ngModel)]="record.discounts"
+            name="discounts-{{ i }}"
+            step="10.00"
+            min="0"
+          />
         </div>
         <div class="col-2">
           <label class="form-label fw-bold">Mês/Ano:</label>
-          <p class="form-control-plaintext">{{ record.month }}/{{ record.year }}</p>
+          <p>{{ record.month }}/{{ record.year }}</p>
         </div>
-        <div class="col-1 d-flex justify-content-end mt-4">
-          <button *ngIf="i === additionalRecords.length - 1" type="button" class="btn btn-danger btn-sm" (click)="removeLastRecord()" title="Remove Last Record">
+        <div class="col-1 d-flex justify-content-end">
+          <button
+            *ngIf="i === additionalRecords.length - 1"
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="removeLastRecord()"
+            title="Remover Último Registro"
+          >
             <i class="bi bi-trash"></i>
           </button>
         </div>
       </div>
-      <div class="row mb-1">
+
+      <!-- Botão para Adicionar Registros -->
+      <div class="row">
         <div *ngIf="idDetailsOrigin != 0" class="col-12 d-flex justify-content-end">
-          <button type="button" class="btn btn-secondary btn-sm" (click)="addRecord()" title="Adicionar Mês">
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            (click)="addRecord()"
+            title="Adicionar Mês"
+          >
             <i class="bi bi-plus"></i>
           </button>
         </div>
       </div>
     </form>
   </div>
+
+  <!-- Rodapé do Modal -->
   <div class="card-footer d-flex justify-content-between">
     <button type="button" class="btn btn-secondary me-2" (click)="close()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="insertInRecords_Expenses()" [disabled]="!isFormValid()">Salvar</button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="insertInRecords_Expenses()"
+      [disabled]="!isFormValid()"
+    >
+      Salvar
+    </button>
   </div>
 </div>

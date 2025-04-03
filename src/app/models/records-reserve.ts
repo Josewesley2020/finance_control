@@ -6,6 +6,7 @@ export class RecordReserve {
   idDestination: number;
   safe_in_piggy: boolean;
   idUser: string;
+  obs?: string; // Nova coluna de observação
 
   constructor(
     id: number,
@@ -14,7 +15,8 @@ export class RecordReserve {
     year: number,
     idDestination: number,
     safe_in_piggy: boolean,
-    idUser: string = ''
+    idUser: string = '',
+    obs: string = '' // Inicializa a observação como string vazia
   ) {
     this.id = id;
     this.value = value;
@@ -23,5 +25,6 @@ export class RecordReserve {
     this.idDestination = idDestination;
     this.safe_in_piggy = safe_in_piggy;
     this.idUser = idUser;
+    this.obs = obs;
   }
 }

@@ -7,7 +7,6 @@
         <th>Fonte de Renda</th>
         <th>Observação</th>
         <th>Valor (R$)</th>
-        <th>Data</th>
         <th class="text-center">Ações</th>
       </tr>
     </thead>
@@ -19,7 +18,6 @@
         </td>
         <td>{{ record.description }}</td>
         <td>{{ record.value | currency:'BRL':'symbol':'1.2-2' }}</td>
-        <td>{{ selectedDate }}</td>
         <td class="text-center">
           <button
             class="btn btn-danger btn-sm"

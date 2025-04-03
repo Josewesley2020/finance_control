@@ -38,7 +38,14 @@ export class ModalEditDetailsRecordExpenseComponent implements OnInit {
 
   save(): void {
     if (this.record) {
-      this.updateInRecords_Expenses(this.record.id, this.record.value, this.record.discounts, this.record.definitive_value, this.record.payment);
+      this.updateInRecords_Expenses(
+        this.record.id,
+        this.record.value,
+        this.record.discounts,
+        this.record.change_value,
+        this.record.payment,
+        this.record.obs || '' // Inclui a observação na atualização
+      );
     }
   }
 
@@ -60,8 +67,15 @@ export class ModalEditDetailsRecordExpenseComponent implements OnInit {
     return date.toLocaleDateString('pt-BR');
   }
 
-  updateInRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
-    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
+ updateInRecords_Expenses(
+    id: number,
+    value: number,
+    discounts: number,
+    definitive_value: boolean,
+    payment: boolean,
+    obs: string // Inclui a observação como parâmetro
+  ) {
+    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment, obs).then(records => {
       this.notificacoesService.sucesso('Despesa atualizada com sucesso.');
       this.dialogRef.close({ success: true });
     }).catch(error => {

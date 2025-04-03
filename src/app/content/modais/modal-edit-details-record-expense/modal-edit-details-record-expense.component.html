@@ -9,7 +9,7 @@
         <label class="form-label fw-bold">Descrição:</label>
       </div>
       <div class="col-6">
-        <p >{{ record?.Details_Origin?.Description }}</p>
+        <p>{{ record?.Details_Origin?.Description }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -17,7 +17,7 @@
         <label class="form-label fw-bold">Data de Fechamento:</label>
       </div>
       <div class="col-6">
-        <p >{{ formatDate(( record?.Details_Origin?.Closing_day || 0), month, year) }}</p>
+        <p>{{ formatDate((record?.Details_Origin?.Closing_day || 0), month, year) }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -25,7 +25,7 @@
         <label class="form-label fw-bold">Data de Vencimento:</label>
       </div>
       <div class="col-6">
-        <p >{{ formatDate((record?.Details_Origin?.due_date || 0), month, year) }}</p>
+        <p>{{ formatDate((record?.Details_Origin?.due_date || 0), month, year) }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -49,7 +49,7 @@
         <label class="form-label fw-bold">Valor Final:</label>
       </div>
       <div class="col-6">
-        <p >{{ ((record?.value ?? 0) - (record?.discounts ?? 0)) | currency:'BRL':'symbol':'1.2-2' }}</p>
+        <p>{{ ((record?.value ?? 0) - (record?.discounts ?? 0)) | currency:'BRL':'symbol':'1.2-2' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -57,7 +57,7 @@
         <label for="definitive_value" class="form-label fw-bold">Valor Definitivo:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="record.definitive_value" name="definitive_value"  [disabled]="record.payment">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="record.change_value" name="definitive_value" [disabled]="record.payment">
       </div>
     </div>
     <div class="row mb-1">
@@ -65,7 +65,23 @@
         <label for="payment" class="form-label fw-bold">Pago:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment" name="payment" [disabled]="!record.definitive_value">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment" name="payment" [disabled]="!record.change_value">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="obs" class="form-label fw-bold">Observação:</label>
+      </div>
+      <div class="col-6">
+        <textarea
+          *ngIf="record"
+          class="form-control"
+          id="obs"
+          [(ngModel)]="record.obs"
+          name="obs"
+          rows="3"
+          placeholder="Digite uma observação"
+        ></textarea>
       </div>
     </div>
   </div>

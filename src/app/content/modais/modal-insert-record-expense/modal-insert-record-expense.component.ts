@@ -26,6 +26,8 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   definitive_value: boolean = false;
   payment: boolean = false;
   additionalRecords: { value: number, discounts: number, month: number, year: number }[] = [];
+  obs: string = '';
+  showObsField: boolean = false;
 
   constructor(
     private tableDetailsOriginService: TableDetailsOriginService,
@@ -42,6 +44,10 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   ngOnInit(): void {
     this.getRecords();
     this.selectInDetails_Origin();
+  }
+
+    toggleObsField(): void {
+    this.showObsField = !this.showObsField; // Alterna a visibilidade do campo
   }
 
   onDetailsOriginChange(event: Event): void {
@@ -76,7 +82,7 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   }
 
     insertInRecords_Expenses() {
-    const { idDetailsOrigin, value, discounts, definitive_value, payment, month, year } = this;
+    const { idDetailsOrigin, value, discounts, definitive_value, payment, month, year, obs } = this;
 
     // Verifica o registro principal
     const existingRecord = this.allRecords.find(record =>
@@ -87,10 +93,10 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
 
     if (existingRecord) {
       // Atualiza o registro principal existente
-      this.upadaRecords_Expenses(existingRecord.id, value, discounts, definitive_value, payment);
+      this.upadaRecords_Expenses(existingRecord.id, value, discounts, definitive_value, payment, obs);
     } else {
       // Insere o registro principal
-      this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, discounts, definitive_value, payment).then(() => {
+      this.tableRecordsService.insertInInRecords_Expenses(idDetailsOrigin, value, month, year, discounts, definitive_value, payment, obs).then(() => {
         this.notificacoesService.sucesso('Despesa principal adicionada com sucesso.');
       }).catch(error => {
         console.error('Erro ao adicionar despesa principal:', error);
@@ -124,8 +130,8 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
     this.dialogRef.close({ success: true });
   }
 
-  upadaRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean) {
-    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment).then(records => {
+  upadaRecords_Expenses(id: number, value: number, discounts: number, definitive_value: boolean, payment: boolean, obs: string = '') {
+    this.tableRecordsService.updateInRecords_Expenses(id, value, discounts, definitive_value, payment, obs).then(records => {
       this.notificacoesService.sucesso('Despesa atualizada com sucesso.');
       this.dialogRef.close({ success: true });
     }

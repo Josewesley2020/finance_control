@@ -12,21 +12,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let record of allRecordsReserve; let i = index">
+            <tr *ngFor="let record of allRecordsReserve; let i = index">
         <td>{{ i + 1 }}</td>
-        <td>
-          {{ getDestinationDescription(record.idDestination) || '' }}
-        </td>
-        <td>
-          {{ getDestinationObservation(record.idDestination) || '' }}
-        </td>
+        <td>{{ getDestinationDescription(record.idDestination) || '' }}</td>
+        <td>{{ record.obs || 'Sem observação' }}</td> <!-- Exibe a observação -->
         <td>{{ record.value | currency:'BRL':'symbol':'1.2-2' }}</td>
         <td>{{ convertBoleanInString(record.safe_in_piggy) }}</td>
         <td class="text-center">
-          <button
-            class="btn btn-danger btn-sm"
-            (click)="deleteRecord(record)"
-            title="Excluir registro">
+          <button class="btn btn-danger btn-sm" (click)="deleteRecord(record)" title="Excluir registro">
             <i class="bi bi-trash"></i> Excluir
           </button>
         </td>

@@ -15,7 +15,7 @@ export class GeneralInformationComponent implements OnInit {
   private subscriptionChangeInfoGeral: Subscription = new Subscription();
   safeValue: number = 0; // Valor no cofre
   goalValue: number = 0; // Meta
-  showValues: boolean = true; // Controla a exibição dos valores
+  showValues: boolean = false; // Controla a exibição dos valores
   isEditing: boolean = false; // Controla o modo de edição
   last_update_year: number = 0; // Data da última atualização
   last_update_month: number = 0; // Mês da última atualização

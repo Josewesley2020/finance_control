@@ -28,6 +28,8 @@ export class ModalInsertRecordReserveComponent implements OnInit {
   selectedDate: string = '';
   selectedMonth: number = 0;
   selectedYear: number = 0;
+  obs: string = ''; //
+
 
   constructor(
     private tableGeneralInformationService: TableGeneralInformationService,
@@ -55,19 +57,25 @@ export class ModalInsertRecordReserveComponent implements OnInit {
     this.selectedYear = this.dataSelectedService.getYear();
   }
 
-  save() {
-    this.tableRecordsReserveService.insertInInRecordsReserve(
-      this.value, this.selectedMonth, this.selectedYear, this.idDestination, this.safe_in_piggy).then(() => {
-        this.notificacoesService.sucesso('Sucesso ao adicionar reserva.');
-        if (this.safe_in_piggy) {
-          this.updatePiggy();
-        } else {
-          this.dialogRef.close({ success: true });
-        }
-      }).catch(error => {
-        this.notificacoesService.erro('Erro.');
-      });
-  }
+save() {
+  this.tableRecordsReserveService.insertInInRecordsReserve(
+    this.value,
+    this.selectedMonth,
+    this.selectedYear,
+    this.idDestination,
+    this.safe_in_piggy,
+    this.obs // Inclui a observação
+  ).then(() => {
+    this.notificacoesService.sucesso('Sucesso ao adicionar reserva.');
+    if (this.safe_in_piggy) {
+      this.updatePiggy();
+    } else {
+      this.dialogRef.close({ success: true });
+    }
+  }).catch(error => {
+    this.notificacoesService.erro('Erro ao adicionar reserva.');
+  });
+}
 
   updatePiggy() {
     if (this.GeneralInfo) {
