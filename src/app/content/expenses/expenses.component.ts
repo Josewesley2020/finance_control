@@ -10,6 +10,7 @@ import { ModalEditDetailsRecordExpenseComponent } from '../modais/modal-edit-det
 import { ModalShowDetailsRecordExpenseComponent } from '../modais/modal-show-details-record-expense/modal-show-details-record-expense.component';
 import { DataSelectedService } from '../../services/data-selected.service';
 import { Subscription } from 'rxjs';
+import { ModalInsertOriginExpenseComponent } from '../modais/modal-insert-origin-expense/modal-insert-origin-expense.component';
 
 @Component({
   selector: 'app-expenses',
@@ -231,5 +232,24 @@ export class ExpensesComponent implements OnInit {
       this.notificacoesService.erro('Erro ao informar pagamento.');
     });
   }
+
+  addNewOrigin() {
+    this.openModal_ModalInsertOriginExpenseComponent();
+  }
+
+    openModal_ModalInsertOriginExpenseComponent() {
+      const dialogRef = this.dialog.open(ModalInsertOriginExpenseComponent, {
+        width: 'auto',
+        height: 'auto',
+        minWidth: '400px',
+        minHeight: '300px'
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result && result.success) {
+          this.notificacoesService.sucesso(result.message);
+          this.getRecords(); // Recarrega os registros após adicionar a nova origem
+        }
+      });
+    }
 
 }

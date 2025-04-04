@@ -11,6 +11,7 @@ import { Income } from '../../models/income.model';
 import { CommonModule } from '@angular/common';
 import { ModalInsertRecordIncomeComponent } from '../modais/modal-insert-record-income/modal-insert-record-income.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ModalInsertIncomeSourceComponent } from '../modais/modal-insert-income-source/modal-insert-income-source.component';
 
 @Component({
   selector: 'app-input-of-income',
@@ -115,5 +116,23 @@ openModalInsertRecordIncome(): void {
 
   addNewIncome() {
     this.openModalInsertRecordIncome();
+  }
+
+  addNewOrigin() {
+this.openModal_ModalInsertIncomeSourceComponent();
+}
+
+  openModal_ModalInsertIncomeSourceComponent() {
+    const dialogRef = this.dialog.open(ModalInsertIncomeSourceComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        this.notificacoesService.sucesso('Fonte de renda inserida com sucesso!');
+        this.getIncomeSource(); // Atualiza a lista de fontes de renda após a inserção
+      }
+    });
   }
 }

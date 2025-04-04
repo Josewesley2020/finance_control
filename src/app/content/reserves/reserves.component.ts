@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalInsertRecordReserveComponent } from '../modais/modal-insert-record-reserve/modal-insert-record-reserve.component';
 import { GeneralInfo } from '../../models/general-info.model';
 import { TableGeneralInformationService } from '../../services/table-general-information.service';
+import { ModalInsertReserveDestinationComponent } from '../modais/modal-insert-reserve-destination/modal-insert-reserve-destination.component';
 
 @Component({
   selector: 'app-reserves',
@@ -63,20 +64,20 @@ export class ReservesComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-selectRecordsReserve() {
-  this.tableRecordsReserveService.selectInRecordsReserve().then((res) => {
-    const filteredRecords = res.filter(record =>
-      record.month === this.selectedMonth &&
-      record.year === this.selectedYear);
-    this.allRecordsReserve = filteredRecords;
-    this.allRecordsReserveEvent.emit(filteredRecords);
-    this.valueTotalOfRecordsReserve.emit(
-      filteredRecords.reduce((acc, record) => acc + record.value, 0)
-    );
-  }).catch((error) => {
-    this.notificacoesService.erro('Erro ao buscar reservas.');
-  });
-}
+  selectRecordsReserve() {
+    this.tableRecordsReserveService.selectInRecordsReserve().then((res) => {
+      const filteredRecords = res.filter(record =>
+        record.month === this.selectedMonth &&
+        record.year === this.selectedYear);
+      this.allRecordsReserve = filteredRecords;
+      this.allRecordsReserveEvent.emit(filteredRecords);
+      this.valueTotalOfRecordsReserve.emit(
+        filteredRecords.reduce((acc, record) => acc + record.value, 0)
+      );
+    }).catch((error) => {
+      this.notificacoesService.erro('Erro ao buscar reservas.');
+    });
+  }
 
 
   selectReservesDestination() {
@@ -104,7 +105,7 @@ selectRecordsReserve() {
   deleteRecord(record: RecordReserve) {
     this.tableRecordsReserveService.deleteInRecordsReserve(record.id).then(() => {
       if (record.safe_in_piggy) {
-      this.updatePiggy(record.value)
+        this.updatePiggy(record.value)
       }
       this.reload();
       this.notificacoesService.sucesso('Registro de reserva excluído com sucesso!');
@@ -161,4 +162,23 @@ selectRecordsReserve() {
       });
   }
 
+  addNewOrigin() {
+    this.openModal_ModalInsertReserveDestinationComponent();
+  }
+
+  openModal_ModalInsertReserveDestinationComponent() {
+    const dialogRef = this.dialog.open(ModalInsertReserveDestinationComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+      minHeight: '300px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        console.log(result.message);
+      } else {
+        console.log('Ação cancelada ou erro ao inserir a destino da reserva.');
+      }
+    });
+  }
 }
