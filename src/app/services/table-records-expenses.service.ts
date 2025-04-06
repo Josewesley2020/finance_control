@@ -11,7 +11,9 @@ import { AuthenticatorService } from './authenticator.service';
 export class TableRecordsService {
  user?: User;
 
-  constructor(private supabaseService: SupabaseService,private authService: AuthenticatorService) {
+  constructor(
+  private supabaseService: SupabaseService,
+  private authService: AuthenticatorService) {
    this.user = this.authService.getUser();
   }
   async selectInRecordsWithDetails_Origin(): Promise<Record[]> {

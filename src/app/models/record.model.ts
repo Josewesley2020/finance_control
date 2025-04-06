@@ -14,7 +14,7 @@ export class Record {
   definitive_value: boolean = false;
   payment: boolean = false;
   month_year: string = `JAN-2025`;
-  obs?: string; // Nova coluna de observação
+  obs?: string;
 
   constructor(
     created_at: string,
@@ -30,7 +30,7 @@ export class Record {
     definitive_value: boolean,
     payment: boolean,
     month_year: string,
-    obs: string = '' // Inicializa a observação como string vazia
+    obs: string = ''
   ) {
     this.created_at = created_at;
     this.details_origin_id = details_origin_id;

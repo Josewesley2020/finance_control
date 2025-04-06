@@ -15,6 +15,11 @@
         </a>
       </li>
       <li class="nav-item navbar-action">
+        <a class="nav-link" [ngClass]="{ active: activeTab === 'outrosPagadores' }" (click)="setActiveTab('outrosPagadores')">
+          Pagadores
+        </a>
+      </li>
+      <li class="nav-item navbar-action">
         <a class="nav-link" [ngClass]="{ active: activeTab === 'receitas' }" (click)="setActiveTab('receitas')">
           Receitas
         </a>
@@ -176,4 +181,8 @@
     (totalLateEvent)="updateTotalLate($event)"
     (totalDiscountEvent)="updateTotalDiscount($event)"
   ></app-expenses>
+</div>
+
+<div *ngIf="activeTab === 'outrosPagadores'">
+  <app-other-payers></app-other-payers>
 </div>

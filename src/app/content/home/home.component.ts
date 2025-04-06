@@ -14,10 +14,11 @@ import { InputOfIncomeComponent } from "../input-of-income/input-of-income.compo
 import { DataSelectedService } from '../../services/data-selected.service';
 import { ReservesComponent } from "../reserves/reserves.component";
 import { ExpensesComponent } from "../expenses/expenses.component";
+import { OtherPayersComponent } from "../other-payers/other-payers.component";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent, ExpensesComponent],
+  imports: [CommonModule, FormsModule, InputOfIncomeComponent, ReservesComponent, ExpensesComponent, OtherPayersComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
