@@ -16,6 +16,21 @@ export class TableRecordsAnotherPayerService {
     this.user = this.authService.getUser();
   }
 
+  async insertMultipleRecords(records: Records_another_payer[]): Promise<void> {
+  try {
+    const { data, error } = await this.supabaseService.clientSupabase
+      .from('Records_another_payer')
+      .insert(records);
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    console.error('Erro ao inserir múltiplos registros:', error);
+    throw error;
+  }
+}
+
   async selectInRecords_another_payer(): Promise<Records_another_payer[]> {
     let { data: records, error } = await this.supabaseService.clientSupabase
       .from('Records_another_payer')
@@ -76,7 +91,7 @@ export class TableRecordsAnotherPayerService {
     value: number,
     month: number,
     year: number,
-    qtd_parcelas: number,
+    qtd_parcelas_pendentes: number,
     monthInit: number,
     yearInit: number,
     payment: boolean = false,
@@ -92,7 +107,7 @@ export class TableRecordsAnotherPayerService {
           value: value,
           month: month,
           year: year,
-          qtd_parcelas: qtd_parcelas,
+          qtd_parcelas_pendentes: qtd_parcelas_pendentes,
           monthInit: monthInit,
           yearInit: yearInit,
           payment: payment,

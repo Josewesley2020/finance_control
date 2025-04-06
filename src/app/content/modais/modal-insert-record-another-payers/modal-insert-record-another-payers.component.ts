@@ -78,26 +78,44 @@ export class ModalInsertRecordAnotherPayersComponent implements OnInit {
   //   }
   // }
 
-  save() {
-    this.tableRecordsAnotherPayerService.insertInRecords_another_payer(
-      this.idPlayer,
-      this.idOrigin,
-      this.description,
-      this.value,
-      this.selectedMonth,
-      this.selectedYear,
-      this.qtd_parcelas,
-      this.monthInit,
-      this.yearInit,
-      this.payment
-    ).then(() => {
-      this.notificacoesService.sucesso('Registro cadastrado com sucesso.');
-      this.dialogRef.close({ success: true });
-    }).catch(error => {
-      console.error('Erro ao inserir registro:', error);
-      this.notificacoesService.erro('Erro ao inserir registro.');
+save() {
+  const registros: any[] = [];
+  let currentMonth = this.monthInit;
+  let currentYear = this.yearInit;
+
+  for (let i = 0; i < this.qtd_parcelas; i++) {
+    registros.push({
+      idPayer: this.idPlayer,
+      idOrigin: this.idOrigin,
+      description: this.description,
+      value: this.value,
+      month: currentMonth,
+      year: currentYear,
+      qtd_parcelas_pendentes: this.qtd_parcelas - i,
+      mothInit: this.monthInit,
+      yearInit: this.yearInit,
+      payment: this.payment,
+      idUser: this.tableRecordsAnotherPayerService.user?.id
     });
+
+    // Incrementa o mês e ajusta o ano, se necessário
+    currentMonth++;
+    if (currentMonth > 12) {
+      currentMonth = 1;
+      currentYear++;
+    }
   }
+
+  this.tableRecordsAnotherPayerService.insertMultipleRecords(registros)
+    .then(() => {
+      this.notificacoesService.sucesso('Registros cadastrados com sucesso.');
+      this.dialogRef.close({ success: true });
+    })
+    .catch(error => {
+      console.error('Erro ao inserir registros:', error);
+      this.notificacoesService.erro('Erro ao inserir registros.');
+    });
+}
 
   cancel() {
     this.notificacoesService.info('Ação cancelada.');
