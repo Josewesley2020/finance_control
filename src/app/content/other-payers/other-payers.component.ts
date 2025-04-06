@@ -9,6 +9,7 @@ import { TableDetailsOriginService } from '../../services/table-details-origin.s
 import { TableOtherPayersService } from '../../services/table-other-payers.service';
 import { ModalInsertPayerComponent } from '../modais/modal-insert-payer/modal-insert-payer.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ModalInsertRecordAnotherPayersComponent } from '../modais/modal-insert-record-another-payers/modal-insert-record-another-payers.component';
 
 @Component({
   selector: 'app-other-payers',
@@ -17,10 +18,6 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./other-payers.component.css']
 })
 export class OtherPayersComponent implements OnInit {
-addNewRecord() {
-throw new Error('Method not implemented.');
-}
-
   recordsAnotherPayer: Records_another_payer[] = [];
   filteredRecords: Records_another_payer[] = [];
   originsMap: { [key: number]: string } = {}; // Mapa para armazenar as descrições das origens
@@ -85,7 +82,6 @@ throw new Error('Method not implemented.');
     return this.payersMap[idPayer] || 'Pagador não encontrado';
   }
 
-
   getRecordsAnotherPayer(): void {
     this.loading = true;
     this.tableRecordsAnotherPayerService.selectInRecords_another_payer().then((records) => {
@@ -117,32 +113,48 @@ throw new Error('Method not implemented.');
   }
 
   markAsPaid(record: Records_another_payer) {
-  this.tableRecordsAnotherPayerService.updateInRecords_another_payer(
-  record.id,record.idPayer,record.idOrigin, record.description, record.value, record.month,
-  record.year, record.qtd_parcelas, record.monthInit, record.yearInit, true ).then(() => {
-    this.notificacoesService.sucesso('Registro marcado como pago com sucesso.');
-    this.getRecordsAnotherPayer();
-  }
-  ).catch((error) => {
-    console.error('Erro ao marcar registro como pago:', error);
-    this.notificacoesService.erro('Erro ao marcar registro como pago.');
-  });
+    this.tableRecordsAnotherPayerService.updateInRecords_another_payer(
+      record.id, record.idPayer, record.idOrigin, record.description, record.value, record.month,
+      record.year, record.qtd_parcelas_pendentes, record.monthInit, record.yearInit, true).then(() => {
+        this.notificacoesService.sucesso('Registro marcado como pago com sucesso.');
+        this.getRecordsAnotherPayer();
+      }
+      ).catch((error) => {
+        console.error('Erro ao marcar registro como pago:', error);
+        this.notificacoesService.erro('Erro ao marcar registro como pago.');
+      });
   }
 
   creatNewPayer() {
     this.openModal_ModalInsertPayerComponent();
   }
 
-    openModal_ModalInsertPayerComponent() {
-      const dialogRef = this.dialog.open(ModalInsertPayerComponent, {
-        width: 'auto',
-        height: 'auto',
-        minWidth: '400px',
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && result.success) {
-          this.getRecordsAnotherPayer();
-        }
-      });
-    }
+  addNewRecord() {
+    this.openModalInsertRecordAnotherPayersComponent();
+  }
+
+  openModal_ModalInsertPayerComponent() {
+    const dialogRef = this.dialog.open(ModalInsertPayerComponent, {
+      width: 'auto',
+      height: 'auto',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        this.getRecordsAnotherPayer();
+      }
+    });
+  }
+
+  openModalInsertRecordAnotherPayersComponent() {
+    const dialogRef = this.dialog.open(ModalInsertRecordAnotherPayersComponent, {
+      width: 'auto',
+      height: 'auto',
+      minWidth: '400px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.success) {
+        this.getRecordsAnotherPayer();
+      }
+    });
+  }
 }

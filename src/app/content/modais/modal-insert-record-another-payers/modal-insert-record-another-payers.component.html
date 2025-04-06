@@ -1,0 +1,51 @@
+<div class="card scrollable-content">
+  <div class="card-header text-bg-primary d-flex justify-content-between">
+    <h5 class="card-title m-1" id="modalInsertOriginExpenseLabel">Registro de dívida</h5>
+    <button type="button" class="btn-close m-1" (click)="cancel()" aria-label="Close"></button>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="mb-3">
+        <label for="idPlayer" class="form-label">Pagador</label>
+        <select class="form-select" id="idPlayer" [(ngModel)]="idPlayer" name="idPlayer" required>
+          <option *ngFor="let payer of payers" [value]="payer.id">{{ payer.name }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="idOrigin" class="form-label">Origem</label>
+        <select class="form-select" id="idOrigin" [(ngModel)]="idOrigin" name="idOrigin" required>
+          <option *ngFor="let origin of origins" [value]="origin.id">{{ origin.Description }}</option>
+        </select>
+      </div>
+       <div class="mb-3">
+        <label for="value" class="form-label">Valor da parcela R$</label>
+        <input
+          type="number"
+          class="form-control"
+          id="value"
+          placeholder="Valor da dívida R$"
+          [(ngModel)]="value"
+          name="value"
+          step="10"
+          min="0"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="qtd_parcelas" class="form-label">Quantidade de Parcelas</label>
+        <input type="number" class="form-control" id="qtd_parcelas" placeholder="Quantidade de parcelas"
+          [(ngModel)]="qtd_parcelas" name="qtd_parcelas" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea class="form-control" id="description" placeholder="Descrição" [(ngModel)]="description"
+          name="description" maxlength="255" rows="4" required></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer d-flex justify-content-between">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="save()"
+      [disabled]="idPlayer === 0 || idOrigin === 0 || value <= 0 || qtd_parcelas <= 0">Salvar</button>
+  </div>
+</div>

@@ -6,14 +6,14 @@ export class Records_another_payer {
   value: number;
   month: number;
   year: number;
-  qtd_parcelas: number;
+  qtd_parcelas_pendentes: number;
   monthInit: number;
   yearInit: number;
   payment: boolean = false;
   idUser: string = '';
 
   constructor(id: number, idPayer: number, idOrigin: number, description: string,
-  value: number, month: number, year: number, qtd_parcelas: number,
+  value: number, month: number, year: number, qtd_parcelas_pendentes: number,
   monthInit: number, yearInit: number, payment: boolean = false, idUser: string = '') {
     this.idUser = idUser;
     this.idPayer = idPayer;
@@ -23,7 +23,7 @@ export class Records_another_payer {
     this.value = value;
     this.month = month;
     this.year = year;
-    this.qtd_parcelas = qtd_parcelas;
+    this.qtd_parcelas_pendentes = qtd_parcelas_pendentes;
     this.monthInit = monthInit;
     this.yearInit = yearInit;
     this.payment = payment;
