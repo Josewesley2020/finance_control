@@ -206,7 +206,7 @@ export class ExpensesComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalInsertRecordExpenseComponent, {
       width: 'auto',
       height: 'auto',
-      minWidth: '500px',
+      minWidth: '800px',
       data: { allRecords: this.allRecords, month: this.selectedMonth, year: this.selectedYear }
     });
 

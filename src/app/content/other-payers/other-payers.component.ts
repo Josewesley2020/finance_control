@@ -115,7 +115,7 @@ export class OtherPayersComponent implements OnInit {
   markAsPaid(record: Records_another_payer) {
     this.tableRecordsAnotherPayerService.updateInRecords_another_payer(
       record.id, record.idPayer, record.idOrigin, record.description, record.value, record.month,
-      record.year, record.qtd_parcelas_pendentes, record.monthInit, record.yearInit, true).then(() => {
+      record.year, record.qtd_parcelas_pagas, record.qtd_parcelas_total, record.monthInit, record.yearInit, true).then(() => {
         this.notificacoesService.sucesso('Registro marcado como pago com sucesso.');
         this.getRecordsAnotherPayer();
       }

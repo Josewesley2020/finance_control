@@ -17,7 +17,8 @@
         <label class="form-label fw-bold">Data de Fechamento:</label>
       </div>
       <div class="col-6">
-        <p>{{ record?.Details_Origin?.Closing_day !== undefined ? formatDate((record?.Details_Origin?.Closing_day || 0), month, year) : '' }}</p>
+        <p>{{ record?.Details_Origin?.Closing_day !== undefined ? formatDate((record?.Details_Origin?.Closing_day || 0),
+          month, year) : '' }}</p>
       </div>
     </div>
     <div class="row mb-1">
@@ -64,6 +65,33 @@
           </span>
         </b>
       </div>
+    </div>
+    <div class="mb-3" *ngIf="otherPayers.length > 0">
+      <label for="otherPayers" class="form-label fw-bold">Outros Pagadores</label>
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>Pagador</th>
+            <th>Valor</th>
+            <th>Parcelas</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payer of otherPayers">
+            <td class="text-start">{{ getPayerName(payer.idPayer) }}</td>
+            <td>{{ payer.value | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td>{{ (payer.qtd_parcelas_pagas || 0) + '/' + (payer.qtd_parcelas_total || 0) }}</td>
+            <td>{{ payer.payment ? 'Pago' : 'Pendente' }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="text-end fw-bold">Total:</td>
+            <td>{{ getTotalValue() | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   </div>
   <div class="card-footer d-flex justify-content-end">

@@ -21,7 +21,7 @@
             </select>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <div class="form-group">
             <label for="value" class="form-label fw-bold">Valor:</label>
             <input
@@ -35,7 +35,7 @@
             />
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <div class="form-group">
             <label for="discounts" class="form-label fw-bold">Descontos:</label>
             <input
@@ -49,6 +49,11 @@
             />
           </div>
         </div>
+        <div class="col-2">
+        <label for="totalOtherPayersValue" class="form-label text-danger fw-bold">Previsão:</label>
+           <small class="text-muted" id="totalOtherPayersValue">
+             {{ getTotalOtherPayersValue(month, year) | currency:'BRL':'symbol':'1.2-2' }}
+          </small></div>
       </div>
 
       <!-- Botão para Alternar Observação -->
@@ -67,7 +72,7 @@
       </div> -->
 
       <!-- Observação -->
-      <div class="row mt-2">
+      <!-- <div class="row mt-2">
         <div class="col-12">
           <label for="obs" class="form-label fw-bold">Observação:</label>
                 <button
@@ -80,7 +85,7 @@
             {{ showObsField ? '' : '' }}
           </button>
           <textarea *ngIf="showObsField"
-            class="form-control"
+            class="form-control mb-2"
             id="obs"
             [(ngModel)]="obs"
             name="obs"
@@ -88,12 +93,12 @@
             placeholder="Digite uma observação"
           ></textarea>
         </div>
-      </div>
+      </div> -->
 
       <!-- Registros Adicionais -->
       <div *ngFor="let record of additionalRecords; let i = index" class="row align-items-center">
           <span class="fw-bold col-3 d-flex justify-content-around">{{ description }}</span>
-        <div class="col-3">
+        <div class="col-2">
           <!-- <label for="value-{{ i }}" class="form-label fw-bold">Valor:</label> -->
           <input
             type="number"
@@ -107,7 +112,7 @@
             placeholder="Digite o valor"
           />
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <!-- <label for="discounts-{{ i }}" class="form-label fw-bold">Descontos:</label> -->
           <input
           title="Digite o valor"
@@ -120,9 +125,14 @@
             min="0"
           />
         </div>
+            <div class="col-2">
+           <small class="text-muted">
+            {{ getTotalOtherPayersValue(record.month, record.year) | currency:'BRL':'symbol':'1.2-2' }}
+          </small></div>
+
         <div class="col-2">
-          <label class="form-label fw-bold">Mês/Ano:</label>
-          <p>{{ record.month }}/{{ record.year }}</p>
+          <!-- <label class="form-label fw-bold">Mês/Ano:</label> -->
+          <p class="mt-2">{{ record.month }}/{{ record.year }}</p>
         </div>
         <div class="col-1 d-flex justify-content-end">
           <button
@@ -150,8 +160,34 @@
           </button>
         </div>
       </div>
+         <!-- Observação -->
+      <div class="row mt-2">
+        <div class="col-10">
+          <label for="obs" class="form-label fw-bold">Observação:</label>
+                <button
+            type="button"
+            class="btn btn-sm"
+            (click)="toggleObsField()"
+            title="Exibir/Esconder Observação"
+          >
+            <i class="bi" [ngClass]="showObsField ? 'bi-eye-slash' : 'bi-eye'"></i>
+            {{ showObsField ? '' : '' }}
+          </button>
+          <textarea *ngIf="showObsField"
+            class="form-control mb-2"
+            id="obs"
+            [(ngModel)]="obs"
+            name="obs"
+            rows="3"
+            placeholder="Digite uma observação"
+          ></textarea>
+        </div>
+      </div>
     </form>
+
   </div>
+
+
 
   <!-- Rodapé do Modal -->
   <div class="card-footer d-flex justify-content-between">

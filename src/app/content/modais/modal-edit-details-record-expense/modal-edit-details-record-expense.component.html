@@ -33,7 +33,8 @@
         <label for="value" class="form-label fw-bold">Valor:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="number" class="form-control" id="value" [(ngModel)]="record.value" name="value" step="10.00" min="0">
+        <input *ngIf="record" type="number" class="form-control" id="value" [(ngModel)]="record.value" name="value"
+          step="10.00" min="0">
       </div>
     </div>
     <div class="row mb-1">
@@ -41,7 +42,8 @@
         <label for="discounts" class="form-label fw-bold">Descontos:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="number" class="form-control" id="discounts" [(ngModel)]="record.discounts" name="discounts" step="10.00" min="0">
+        <input *ngIf="record" type="number" class="form-control" id="discounts" [(ngModel)]="record.discounts"
+          name="discounts" step="10.00" min="0">
       </div>
     </div>
     <div class="row mb-1">
@@ -57,7 +59,8 @@
         <label for="definitive_value" class="form-label fw-bold">Valor Definitivo:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value" [(ngModel)]="record.definitive_value" name="definitive_value" [disabled]="record.payment">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="definitive_value"
+          [(ngModel)]="record.definitive_value" name="definitive_value" [disabled]="record.payment">
       </div>
     </div>
     <div class="row mb-1">
@@ -65,7 +68,8 @@
         <label for="payment" class="form-label fw-bold">Pago:</label>
       </div>
       <div class="col-6">
-        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment" name="payment" [disabled]="!record.definitive_value">
+        <input *ngIf="record" type="checkbox" class="form-check-input" id="payment" [(ngModel)]="record.payment"
+          name="payment" [disabled]="!record.definitive_value">
       </div>
     </div>
     <div class="row mb-3">
@@ -73,15 +77,38 @@
         <label for="obs" class="form-label fw-bold">Observação:</label>
       </div>
       <div class="col-6">
-        <textarea
-          *ngIf="record"
-          class="form-control"
-          id="obs"
-          [(ngModel)]="record.obs"
-          name="obs"
-          rows="3"
-          placeholder="Digite uma observação"
-        ></textarea>
+        <textarea *ngIf="record" class="form-control" id="obs" [(ngModel)]="record.obs" name="obs" rows="3"
+          placeholder="Digite uma observação"></textarea>
+      </div>
+
+      <div class="row mb-3" *ngIf="otherPayers.length > 0">
+        <div class="col-12">
+          <label for="otherPayers" class="form-label fw-bold">Outros Pagadores</label>
+          <table class="table table-bordered table-striped text-center">
+            <thead class="table-primary">
+              <tr>
+                <th>Pagador</th>
+                <th>Valor</th>
+                <th>Parcelas</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let payer of otherPayers">
+                <td class="text-start">{{ getPayerName(payer.idPayer) }}</td>
+                <td>{{ payer.value | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td>{{ (payer.qtd_parcelas_pagas || 0) + '/' + (payer.qtd_parcelas_total || 0) }}</td>
+                <td>{{ payer.payment ? 'Pago' : 'Pendente' }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="text-end fw-bold">Total:</td>
+                <td>{{ getTotalValue() | currency:'BRL':'symbol':'1.2-2' }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
     </div>
   </div>

@@ -7,6 +7,8 @@ import { TableDetailsOriginService } from '../../../services/table-details-origi
 import { Details_Origin } from '../../../models/details_Origin.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TableRecordsAnotherPayerService } from '../../../services/table-records-another-payer.service';
+import { Records_another_payer } from '../../../models/records_another_payer';
 
 @Component({
   selector: 'app-modal-insert-record-expense',
@@ -28,8 +30,11 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   additionalRecords: { value: number, discounts: number, month: number, year: number }[] = [];
   obs: string = '';
   showObsField: boolean = false;
+  otherPayers: Records_another_payer[] = [];
+  details_origin_id: number = 0;
 
   constructor(
+    private tableRecordsAnotherPayerService: TableRecordsAnotherPayerService,
     private tableDetailsOriginService: TableDetailsOriginService,
     private tableRecordsService: TableRecordsService,
     private notificacoesService: NotificacoesService,
@@ -44,6 +49,7 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   ngOnInit(): void {
     this.getRecords();
     this.selectInDetails_Origin();
+    this.loadOtherPayers();
   }
 
     toggleObsField(): void {
@@ -173,4 +179,19 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
   close(): void {
     this.dialogRef.close();
   }
+
+    loadOtherPayers(): void {
+    this.tableRecordsAnotherPayerService.selectInRecords_another_payer().then((records) => {
+      this.otherPayers = records;
+    }).catch((error) => {
+      console.error('Erro ao carregar outros pagadores:', error);
+    });
+  }
+
+  getTotalOtherPayersValue(month: number, year: number): number {
+    return this.otherPayers
+      .filter(payer => payer.idOrigin === this.idDetailsOrigin && payer.month === month && payer.year === year)
+      .reduce((total, payer) => total + (payer.value || 0), 0);
+  }
+
 }

@@ -22,7 +22,7 @@
         <td>{{ getOriginDescription(record.idOrigin) }}</td>
         <td>{{ record.description }}</td>
         <td>{{ record.value | currency:'BRL':'symbol':'1.2-2' }}</td>
-        <td>{{ record.qtd_parcelas_pendentes }}</td>
+        <td class="text-center">{{ (record.qtd_parcelas_pagas || 0) + '/' + (record.qtd_parcelas_total || 0) }}</td>
         <td>
           <span [ngClass]="record.payment ? 'text-success' : 'text-warning'">
             {{ record.payment ? 'Pago' : 'Pendente' }}
