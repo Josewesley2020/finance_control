@@ -46,7 +46,7 @@
         <!-- Demais Colunas -->
         <td>{{ record.Details_Origin.Description }}</td>
         <td>{{ record.Details_Origin.due_date }}</td>
-        <td>{{ record.value - record.discounts | currency:'BRL':'symbol':'1.2-2' }}</td>
+        <td class="fw-bold">{{ record.value - record.discounts | currency:'BRL':'symbol':'1.2-2' }}</td>
         <td>{{ filterValueNextMonth(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</td>
         <td>{{ filterValueAllMonths(record.details_origin_id) | currency:'BRL':'symbol':'1.2-2' }}</td>
 

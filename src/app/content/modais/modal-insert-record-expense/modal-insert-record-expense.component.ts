@@ -194,4 +194,12 @@ export class ModalInsertRecordExpenseComponent implements OnInit {
       .reduce((total, payer) => total + (payer.value || 0), 0);
   }
 
+  assumePredictedDiscount(): void {
+  this.discounts = this.getTotalOtherPayersValue(this.month, this.year);
+}
+
+assumePredictedDiscountOther(record: any): void {
+  record.discounts = this.getTotalOtherPayersValue(record.month, record.year);
+}
+
 }

@@ -35,66 +35,47 @@
             />
           </div>
         </div>
-        <div class="col-2">
+         <div class="col-2">
           <div class="form-group">
             <label for="discounts" class="form-label fw-bold">Descontos:</label>
-            <input
-              type="number"
-              class="form-control"
-              id="discounts"
-              [(ngModel)]="discounts"
-              name="discounts"
-              step="10.00"
-              min="0"
-            />
+            <div class="input-group">
+              <input
+                type="number"
+                class="form-control"
+                id="discounts"
+                [(ngModel)]="discounts"
+                name="discounts"
+                step="10.00"
+                min="0"
+              />
+              <!-- <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="assumePredictedDiscount()"
+                title="Assumir valor previsto"
+              >
+                <i class="bi bi-arrow-down-circle"></i>
+              </button> -->
+            </div>
           </div>
         </div>
-        <div class="col-2">
-        <label for="totalOtherPayersValue" class="form-label text-danger fw-bold">Previsão:</label>
-           <small class="text-muted" id="totalOtherPayersValue">
-             {{ getTotalOtherPayersValue(month, year) | currency:'BRL':'symbol':'1.2-2' }}
-          </small></div>
+        <div class="col-4 d-flex row text-start">
+          <label for="totalOtherPayersValue" class="form-label text-danger fw-bold">Descontos previstos:</label>
+          <div>
+                    <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="assumePredictedDiscount()"
+                title="Assumir valor de desconto previsto"
+              >
+                <i class="bi bi-arrow-left-circle"></i>
+              </button>
+          <small class="text-muted" id="totalOtherPayersValue">
+            {{ getTotalOtherPayersValue(month, year) | currency:'BRL':'symbol':'1.2-2' }}
+          </small>
+          </div>
+        </div>
       </div>
-
-      <!-- Botão para Alternar Observação -->
-      <!-- <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-          <button
-            type="button"
-            class="btn btn-outline-secondary btn-sm"
-            (click)="toggleObsField()"
-            title="Exibir/Esconder Observação"
-          >
-            <i class="bi" [ngClass]="showObsField ? 'bi-eye-slash' : 'bi-eye'"></i>
-            {{ showObsField ? 'Esconder Observação' : 'Exibir Observação' }}
-          </button>
-        </div>
-      </div> -->
-
-      <!-- Observação -->
-      <!-- <div class="row mt-2">
-        <div class="col-12">
-          <label for="obs" class="form-label fw-bold">Observação:</label>
-                <button
-            type="button"
-            class="btn btn-sm"
-            (click)="toggleObsField()"
-            title="Exibir/Esconder Observação"
-          >
-            <i class="bi" [ngClass]="showObsField ? 'bi-eye-slash' : 'bi-eye'"></i>
-            {{ showObsField ? '' : '' }}
-          </button>
-          <textarea *ngIf="showObsField"
-            class="form-control mb-2"
-            id="obs"
-            [(ngModel)]="obs"
-            name="obs"
-            rows="3"
-            placeholder="Digite uma observação"
-          ></textarea>
-        </div>
-      </div> -->
-
       <!-- Registros Adicionais -->
       <div *ngFor="let record of additionalRecords; let i = index" class="row align-items-center">
           <span class="fw-bold col-3 d-flex justify-content-around">{{ description }}</span>
@@ -125,10 +106,21 @@
             min="0"
           />
         </div>
-            <div class="col-2">
-           <small class="text-muted">
-            {{ getTotalOtherPayersValue(record.month, record.year) | currency:'BRL':'symbol':'1.2-2' }}
-          </small></div>
+                  <div class="col-2">
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="assumePredictedDiscountOther(record)"
+                  title="Assumir valor de desconto previsto"
+                >
+                  <i class="bi bi-arrow-left-circle"></i>
+                </button>
+                <small class="text-muted" id="totalOtherPayersValue">
+                  {{ getTotalOtherPayersValue(record.month, record.year) | currency:'BRL':'symbol':'1.2-2' }}
+                </small>
+              </div>
+            </div>
 
         <div class="col-2">
           <!-- <label class="form-label fw-bold">Mês/Ano:</label> -->
